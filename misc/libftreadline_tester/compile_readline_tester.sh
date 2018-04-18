@@ -7,6 +7,9 @@ if [ ! -f libftreadline_tester.c ]; then
 	exit 1
 fi
 
-make -C ../../libft
-make -C ../../libftreadline
-gcc -o libftreadline_tester libftreadline_tester.c -I ../../libft -I ../../libftreadline/includes -L ../../libft -L ../../libftreadline -lft -lftreadline -ltermcap
+librlp="../.."
+libftp="../../libft"
+
+make -C "$libftp"
+make -C "$librlp"
+gcc -o libftreadline_tester libftreadline_tester.c -I "$libftp" -I "$librlp/includes" -L "$libftp" -L "$librlp" -lft -lftreadline -ltermcap

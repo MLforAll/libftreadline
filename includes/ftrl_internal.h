@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/17 18:55:11 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/18 19:22:44 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,7 @@ int				rl_set_term(t_readline *rl, int echo, const char *prompt);
 
 int				outcap(char *name);
 int				outcapstr(char *cstr);
+int				outcap_arg_fb(char *cstr, char *fb, int arg);
 
 /*
 ** utils

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 18:20:20 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/16 18:35:01 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/18 19:22:33 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,22 @@ int					outcapstr(char *cstr)
 {
 	if (tputs(cstr, 1, &putcf) == -1)
 		return (FALSE);
+	return (TRUE);
+}
+
+int					outcap_arg_fb(char *cstr, char *fb, int arg)
+{
+	char	*prog;
+
+	if (cstr)
+	{
+		prog = tgoto(cstr, arg, 0);
+		return (outcapstr(prog));
+	}
+	while (arg--)
+	{
+		if (!outcapstr(fb))
+			return (FALSE);
+	}
 	return (TRUE);
 }

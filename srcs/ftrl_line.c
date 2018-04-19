@@ -6,13 +6,26 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/20 00:05:31 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/20 00:55:44 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
 #include "ftrl_internal.h"
+
+inline static void	clr_lines(t_point *coords, t_readline *rl)
+{
+	t_point	maxc;
+
+	get_line_info_for_pos(&maxc, rl->csr.max, rl);
+	outcap("ce");
+	if (coords->y >= maxc.y)
+		return ;
+	outcapstr(rl->movs.downm);
+	outcap_arg_fb(tgetstr("DL", NULL), tgetstr("dl", NULL), maxc.y - 1);
+	outcapstr(rl->movs.upm);
+}
 
 void	rl_line_rm(char **line, size_t len, t_readline *rl)
 {
@@ -26,7 +39,7 @@ void	rl_line_rm(char **line, size_t len, t_readline *rl)
 	rl->csr.pos -= len;
 	get_line_info(&csrm, rl);
 	go_to_point(&csrm, &coords, rl);
-	outcap("ce");
+	clr_lines(&coords, rl);
 	outcap("sc");
 	if (rl->csr.pos + len < rl->csr.max)
 		ft_putstr_fd(*line + rl->csr.pos + len, STDIN_FILENO);

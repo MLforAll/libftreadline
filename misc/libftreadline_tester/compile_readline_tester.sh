@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -e
 
 if [ ! -f libftreadline_tester.c ]; then
 	echo "OOPS!"

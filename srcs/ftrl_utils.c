@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 16:49:05 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/17 18:55:00 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/19 00:45:41 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,21 @@ void	get_line_info_for_pos(t_point *pt, unsigned int pos, t_readline *rl)
 void	get_line_info(t_point *pt, t_readline *rl)
 {
 	get_line_info_for_pos(pt, rl->csr.pos, rl);
+}
+
+void	go_to_point(t_point *to, t_point *from, t_readline *rl)
+{
+	char			*tch;
+	char			*tcv;
+	int				lenh;
+	int				lenv;
+
+	if (from->x == to->x && from->y == to->y)
+		return ;
+	tch = (from->x < to->x) ? rl->movs.rightm : rl->movs.leftm;
+	tcv = (from->y < to->y) ? rl->movs.downm : rl->movs.upm;
+	lenh = (from->x < to->x) ? to->x - from->x : from->x - to->x;
+	lenv = (from->y < to->y) ? to->y - from->y : from->y - to->y;
+	outcap_arg_fb(NULL, tch, lenh);
+	outcap_arg_fb(NULL, tcv, lenv);
 }

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/18 19:22:44 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/19 00:48:56 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,8 @@
 ** ANSI Sequences Codes
 */
 
-# define ESC_LEFTK	"\033[D"
-# define ESC_RIGHTK	"\033[C"
-# define ESC_HOMEK	"\033[H"
-# define ESC_ENDK	"\033[F"
-# define ESC_DELK	"\033[3~"
-# define ESC_CLRL	"\033[K"
-# define ESC_SAVEP	"\033[s"
-# define ESC_RESTP	"\033[u"
+# define ESC_MOVL	"\033b"
+# define ESC_MOVR	"\033f"
 
 /*
 ** structs for termcaps
@@ -92,6 +86,12 @@ typedef enum	e_keyact
 	kKeyFail
 }				t_keyact;
 
+typedef enum	e_direct
+{
+	kDirectLeft = -1,
+	kDirectRight = 1
+}				t_direct;
+
 /*
 ** autocompletion
 */
@@ -102,12 +102,13 @@ t_keyact		rl_ac_routine(char **line, t_readline *rl);
 ** cursor
 */
 
-/*t_keyact		rl_csr_keys(char *buff, t_readline *rl);
-t_keyact		rl_home_end_keys(char *buff, t_readline *rl);*/
-t_keyact		rl_right_key(char *buff, t_readline *rl);
-t_keyact		rl_left_key(char *buff, t_readline *rl);
-t_keyact		rl_home_key(char *buff, t_readline *rl);
-t_keyact		rl_end_key(char *buff, t_readline *rl);
+t_keyact		rl_right_key(char *line, t_readline *rl);
+t_keyact		rl_left_key(char *line, t_readline *rl);
+t_keyact		rl_home_key(char *line, t_readline *rl);
+t_keyact		rl_end_key(char *line, t_readline *rl);
+
+t_keyact		rl_movl_key(char *line, t_readline *rl);
+t_keyact		rl_movr_key(char *line, t_readline *rl);
 
 /*
 ** line edit
@@ -150,5 +151,6 @@ int				outcap_arg_fb(char *cstr, char *fb, int arg);
 size_t			ft_strlen_nocolor(const char *s);
 void			get_line_info_for_pos(t_point *pt, unsigned int pos, t_readline *rl);
 void			get_line_info(t_point *pt, t_readline *rl);
+void			go_to_point(t_point *to, t_point *from, t_readline *rl);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/17 23:44:44 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/19 02:09:11 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,63 +38,27 @@
 		if ((rval = f[idx](buff, rl)) > 0)
 			return ;
 	}
-}
-
-static int		act_on_buff(char *buff, char **line, t_readline *rl)
-{
-	int				retval;
-
-	if (!line || !*line || !buff || !rl)
-		return (FALSE);
-	if (rl_input_add_text(buff, line, rl))
-		return (TRUE);
-	if ((retval = rl_input_rm_text(line, buff, rl)) == 1)
-		return (TRUE);
-	if (*buff == 4 || *buff == 3)
-		ft_strdel(line);
-	if (*buff == 3)
-		*line = ft_strnew(0);
-	if (*buff == 4 || *buff == 3)
-		return (FALSE);
-	if (*buff == 21)
-	{
-		outcap("cr");
-		outcap("ce");
-		free(*line);
-		*line = ft_strnew(0);
-		ft_putstr_fd(rl->prompt, rl->opts->outfd);
-		ft_bzero(&rl->csr, sizeof(t_cursor));
-	}
-	return (TRUE);
 }*/
 
 static void		act_keys(char **line, char *buff, t_readline *rl)
 {
-	int				rval;
 	unsigned int	idx;
-	static t_keyact	(*f[5])(char*, t_readline*) =
-	{&rl_right_key, &rl_left_key, &rl_home_key, &rl_end_key, NULL};
-	const char		*keys[5] = {rl->keys.rightk, rl->keys.leftk,
-								rl->keys.homek, rl->keys.endk, NULL};
+	static t_keyact	(*f[7])(char*, t_readline*) =
+	{&rl_right_key, &rl_left_key, &rl_home_key, &rl_end_key,
+	&rl_movl_key, &rl_movr_key, NULL};
+	const char		*keys[7] = {rl->keys.rightk, rl->keys.leftk,
+								rl->keys.homek, rl->keys.endk,
+								ESC_MOVL, ESC_MOVR, NULL};
 
 	if (!line || !*line || !buff)
 		return ;
-	if ((rval = rl_history_keys(&rl->opts->hist, buff, line)) > 0 && *line)
+	idx = 0;
+	while (f[idx] && keys[idx])
 	{
-		outcap("cr");
-		outcap("ce");
-		ft_putstr_fd(rl->prompt, rl->opts->outfd);
-		ft_putstr_fd(*line, STDIN_FILENO);
-		rl->csr.max = ft_strlen(*line);
-		rl->csr.pos = rl->csr.max;
-	}
-	idx = -1;
-	while (f[++idx])
-	{
-		if (!ft_strequ(keys[idx], buff))
-			continue ;
-		if (f[idx](buff, rl) == kKeyFail && rl->opts->bell)
+		if (ft_strequ(keys[idx], buff)
+			&& f[idx](*line, rl) == kKeyFail && rl->opts->bell)
 			outcap("bl");
+		idx++;
 	}
 }
 

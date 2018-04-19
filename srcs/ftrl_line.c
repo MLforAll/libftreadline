@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/16 19:03:55 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/19 00:28:02 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,6 @@ int		rl_input_add_text(char *buff, char **line, t_readline *rl)
 
 	if (*buff == 27)
 		return (0);
-	/*if (*buff < 0)
-	{
-		rl_line_add(line, buff, rl);
-		return (TRUE);
-	}*/
 	idx = 0;
 	ft_bzero(add, sizeof(add));
 	while (*buff)

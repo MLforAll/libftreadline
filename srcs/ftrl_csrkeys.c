@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/18 09:00:17 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/19 00:44:46 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/20 00:02:29 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,16 @@ t_keyact	rl_right_key(char *line, t_readline *rl)
 
 t_keyact	rl_left_key(char *line, t_readline *rl)
 {
+	t_point		coords;
+	t_point		gtc;
+
 	(void)line;
 	if (rl->csr.pos <= 0)
 		return (kKeyFail);
+	get_line_info(&coords, rl);
 	rl->csr.pos--;
-	outcapstr(rl->movs.leftm);
+	get_line_info(&gtc, rl);
+	go_to_point(&gtc, &coords, rl);
 	return (kKeyOK);
 }
 

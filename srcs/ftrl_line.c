@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/20 00:55:44 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/20 02:49:49 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ inline static void	clr_lines(t_point *coords, t_readline *rl)
 	outcapstr(rl->movs.upm);
 }
 
-void	rl_line_rm(char **line, size_t len, t_readline *rl)
+void				rl_line_rm(char **line, size_t len, t_readline *rl)
 {
 	char			*tmp;
 	t_point			coords;
@@ -52,7 +52,7 @@ void	rl_line_rm(char **line, size_t len, t_readline *rl)
 	rl->csr.max -= len;
 }
 
-void	rl_line_add(char **line, char *add, t_readline *rl)
+void				rl_line_add(char **line, char *add, t_readline *rl)
 {
 	char			*tmp;
 	size_t			len;
@@ -63,10 +63,11 @@ void	rl_line_add(char **line, char *add, t_readline *rl)
 	get_line_info(&coords, rl);
 	outcap("ce");
 	ft_putstr_fd(add, STDIN_FILENO);
-	if (coords.x + 1 >= rl->ws.ws_col)
+	if (coords.x + len >= rl->ws.ws_col)
 	{
-		outcap("cr");
-		outcapstr(rl->movs.downm);
+		ft_putchar_fd(' ', STDIN_FILENO);
+		outcapstr(rl->movs.leftm);
+		outcap("ce");
 	}
 	if (rl->csr.pos < rl->csr.max)
 	{
@@ -84,7 +85,7 @@ void	rl_line_add(char **line, char *add, t_readline *rl)
 	rl->csr.pos += len;
 }
 
-int		rl_input_add_text(char *buff, char **line, t_readline *rl)
+int					rl_input_add_text(char *buff, char **line, t_readline *rl)
 {
 	char			add[5];
 	unsigned int	idx;
@@ -106,7 +107,7 @@ int		rl_input_add_text(char *buff, char **line, t_readline *rl)
 	return ((idx > 0));
 }
 
-int		rl_input_rm_text(char **line, char *buff, t_readline *rl)
+int					rl_input_rm_text(char **line, char *buff, t_readline *rl)
 {
 	int				keys[2];
 

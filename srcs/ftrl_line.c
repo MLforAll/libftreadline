@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/23 19:49:45 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/23 21:41:46 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ inline static void	clr_lines(t_point *coords, t_readline *rl)
 
 void				rl_line_rm(char **line, size_t len, t_readline *rl)
 {
-	char			*tmp;
 	t_point			coords;
 	t_point			csrm;
 
@@ -46,28 +45,12 @@ void				rl_line_rm(char **line, size_t len, t_readline *rl)
 	if (rl->csr.pos + len < rl->csr.max)
 		ft_putstr_fd(*line + rl->csr.pos + len, STDIN_FILENO);
 	outcap("rc");
-	tmp = *line;
-	*line = ft_strsub(tmp, 0, rl->csr.pos);
-	if (rl->csr.pos + len < rl->csr.max)
-		ft_stradd(line, tmp + rl->csr.pos + len);
-	ft_strdel(&tmp);
-	rl->bufflen = ft_strlen(*line);
+	rl_linebuff_rm(line, len, rl);
 	rl->csr.max -= len;
-}
-
-inline static void	pos_csr_nl(t_point *coords, size_t len, t_readline *rl)
-{
-	if (coords->x + len == rl->ws.ws_col)
-	{
-		ft_putchar_fd(' ', STDIN_FILENO);
-		outcapstr(rl->movs.leftm);
-		outcap("ce");
-	}
 }
 
 void				rl_line_add(char **line, char *add, t_readline *rl)
 {
-	//char			*tmp;
 	size_t			len;
 	t_point			coords;
 
@@ -76,20 +59,19 @@ void				rl_line_add(char **line, char *add, t_readline *rl)
 	get_line_info(&coords, rl);
 	outcap("ce");
 	ft_putstr_fd(add, STDIN_FILENO);
-	pos_csr_nl(&coords, len, rl);
+	if (coords.x + len == rl->ws.ws_col)
+	{
+		ft_putchar_fd(' ', STDIN_FILENO);
+		outcapstr(rl->movs.leftm);
+		outcap("ce");
+	}
 	if (rl->csr.pos < rl->csr.max)
 	{
 		outcap("sc");
 		ft_putstr_fd(*line + rl->csr.pos, STDIN_FILENO);
 		outcap("rc");
 	}
-	/*tmp = *line;
-	*line = ft_strsub(tmp, 0, rl->csr.pos);
-	ft_stradd(line, add);
-	if (rl->csr.pos < rl->csr.max)
-		ft_stradd(line, tmp + rl->csr.pos);
-	ft_strdel(&tmp);*/
 	rl_linebuff_add(line, add, len, rl);
-	rl->csr.max += len;
 	rl->csr.pos += len;
+	rl->csr.max += len;
 }

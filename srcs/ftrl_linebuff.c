@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/21 22:59:54 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/23 20:37:27 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/23 21:44:47 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ inline static size_t	newbufflen(t_readline *rl, size_t addlen)
 	return (rl->bufflen);
 }
 
-static int	buffrealloc(char **line, size_t size)
+static int				buffrealloc(char **line, size_t size)
 {
 	char	*newline;
 
@@ -37,7 +37,10 @@ static int	buffrealloc(char **line, size_t size)
 	return (TRUE);
 }
 
-int		rl_linebuff_add(char **line, char *add, size_t addlen, t_readline *rl)
+int						rl_linebuff_add(char **line,
+										char *add,
+										size_t addlen,
+										t_readline *rl)
 {
 	char	backup[512];
 
@@ -54,12 +57,12 @@ int		rl_linebuff_add(char **line, char *add, size_t addlen, t_readline *rl)
 	return (TRUE);
 }
 
-int		rl_linebuff_rm(char **line, size_t len, t_readline *rl)
+int						rl_linebuff_rm(char **line, size_t len, t_readline *rl)
 {
 	if (rl->csr.max <= rl->bufflen / 2)
 		buffrealloc(line, rl->bufflen /= 2);
-	ft_memset(*line + rl->csr.pos - len, '\0', len);
-	if (rl->csr.pos < rl->csr.max)
-		ft_strcpy(*line + rl->csr.pos - len, *line + rl->csr.pos);
+	ft_memset(*line + rl->csr.pos, '\0', len);
+	if (rl->csr.pos + len < rl->csr.max)
+		ft_strcpy(*line + rl->csr.pos, *line + rl->csr.pos + len);
 	return (TRUE);
 }

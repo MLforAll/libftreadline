@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/23 20:34:18 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/23 23:47:32 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,6 @@ typedef struct	s_mov
 	char	*upm;
 	char	*downm;
 }				t_mov;
-
-/*
-** struct for cursor mgmt
-*/
-
-typedef struct	s_cursor
-{
-	unsigned int	pos;
-	size_t			max;
-}				t_cursor;
 
 /*
 ** struct for moving around data
@@ -122,6 +112,13 @@ int				rl_linebuff_rm(char **line, size_t len, t_readline *rl);
 
 int				rl_input_add_text(char *buff, char **line, t_readline *rl);
 int				rl_input_rm_text(char **line, char *buff, t_readline *rl);
+
+/*
+** autocompletion
+*/
+
+t_keyact		rl_acroutine(char **line, t_readline *rl);
+t_list			*get_ac_result_bltn(char *line, t_cursor *csr);
 
 /*
 ** history

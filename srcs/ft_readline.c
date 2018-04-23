@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/23 19:39:37 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/23 23:47:15 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,15 @@ static int		act_on_buff(char *buff, char **line, t_readline *rl)
 	if ((retval = rl_input_rm_text(line, buff, rl)) == 1)
 		return (TRUE);
 	if (*buff == 4 || *buff == 3)
+	{
+		rl->bufflen = 0;
 		ft_strdel(line);
+	}
 	if (*buff == 3)
-		*line = ft_strnew(0);
+	{
+		rl->bufflen = 10;
+		*line = ft_strnew(10);
+	}
 	if (*buff == 4 || *buff == 3)
 		return (FALSE);
 	if (*buff == 21)
@@ -133,6 +139,8 @@ char			*ft_readline(const char *prompt, t_rl_opts *opts)
 	while (ret && read(STDIN_FILENO, buff, 4) > 0)
 	{
 		act_keys(&ret, buff, &rl);
+		if (ft_strequ(buff, "\t"))
+			rl_acroutine(&ret, &rl);
 		if (ft_strequ(buff, "\n") || !act_on_buff(buff, &ret, &rl))
 			break ;
 		ft_bzero(buff, sizeof(buff));

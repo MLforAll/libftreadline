@@ -6,7 +6,7 @@
 #    By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/04 06:10:18 by kdumarai          #+#    #+#              #
-#    Updated: 2018/04/23 19:41:47 by kdumarai         ###   ########.fr        #
+#    Updated: 2018/04/23 22:06:57 by kdumarai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,10 +27,15 @@ SRCFILES = ft_readline.c \
 	ftrl_linebuff.c \
 	ftrl_csrkeys.c \
 	ftrl_movtab.c \
+	ftrl_acroutine.c \
+	ftrl_acgetres.c \
+	ftrl_acshowres.c \
 	ftrl_term.c \
 	ftrl_termcaps.c \
 	ftrl_utils.c \
-	ftrl_history.c
+	ftrl_history.c \
+	fsexp_utils.c \
+	filep_utils.c
 SRCS = $(addprefix $(SRCDIR)/, $(SRCFILES))
 
 NSRC = $(shell echo "$(SRCS)" | awk '{print NF}')

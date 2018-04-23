@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 06:36:52 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/21 18:23:07 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/23 22:09:46 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,16 @@ typedef struct	s_history
 }				t_history;
 
 /*
+** struct for cursor mgmt
+*/
+
+typedef struct	s_cursor
+{
+	unsigned int	pos;
+	size_t			max;
+}				t_cursor;
+
+/*
 ** options struct
 */
 
@@ -34,8 +44,8 @@ typedef struct	s_rl_opts
 {
 	uint8_t		bell;
 	int			outfd;
-	int			(*ac_get_result)(char *);
-	t_list		(*ac_show_result)(t_list *);
+	t_list		*(*ac_get_result)(char *, t_cursor *);
+	t_list		*(*ac_show_result)(t_list *);
 	t_history	*hist;
 }				t_rl_opts;
 

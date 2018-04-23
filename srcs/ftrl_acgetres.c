@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/26 20:53:53 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/21 17:35:22 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/23 23:36:34 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <dirent.h>
 #include "ftrl_internal.h"
 
-static char		*get_last_components(const char *s, const char *comps)
+static char			*get_last_components(const char *s, const char *comps)
 {
 	char	*ret;
 	char	*tmp;
@@ -61,12 +61,15 @@ inline static char	*get_region(char *line, t_cursor *csr)
 	return (ft_strsub(line, idx, csr->pos - idx));
 }
 
-t_list			*get_ac_result(char *line, char *region)
+t_list				*get_ac_result_bltn(char *line, t_cursor *csr)
 {
 	t_list	*ret;
+	char	*region;
 	char	*chk_cmd_line;
 
 	chk_cmd_line = get_last_components(line, "|;");
+	region = get_region(line, csr);
 	ret = search_files_begin(region, NULL, FALSE);
+	free(region);
 	return (ret);
 }

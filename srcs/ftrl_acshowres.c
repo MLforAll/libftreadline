@@ -1,42 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ftrl_data.h                                        :+:      :+:    :+:   */
+/*   ftrl_acshowres.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/13 06:36:52 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/21 18:23:07 by kdumarai         ###   ########.fr       */
+/*   Created: 2018/04/20 19:47:08 by kdumarai          #+#    #+#             */
+/*   Updated: 2018/04/21 22:24:56 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FTRL_DATA_H
-# define FTRL_DATA_H
+#include <unistd.h>
+#include <stdlib.h>
+#include "ftrl_internal.h"
 
-# include <stdint.h>
-
-/*
-** linked list for history mgmt
-*/
-
-typedef struct	s_history
+void			show_choices(t_list **res, char *line, t_readline *rl)
 {
-	char				*line;
-	struct s_history	*next;
-	struct s_history	*prev;
-}				t_history;
-
-/*
-** options struct
-*/
-
-typedef struct	s_rl_opts
-{
-	uint8_t		bell;
-	int			outfd;
-	int			(*ac_get_result)(char *);
-	t_list		(*ac_show_result)(t_list *);
-	t_history	*hist;
-}				t_rl_opts;
-
-#endif
+	ft_putchar_fd('\n', STDIN_FILENO);
+	ft_lstmergesort(res, &ft_lstsortalpha, NO);
+	ft_putlst_fd(*res, STDIN_FILENO);
+	ft_putstr_fd(rl->prompt, STDIN_FILENO);
+	ft_putstr_fd(line, STDIN_FILENO);
+}

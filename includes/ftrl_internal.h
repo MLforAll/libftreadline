@@ -6,15 +6,14 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/19 00:48:56 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/23 20:34:18 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FTRL_INTERNAL_H
 # define FTRL_INTERNAL_H
 
-# include "libft.h"
-# include "ftrl_data.h"
+# include "libftreadline.h"
 # include <termcap.h>
 # include <sys/ioctl.h>
 
@@ -68,6 +67,7 @@ typedef struct	s_readline
 {
 	const char		*prompt;
 	size_t			prlen;
+	size_t			bufflen;
 	t_cursor		csr;
 	t_keys			keys;
 	t_mov			movs;
@@ -116,6 +116,10 @@ t_keyact		rl_movr_key(char *line, t_readline *rl);
 
 void			rl_line_rm(char **line, size_t len, t_readline *rl);
 void			rl_line_add(char **line, char *add, t_readline *rl);
+
+int				rl_linebuff_add(char **line, char *add, size_t addlen, t_readline *rl);
+int				rl_linebuff_rm(char **line, size_t len, t_readline *rl);
+
 int				rl_input_add_text(char *buff, char **line, t_readline *rl);
 int				rl_input_rm_text(char **line, char *buff, t_readline *rl);
 
@@ -142,7 +146,7 @@ int				rl_set_term(t_readline *rl, int echo, const char *prompt);
 
 int				outcap(char *name);
 int				outcapstr(char *cstr);
-int				outcap_arg_fb(char *cstr, char *fb, int arg);
+int				outcap_arg_fb(char *cstr, char *fb, int arg, int affcnt);
 
 /*
 ** utils

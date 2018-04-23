@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/20 18:20:04 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/23 19:48:13 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include "ftrl_internal.h"
 
-int					rl_input_add_text(char *buff, char **line, t_readline *rl)
+int			rl_input_add_text(char *buff, char **line, t_readline *rl)
 {
 	char			add[5];
 	unsigned int	idx;
@@ -36,7 +36,7 @@ int					rl_input_add_text(char *buff, char **line, t_readline *rl)
 	return ((idx > 0));
 }
 
-int					rl_input_rm_text(char **line, char *buff, t_readline *rl)
+int			rl_input_rm_text(char **line, char *buff, t_readline *rl)
 {
 	int				keys[2];
 

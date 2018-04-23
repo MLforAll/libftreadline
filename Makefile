@@ -6,7 +6,7 @@
 #    By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/04 06:10:18 by kdumarai          #+#    #+#              #
-#    Updated: 2018/04/20 18:20:25 by kdumarai         ###   ########.fr        #
+#    Updated: 2018/04/23 19:41:47 by kdumarai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ SRCDIR = srcs
 SRCFILES = ft_readline.c \
 	ftrl_line.c \
 	ftrl_linekeys.c \
+	ftrl_linebuff.c \
 	ftrl_csrkeys.c \
 	ftrl_movtab.c \
 	ftrl_term.c \

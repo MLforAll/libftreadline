@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 16:49:35 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/13 06:43:05 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/23 19:44:00 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int		main(int ac, char **av, char **env)
 	opts.bell = TRUE;
 	opts.outfd = STDIN_FILENO;
 	opts.ac_get_result = NULL;
-	opts.ac_multi_choice = NULL;
+	opts.ac_show_result = NULL;
 	prompt = "\033[1;32mlibftreadline\033[0;39m$ ";
 	ft_putstr_fd("This tool is used for debug purposes ONLY!\n"
 				"Type something and check if the returned result is OK\n"

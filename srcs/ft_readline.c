@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/19 02:09:11 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/23 19:39:37 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,8 @@ char			*ft_readline(const char *prompt, t_rl_opts *opts)
 	if (!rl_init(&rl, prompt, opts) || !rl_set_term(&rl, NO, prompt))
 		return (NULL);
 	ft_bzero(buff, sizeof(buff));
-	ret = ft_strnew(0);
+	ret = ft_strnew(10);
+	rl.bufflen = 10;
 	while (ret && read(STDIN_FILENO, buff, 4) > 0)
 	{
 		act_keys(&ret, buff, &rl);

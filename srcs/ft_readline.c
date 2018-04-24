@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/24 11:58:08 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/24 21:17:38 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ static int		act_on_buff(char *buff, char **line, t_readline *rl)
 static void		print_end_newlines(t_readline *rl)
 {
 	t_point			coords;
+	t_point			maxc;
+	size_t			times;
 	char			*nlb;
 
 	if (!rl)
@@ -82,11 +84,13 @@ static void		print_end_newlines(t_readline *rl)
 		outcapstr(rl->movs.downm);
 		return ;
 	}
-	get_line_info_for_pos(&coords, rl->csr.max, rl);
-	if (!(nlb = (char*)malloc(sizeof(char) * (coords.y + 1))))
+	get_line_info(&coords, rl);
+	get_line_info_for_pos(&maxc, rl->csr.max, rl);
+	times = maxc.y - coords.y + 1;
+	if (!(nlb = (char*)malloc(sizeof(char) * (times + 1))))
 		return ;
-	ft_memset(nlb, '\n', coords.y);
-	nlb[coords.y] = '\0';
+	ft_memset(nlb, '\n', times);
+	nlb[times] = '\0';
 	outcap("cr");
 	ft_putstr_fd(nlb, STDIN_FILENO);
 	free(nlb);

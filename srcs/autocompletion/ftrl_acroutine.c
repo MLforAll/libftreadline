@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 23:12:06 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/24 09:41:24 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/24 13:02:23 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 #include <stdlib.h>
 #include <dirent.h>
 #include "ftrl_internal.h"
+
+static void				free_tlist(void *content, size_t size)
+{
+	(void)size;
+	free(content);
+}
 
 inline static char		*get_highest_common(t_list *lst)
 {
@@ -56,12 +62,6 @@ static char				*get_diff(char *line, char *ch, unsigned int pos)
 	return (NULL);
 }
 
-void					free_tlist(void *content, size_t size)
-{
-	(void)size;
-	free(content);
-}
-
 t_keyact				rl_acroutine(char **line, t_readline *rl)
 {
 	t_list			*res;
@@ -73,9 +73,6 @@ t_keyact				rl_acroutine(char **line, t_readline *rl)
 	base = (res && !res->next) ? res->content : get_highest_common(res);
 	if (base && (diff = get_diff(*line, base, rl->csr.pos)) && *diff)
 		rl_line_add(line, diff, rl);
-	//(diff = ft_strdiff(base, *line));
-	if (res && base && diff && base == res->content && res->content_size != DT_LNK)
-		rl_line_add(line, (res->content_size == DT_DIR) ? "/" : " ", rl);
 	if (base && base != res->content)
 		ft_strdel(&base);
 	ft_lstdel(&res, &free_tlist);

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/23 23:47:15 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/24 11:58:08 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,7 @@
 #include <stdlib.h>
 #include "ftrl_internal.h"
 
-/*static void		act_keys(char **line, char *buff, t_readline *rl)
-{
-	int				rval;
-	unsigned int	idx;
-	static t_keyact	(*f[3])(char*, t_readline*) =
-	{&rl_csr_keys, &rl_home_end_keys, NULL};
-
-	if (!line || !*line || !buff)
-		return ;
-	if ((rval = rl_history_keys(&rl->opts->hist, buff, line)) > 0 && *line)
-	{
-		outcap("cr");
-		outcap("ce");
-		ft_putstr_fd(rl->prompt, rl->opts->outfd);
-		ft_putstr_fd(*line, STDIN_FILENO);
-		rl->csr.max = ft_strlen(*line);
-		rl->csr.pos = rl->csr.max;
-	}
-	idx = -1;
-	while (f[++idx])
-	{
-		if ((rval = f[idx](buff, rl)) > 0)
-			return ;
-	}
-}*/
-
-static void		act_keys(char **line, char *buff, t_readline *rl)
+static void		nav_keys(char **line, char *buff, t_readline *rl)
 {
 	unsigned int	idx;
 	static t_keyact	(*f[7])(char*, t_readline*) =
@@ -89,37 +63,30 @@ static int		act_on_buff(char *buff, char **line, t_readline *rl)
 		outcap("cr");
 		outcap("ce");
 		free(*line);
-		*line = ft_strnew(0);
+		*line = ft_strnew(10);
+		rl->bufflen = 10;
 		ft_putstr_fd(rl->prompt, rl->opts->outfd);
 		ft_bzero(&rl->csr, sizeof(t_cursor));
 	}
 	return (TRUE);
 }
 
-static void		print_end_newlines(char *line, char *buff, t_readline *rl)
+static void		print_end_newlines(t_readline *rl)
 {
-	struct winsize	ws;
-	size_t			times;
-	size_t			linelen;
+	t_point			coords;
 	char			*nlb;
 
-	if (!line || !rl || rl->csr.pos == rl->csr.max)
+	if (!rl)
 	{
 		outcap("cr");
 		outcapstr(rl->movs.downm);
 		return ;
 	}
-	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &ws) == -1)
+	get_line_info_for_pos(&coords, rl->csr.max, rl);
+	if (!(nlb = (char*)malloc(sizeof(char) * (coords.y + 1))))
 		return ;
-	linelen = ft_strlen(line) + rl->prlen;
-	times = linelen / ws.ws_col + (linelen % ws.ws_col != 0);
-	times -= rl->csr.pos / ws.ws_col;
-	times = (times <= 0) ? 1 : times;
-	times += (buff && *buff != '\n');
-	if (!(nlb = (char*)malloc(sizeof(char) * (times + 1))))
-		return ;
-	ft_memset(nlb, '\n', times);
-	nlb[times] = '\0';
+	ft_memset(nlb, '\n', coords.y);
+	nlb[coords.y] = '\0';
 	outcap("cr");
 	ft_putstr_fd(nlb, STDIN_FILENO);
 	free(nlb);
@@ -138,14 +105,14 @@ char			*ft_readline(const char *prompt, t_rl_opts *opts)
 	rl.bufflen = 10;
 	while (ret && read(STDIN_FILENO, buff, 4) > 0)
 	{
-		act_keys(&ret, buff, &rl);
+		nav_keys(&ret, buff, &rl);
 		if (ft_strequ(buff, "\t"))
 			rl_acroutine(&ret, &rl);
 		if (ft_strequ(buff, "\n") || !act_on_buff(buff, &ret, &rl))
 			break ;
 		ft_bzero(buff, sizeof(buff));
 	}
-	print_end_newlines(ret, buff, &rl);
+	print_end_newlines(&rl);
 	rl_set_term(&rl, YES, prompt);
 	return (ret);
 }

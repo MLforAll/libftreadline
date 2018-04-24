@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/19 00:20:51 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/24 13:02:07 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,17 @@ int					rl_set_term(t_readline *rl, int echo, const char *prompt)
 
 inline static void	set_keys_movs(t_keys *keys, t_mov *movs)
 {
-	keys->leftk = tgetstr("kl", NULL);
-	keys->rightk = tgetstr("kr", NULL);
-	keys->upk = tgetstr("ku", NULL);
-	keys->downk = tgetstr("kd", NULL);
-	keys->homek = tgetstr("kh", NULL);
-	keys->endk = tgetstr("@7", NULL);
-	keys->delk = tgetstr("kD", NULL);
-	keys->clrk = tgetstr("kE", NULL);
+	char			**keysptr;
+	unsigned int	idx;
+	const char		*caps[8] = {"kl", "kr", "ku", "kd", "kh", "@7", "kD", "kE"};
+
+	keysptr = (char**)keys;
+	idx = 0;
+	while (idx < sizeof(caps) / sizeof(caps[0]))
+	{
+		keysptr[idx] = tgetstr((char*)caps[idx], NULL);
+		idx++;
+	}
 	movs->leftm = tgetstr("le", NULL);
 	movs->rightm = tgetstr("nd", NULL);
 	movs->upm = tgetstr("up", NULL);

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 21:26:34 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/23 23:34:51 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/24 12:44:22 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ t_list		*search_files_begin(const char *f_path, const char *s_dir, int exec)
 			|| (exec && ft_strstart(dird->d_name, name)
 				&& is_exec(s_dir, dird->d_name, FALSE)))
 		{
-			ft_lstadd(&ret, ft_lstnew(dird->d_name, dird->d_namlen + 1));
-			ret->content_size = (size_t)dird->d_type;
+			ft_lstadd(&ret, ft_lstnew(dird->d_name, dird->d_namlen + 2));
+			ft_strcpy(ret->content + dird->d_namlen, (dird->d_type == DT_DIR) ? "/" : " ");
 		}
 	}
 	if (dirp)

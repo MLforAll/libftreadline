@@ -18,6 +18,15 @@ prompt may be NULL. In that case, no prompt is showed.
 Cursor must be positionned at the beginning of the line.
 Any other position is undefined behavior.
 
+.SH ft_readline
+.B 
+ft_readline()
+reads a line from stdin and returns a malloced copy.
+You should free the returned result once you are done dealing with it.
+It takes a prompt as a C-string, and a series of options via a ref
+to a
+.B t_rl_opts struct.
+
 .SH RETURN VALUES
 If EOF is catched,
 .B ft_readline()

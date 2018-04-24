@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 06:36:52 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/23 22:09:46 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/24 12:53:01 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,15 @@ typedef struct	s_rl_opts
 	t_list		*(*ac_show_result)(t_list *);
 	t_history	*hist;
 }				t_rl_opts;
+
+/*
+** enum for ft_confirm
+*/
+
+typedef enum	e_dflact
+{
+	kDefaultYes,
+	kDefaultNo
+}				t_dflact;
 
 #endif

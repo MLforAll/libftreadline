@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 23:12:06 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/23 23:52:03 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/24 09:41:24 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,24 +44,19 @@ inline static t_list	*get_ac_result(char *line, t_readline *rl)
 	return (get_ac_result_bltn(line, &rl->csr));
 }
 
-/*char	*ft_strrdiff(char *s1, char *s2)
+static char				*get_diff(char *line, char *ch, unsigned int pos)
 {
-	unsigned int	idx1;
-	unsigned int	idx2;
+	char			*res;
 
-	if (!s1 || !s2)
-		return (NULL);
-	idx1 = ft_strlen(s1);
-	idx2 = ft_strlen(s2);
-	while (idx1 && idx2 && s1[idx1] == s2[idx2])
+	while (pos--)
 	{
-		idx1--;
-		idx2--;
+		if ((res = ft_strstart(ch, line + pos)))
+			return (res);
 	}
-	return (s1);
-}*/
+	return (NULL);
+}
 
-void    free_tlist(void *content, size_t size)
+void					free_tlist(void *content, size_t size)
 {
 	(void)size;
 	free(content);
@@ -76,9 +71,10 @@ t_keyact				rl_acroutine(char **line, t_readline *rl)
 	if (!(res = get_ac_result(*line, rl)))
 		return (kKeyFail);
 	base = (res && !res->next) ? res->content : get_highest_common(res);
-	if (base && (diff = ft_strdiff(base, *line)) && *diff)
+	if (base && (diff = get_diff(*line, base, rl->csr.pos)) && *diff)
 		rl_line_add(line, diff, rl);
-	if (res && base && base == res->content && res->content_size != DT_LNK)
+	//(diff = ft_strdiff(base, *line));
+	if (res && base && diff && base == res->content && res->content_size != DT_LNK)
 		rl_line_add(line, (res->content_size == DT_DIR) ? "/" : " ", rl);
 	if (base && base != res->content)
 		ft_strdel(&base);

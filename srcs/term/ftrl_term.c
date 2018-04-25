@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/24 13:02:07 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/25 03:19:46 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,24 @@ static void			get_winsize_hdl(unsigned long long sigc)
 	ioctl(STDIN_FILENO, TIOCGWINSZ, &rl->ws);
 }
 
-int					rl_set_term(t_readline *rl, int echo, const char *prompt)
+int					rl_set_term(t_readline *rl, int echo)
 {
 	struct termios	t;
+	static int		state = 0;
 
-	if (tcgetattr(STDIN_FILENO, &t))
+	if (tcgetattr(STDIN_FILENO, &t) || state != echo)
 		return (FALSE);
 	if (!echo)
 	{
-		if (prompt)
-			ft_putstr_fd(prompt, rl->opts->outfd);
 		t.c_lflag &= ~(ICANON | ECHO | ISIG);
 		t.c_oflag &= ~OPOST;
 		outcap("ks");
-		get_winsize_hdl((unsigned long long)rl);
-		signal(SIGWINCH, (void (*)(int))&get_winsize_hdl);
+		if (rl)
+		{
+			get_winsize_hdl((unsigned long long)rl);
+			signal(SIGWINCH, (void (*)(int))&get_winsize_hdl);
+		}
+		state = 1;
 	}
 	else
 	{
@@ -46,6 +49,7 @@ int					rl_set_term(t_readline *rl, int echo, const char *prompt)
 		t.c_oflag |= OPOST;
 		outcap("ke");
 		signal(SIGWINCH, SIG_DFL);
+		state = 0;
 	}
 	tcsetattr(STDIN_FILENO, TCSANOW, &t);
 	return (TRUE);

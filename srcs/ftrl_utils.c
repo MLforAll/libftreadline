@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 16:49:05 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/21 22:27:15 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/25 03:06:14 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 
 size_t	ft_strlen_nocolor(const char *s)
 {
-	size_t			ret;
-	size_t			chk;
+	size_t		ret;
+	size_t		chk;
 
 	ret = 0;
 	while (*s)
@@ -61,4 +61,14 @@ void	go_to_point(t_point *to, t_point *from, t_readline *rl)
 	lenv = (from->y < to->y) ? to->y - from->y : from->y - to->y;
 	outcap_arg_fb(NULL, tch, lenh, 1);
 	outcap_arg_fb(NULL, tcv, lenv, lenv);
+}
+
+void	go_to_pos(unsigned int to, unsigned int from, t_readline *rl)
+{
+	t_point		toc;
+	t_point		fromc;
+
+	get_line_info_for_pos(&toc, to, rl);
+	get_line_info_for_pos(&fromc, from, rl);
+	go_to_point(&toc, &fromc, rl);
 }

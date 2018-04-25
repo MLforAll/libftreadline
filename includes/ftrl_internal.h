@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/24 12:34:07 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/25 03:09:48 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,17 @@
 # include <sys/ioctl.h>
 
 /*
+** Macros
+*/
+
+# define DFL_LINEBUFFSIZE	10
+
+/*
 ** ANSI Sequences Codes
 */
 
-# define ESC_MOVL	"\033b"
-# define ESC_MOVR	"\033f"
+# define ESC_MOVL			"\033b"
+# define ESC_MOVR			"\033f"
 
 /*
 ** structs for termcaps
@@ -119,6 +125,7 @@ int				rl_input_rm_text(char **line, char *buff, t_readline *rl);
 
 t_keyact		rl_acroutine(char **line, t_readline *rl);
 t_list			*get_ac_result_bltn(char *line, t_cursor *csr);
+char			*show_ac_result_bltn(t_list **res);
 
 /*
 ** history
@@ -135,7 +142,7 @@ t_keyact		rl_history_keys(t_history **history, char *buff, char **line);
 */
 
 int				rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts);
-int				rl_set_term(t_readline *rl, int echo, const char *prompt);
+int				rl_set_term(t_readline *rl, int echo);
 
 /*
 ** termcaps
@@ -153,5 +160,6 @@ size_t			ft_strlen_nocolor(const char *s);
 void			get_line_info_for_pos(t_point *pt, unsigned int pos, t_readline *rl);
 void			get_line_info(t_point *pt, t_readline *rl);
 void			go_to_point(t_point *to, t_point *from, t_readline *rl);
+void			go_to_pos(unsigned int to, unsigned int from, t_readline *rl);
 
 #endif

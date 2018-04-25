@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/24 21:17:38 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/25 03:31:23 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,10 @@ char			*ft_readline(const char *prompt, t_rl_opts *opts)
 	t_readline		rl;
 	char			*ret;
 
-	if (!rl_init(&rl, prompt, opts) || !rl_set_term(&rl, NO, prompt))
+	if (!rl_init(&rl, prompt, opts) || !rl_set_term(&rl, NO))
 		return (NULL);
+	if (prompt)
+		ft_putstr_fd(prompt, rl.opts->outfd);
 	ft_bzero(buff, sizeof(buff));
 	ret = ft_strnew(10);
 	rl.bufflen = 10;
@@ -117,6 +119,6 @@ char			*ft_readline(const char *prompt, t_rl_opts *opts)
 		ft_bzero(buff, sizeof(buff));
 	}
 	print_end_newlines(&rl);
-	rl_set_term(&rl, YES, prompt);
+	rl_set_term(&rl, YES);
 	return (ret);
 }

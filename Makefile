@@ -6,7 +6,7 @@
 #    By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/04 06:10:18 by kdumarai          #+#    #+#              #
-#    Updated: 2018/04/24 13:02:54 by kdumarai         ###   ########.fr        #
+#    Updated: 2018/04/25 02:26:54 by kdumarai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,8 @@ SRCFILES = ft_readline.c \
 	ftrl_utils.c \
 	ftrl_history.c \
 	fsexp_utils.c \
-	filep_utils.c
+	filep_utils.c \
+	lst_utils.c
 SRCS = $(addprefix $(SRCDIR)/, $(SRCFILES))
 
 NSRC = $(shell echo "$(SRCS)" | awk '{print NF}')

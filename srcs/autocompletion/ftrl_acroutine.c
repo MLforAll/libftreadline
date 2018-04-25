@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 23:12:06 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/24 13:02:23 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/25 03:40:25 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,6 @@
 #include <stdlib.h>
 #include <dirent.h>
 #include "ftrl_internal.h"
-
-static void				free_tlist(void *content, size_t size)
-{
-	(void)size;
-	free(content);
-}
 
 inline static char		*get_highest_common(t_list *lst)
 {
@@ -50,9 +44,23 @@ inline static t_list	*get_ac_result(char *line, t_readline *rl)
 	return (get_ac_result_bltn(line, &rl->csr));
 }
 
+inline static char		*show_ac_result(char *line, t_list **res, t_readline *rl)
+{
+	char	*ret;
+
+	if (rl->opts->ac_get_result)
+		ret = (rl->opts->ac_show_result)(res);
+	else
+		ret = show_ac_result_bltn(res);
+	ft_putstr_fd(rl->prompt, rl->opts->outfd);
+	ft_putstr_fd(line, STDIN_FILENO);
+	go_to_pos(rl->csr.pos, rl->csr.max, rl);
+	return (ret);
+}
+
 static char				*get_diff(char *line, char *ch, unsigned int pos)
 {
-	char			*res;
+	char	*res;
 
 	while (pos--)
 	{
@@ -64,17 +72,25 @@ static char				*get_diff(char *line, char *ch, unsigned int pos)
 
 t_keyact				rl_acroutine(char **line, t_readline *rl)
 {
-	t_list			*res;
-	char			*diff;
-	char			*base;
+	t_list		*res;
+	char		*diff;
+	char		*base;
 
 	if (!(res = get_ac_result(*line, rl)))
 		return (kKeyFail);
-	base = (res && !res->next) ? res->content : get_highest_common(res);
-	if (base && (diff = get_diff(*line, base, rl->csr.pos)) && *diff)
+	if (!(base = (res && !res->next) ? res->content : get_highest_common(res)))
+	{
+		ft_lstdel(&res, &free_tlist);
+		return (kKeyFail);
+	}
+	if ((diff = get_diff(*line, base, rl->csr.pos)) && !*diff)
+	{
+		if (base && base != res->content)
+			ft_strdel(&base);
+		base = show_ac_result(*line, &res, rl);
+	}
+	if ((diff = get_diff(*line, base, rl->csr.pos)) && *diff)
 		rl_line_add(line, diff, rl);
-	if (base && base != res->content)
-		ft_strdel(&base);
 	ft_lstdel(&res, &free_tlist);
 	return (kKeyOK);
 }

@@ -1,35 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ftrl_acshowres.c                                   :+:      :+:    :+:   */
+/*   lst_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/20 19:47:08 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 02:31:58 by kdumarai         ###   ########.fr       */
+/*   Created: 2018/04/25 01:47:01 by kdumarai          #+#    #+#             */
+/*   Updated: 2018/04/25 02:27:38 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
+#include <stdlib.h>
 #include "ftrl_internal.h"
 
-static void	ft_putlst_custom(t_list *lst)
+void	free_tlist(void *content, size_t size)
 {
-	while (lst)
-	{
-		if (lst->content)
-		{
-			ft_putstr_fd(lst->content, STDIN_FILENO);
-			ft_putstr_fd("\r\n", STDIN_FILENO);
-		}
-		lst = lst->next;
-	}
+	(void)size;
+	free(content);
 }
 
-char		*show_ac_result_bltn(t_list **res)
+int		ft_lstsortalpha(t_list *a, t_list *b)
 {
-	ft_putstr_fd("\r\n", STDIN_FILENO);
-	ft_lstmergesort(res, &ft_lstsortalpha, NO);
-	ft_putlst_custom(*res);
-	return (NULL);
+	if (!a || !b || !a->content || !b->content)
+		return (FALSE);
+	if (ft_strcmp(a->content, b->content) > 0)
+		return (TRUE);
+	return (FALSE);
 }

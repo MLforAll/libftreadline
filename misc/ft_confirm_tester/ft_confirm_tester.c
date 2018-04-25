@@ -1,35 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ftrl_acshowres.c                                   :+:      :+:    :+:   */
+/*   ft_confirm_tester.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/20 19:47:08 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 02:31:58 by kdumarai         ###   ########.fr       */
+/*   Created: 2018/04/25 03:42:54 by kdumarai          #+#    #+#             */
+/*   Updated: 2018/04/25 03:46:08 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
-#include "ftrl_internal.h"
+#include "libftreadline.h"
 
-static void	ft_putlst_custom(t_list *lst)
+int		main(void)
 {
-	while (lst)
-	{
-		if (lst->content)
-		{
-			ft_putstr_fd(lst->content, STDIN_FILENO);
-			ft_putstr_fd("\r\n", STDIN_FILENO);
-		}
-		lst = lst->next;
-	}
+	int	ans;
+
+	ans = ft_confirm("Do you want to show all files?",
+					STDOUT_FILENO, kDefaultYes);
+	ft_putstr("The user said ");
+	ft_putstr(ans ? "YES" : "NO");
+	ft_putstr("!\n");
 }
 
-char		*show_ac_result_bltn(t_list **res)
-{
-	ft_putstr_fd("\r\n", STDIN_FILENO);
-	ft_lstmergesort(res, &ft_lstsortalpha, NO);
-	ft_putlst_custom(*res);
-	return (NULL);
-}

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 16:21:50 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/25 18:26:15 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 */
 
 # define DFL_LINEBUFFSIZE	10
+# define RL_READBUFFSIZE	6
 
 /*
 ** ANSI Sequences Codes
@@ -55,6 +56,12 @@ typedef struct	s_mov
 	char	*downm;
 }				t_mov;
 
+typedef struct	s_cpypste
+{
+	unsigned int	mkrs[2];
+	char			*dat;
+}				t_cpypste;
+
 /*
 ** struct for moving around data
 */
@@ -65,6 +72,7 @@ typedef struct	s_readline
 	size_t			prlen;
 	size_t			bufflen;
 	t_cursor		csr;
+	t_cpypste		cpypste;
 	t_keys			keys;
 	t_mov			movs;
 	t_rl_opts		*opts;
@@ -125,6 +133,12 @@ t_keyact		rl_movl_key(char *line, t_readline *rl);
 t_keyact		rl_movr_key(char *line, t_readline *rl);
 
 /*
+** copy/paste (to be changed, refined etc!!!)
+*/
+
+t_keyact		cpypaste_keys(char **line, char *buff, t_readline *rl);
+
+/*
 ** autocompletion
 */
 
@@ -143,7 +157,7 @@ t_keyact		rl_history_keys(char *buff, t_readline *rl, t_rl_hist **hist);
 */
 
 int				rl_set_term(int echo);
-int				rl_deinit(void);
+int				rl_deinit(t_readline *rl);
 int				rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts);
 
 /*

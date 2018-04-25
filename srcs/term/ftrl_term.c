@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 16:26:55 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/25 18:25:08 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,13 @@ inline static void	set_keys_movs(t_keys *keys, t_mov *movs)
 	movs->downm = tgetstr("do", NULL);
 }
 
-int					rl_deinit(void)
+int					rl_deinit(t_readline *rl)
 {
 	if (!rl_set_term(YES))
 		return (FALSE);
 	outcap("ke");
 	signal(SIGWINCH, SIG_DFL);
+	ft_strdel(&rl->cpypste.dat);
 	return (TRUE);
 }
 

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 17:36:52 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/25 18:25:51 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static t_keyact	nav_keys(char **line, char *buff, t_readline *rl)
 	while (f[idx] && keys[idx])
 	{
 		if (ft_strequ(keys[idx], buff)
-			&& f[idx](*line, rl) == kKeyFail && rl->opts->bell)
+			&& f[idx](*line, rl) == kKeyFail)
 			return (kKeyFail);
 		idx++;
 	}
@@ -117,7 +117,7 @@ char			*ft_readline(const char *prompt,
 							t_rl_opts *opts, t_rl_hist *hist)
 {
 	t_readline		rl;
-	char			buff[5];
+	char			buff[RL_READBUFFSIZE + 1];
 	char			*ret;
 
 	if (!rl_init(&rl, prompt, opts))
@@ -126,17 +126,18 @@ char			*ft_readline(const char *prompt,
 		ft_putstr_fd(prompt, rl.opts->outfd);
 	ft_bzero(buff, sizeof(buff));
 	rl.bufflen = rl_linebuff_create(&ret);
-	while (ret && read(STDIN_FILENO, buff, 4) > 0)
+	while (ret && read(STDIN_FILENO, buff, RL_READBUFFSIZE) > 0)
 	{
 		if ((nav_keys(&ret, buff, &rl) == kKeyFail
 			|| hist_nav(&ret, buff, &rl, &hist) == kKeyFail
-			|| edit_keys(&ret, buff, &rl) == kKeyFail) && opts->bell)
+			|| edit_keys(&ret, buff, &rl) == kKeyFail
+			|| cpypaste_keys(&ret, buff, &rl)) && opts->bell)
 			outcap("bl");
 		if (ft_strequ(buff, "\n"))
 			break ;
 		ft_bzero(buff, sizeof(buff));
 	}
 	print_end_newlines(&rl);
-	rl_deinit();
+	rl_deinit(&rl);
 	return (ret);
 }

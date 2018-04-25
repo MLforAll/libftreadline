@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libftreadline_tester.c                             :+:      :+:    :+:   */
+/*   ft_readline_tester.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 16:49:35 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/23 19:44:00 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/25 04:05:00 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int		main(int ac, char **av, char **env)
 	opts.outfd = STDIN_FILENO;
 	opts.ac_get_result = NULL;
 	opts.ac_show_result = NULL;
-	prompt = "\033[1;32mlibftreadline\033[0;39m$ ";
+	prompt = "\033[1;33mft_readline\033[0;39m$ ";
 	ft_putstr_fd("This tool is used for debug purposes ONLY!\n"
 				"Type something and check if the returned result is OK\n"
 				"PS: Autocompletion works for either commands "
@@ -33,7 +33,7 @@ int		main(int ac, char **av, char **env)
 				"PS2: Ctrl-D to quit!\n\n", STDIN_FILENO);
 	while ((line = ft_readline(prompt, &opts)))
 	{
-		ft_putstr_fd("-------------> ", STDIN_FILENO);
+		ft_putstr_fd("-----------> ", STDIN_FILENO);
 		ft_putstr_fd(line, STDIN_FILENO);
 		ft_putstr_fd("\n\n", STDIN_FILENO);
 		ft_strdel(&line);

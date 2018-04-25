@@ -9,13 +9,14 @@ It uses termcaps and passes norminette, so it can be used for 42 projects.
 
 # Manpages
 The lib includes manpages for each function.
-To view them with `man`, you can issue (assuming `$PWD` is the repo dir):
-`man -M man ft_readline`
-or
-`man -M man ft_confirm`
-or even
-`man -M man libftreadline`
-If you want to view them all in a row, issue:
+To view them with `man`, you can issue (assuming `$PWD` is the repo dir):<br/>
+`man -M man ft_readline`<br/>
+or<br/>
+`man -M man ft_confirm`<br/>
+or even<br/>
+`man -M man libftreadline`<br/>
+
+If you want to view them all in a row, issue:<br/>
 `man man/man3/*`
 
 # Autocompletion

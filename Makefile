@@ -6,19 +6,15 @@
 #    By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/04 06:10:18 by kdumarai          #+#    #+#              #
-#    Updated: 2018/04/25 11:56:25 by kdumarai         ###   ########.fr        #
+#    Updated: 2018/04/25 13:28:27 by kdumarai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftreadline.a
 
 CC_FLAGS = -Wall -Werror -Wextra
-CC_LIB = -I includes -I ../libft
+CC_LIB = -I includes -I ../libft/includes
 LD_FLAGS = -L ../libft -lft
-
-INCDIR = includes
-INCFILES = ft_readline.h
-INCLUDES = $(addprefix $(INCDIR)/, $(INCFILES))
 
 SRCDIR = srcs
 SRCFILES = ft_readline.c \

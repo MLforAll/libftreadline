@@ -37,4 +37,5 @@ pass it to ft_readline() and free it when you're done with it.
 The project, while in good shape, is not finished.
 Norm issues and bugs can exist.
 Autocompletion is done!
-History needs to be fixed tho.
+History fixed and working.
+Copy and paste left to do.

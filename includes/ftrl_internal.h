@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 03:09:48 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/25 12:39:01 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,17 +125,13 @@ int				rl_input_rm_text(char **line, char *buff, t_readline *rl);
 
 t_keyact		rl_acroutine(char **line, t_readline *rl);
 t_list			*get_ac_result_bltn(char *line, t_cursor *csr);
-char			*show_ac_result_bltn(t_list **res);
+char			*show_ac_result_bltn(t_list **res, struct winsize *ws);
 
 /*
 ** history
 */
 
-t_history		*ft_histnew(char *line);
-void			ft_histadd(t_history **headref, char *line);
-void			ft_histdelone(t_history	**hist);
-void			ft_histdel(t_history **headref);
-t_keyact		rl_history_keys(t_history **history, char *buff, char **line);
+t_keyact		rl_history_keys(char *buff, t_readline *rl, t_rl_hist **hist);
 
 /*
 ** terminal

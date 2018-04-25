@@ -6,25 +6,26 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 06:36:52 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 02:25:40 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/25 12:38:22 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FTRL_DATA_H
 # define FTRL_DATA_H
 
+# include <sys/ioctl.h>
 # include <stdint.h>
 
 /*
 ** linked list for history mgmt
 */
 
-typedef struct	s_history
+typedef struct	s_rl_hist
 {
 	char				*line;
-	struct s_history	*next;
-	struct s_history	*prev;
-}				t_history;
+	struct s_rl_hist	*next;
+	struct s_rl_hist	*prev;
+}				t_rl_hist;
 
 /*
 ** struct for cursor mgmt
@@ -45,8 +46,8 @@ typedef struct	s_rl_opts
 	uint8_t		bell;
 	int			outfd;
 	t_list		*(*ac_get_result)(char *, t_cursor *);
-	char		*(*ac_show_result)(t_list **);
-	t_history	*hist;
+	char		*(*ac_show_result)(t_list **, struct winsize *);
+	t_rl_hist	*hist;
 }				t_rl_opts;
 
 /*

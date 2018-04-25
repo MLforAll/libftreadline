@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 03:31:23 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/25 12:46:53 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,29 @@
 #include <stdlib.h>
 #include "ftrl_internal.h"
 
-static void		nav_keys(char **line, char *buff, t_readline *rl)
+static t_keyact	hist_nav(char **line, char *buff,
+						t_readline *rl, t_rl_hist **hist)
+{
+	t_point		maxc;
+	t_keyact	retk;
+
+	if ((retk = rl_history_keys(buff, rl, hist)) != kKeyOK)
+		return (retk);
+	free(*line);
+	*line = ft_strdup((*hist)->line);
+	rl->csr.max = ft_strlen(*line);
+	rl->csr.pos = rl->csr.max;
+	rl->bufflen = rl->csr.max;
+	get_line_info_for_pos(&maxc, rl->csr.max, rl);
+	go_to_pos(0, rl->csr.pos, rl);
+	outcap("cr");
+	outcap_arg_fb(tgetstr("DL", NULL), tgetstr("dl", NULL), maxc.y, maxc.y);
+	ft_putstr_fd(rl->prompt, rl->opts->outfd);
+	ft_putstr_fd(*line, STDIN_FILENO);
+	return (kKeyOK);
+}
+
+static t_keyact	nav_keys(char **line, char *buff, t_readline *rl)
 {
 	unsigned int	idx;
 	static t_keyact	(*f[7])(char*, t_readline*) =
@@ -25,15 +47,16 @@ static void		nav_keys(char **line, char *buff, t_readline *rl)
 								ESC_MOVL, ESC_MOVR, NULL};
 
 	if (!line || !*line || !buff)
-		return ;
+		return (kKeyFail);
 	idx = 0;
 	while (f[idx] && keys[idx])
 	{
 		if (ft_strequ(keys[idx], buff)
 			&& f[idx](*line, rl) == kKeyFail && rl->opts->bell)
-			outcap("bl");
+			return (kKeyFail);
 		idx++;
 	}
+	return (kKeyOK);
 }
 
 static int		act_on_buff(char *buff, char **line, t_readline *rl)
@@ -96,7 +119,8 @@ static void		print_end_newlines(t_readline *rl)
 	free(nlb);
 }
 
-char			*ft_readline(const char *prompt, t_rl_opts *opts)
+char			*ft_readline(const char *prompt,
+							t_rl_opts *opts, t_rl_hist *hist)
 {
 	char			buff[5];
 	t_readline		rl;
@@ -111,7 +135,9 @@ char			*ft_readline(const char *prompt, t_rl_opts *opts)
 	rl.bufflen = 10;
 	while (ret && read(STDIN_FILENO, buff, 4) > 0)
 	{
-		nav_keys(&ret, buff, &rl);
+		if (nav_keys(&ret, buff, &rl) == kKeyFail
+			|| hist_nav(&ret, buff, &rl, &hist) == kKeyFail)
+			outcap("bl");
 		if (ft_strequ(buff, "\t"))
 			rl_acroutine(&ret, &rl);
 		if (ft_strequ(buff, "\n") || !act_on_buff(buff, &ret, &rl))

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 23:12:06 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 03:40:25 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/25 12:48:48 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,15 @@ inline static t_list	*get_ac_result(char *line, t_readline *rl)
 	return (get_ac_result_bltn(line, &rl->csr));
 }
 
-inline static char		*show_ac_result(char *line, t_list **res, t_readline *rl)
+inline static char		*show_ac_result(char *line, t_list **res,
+										t_readline *rl)
 {
 	char	*ret;
 
 	if (rl->opts->ac_get_result)
-		ret = (rl->opts->ac_show_result)(res);
+		ret = (rl->opts->ac_show_result)(res, &rl->ws);
 	else
-		ret = show_ac_result_bltn(res);
+		ret = show_ac_result_bltn(res, &rl->ws);
 	ft_putstr_fd(rl->prompt, rl->opts->outfd);
 	ft_putstr_fd(line, STDIN_FILENO);
 	go_to_pos(rl->csr.pos, rl->csr.max, rl);

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 19:47:08 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 09:21:17 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/25 15:50:34 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ static void	ft_putlst_custom(t_list *lst)
 {
 	while (lst)
 	{
-		if (lst->content)
+		if (lst->content && !ft_strequ(lst->content, "./")
+			&& !ft_strequ(lst->content, "../"))
 		{
 			ft_putstr_fd(lst->content, STDIN_FILENO);
 			ft_putstr_fd("\r\n", STDIN_FILENO);

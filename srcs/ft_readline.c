@@ -6,13 +6,38 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 12:46:53 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/25 17:36:52 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
 #include "ftrl_internal.h"
+
+static void		print_end_newlines(t_readline *rl)
+{
+	t_point			coords;
+	t_point			maxc;
+	size_t			times;
+	char			*nlb;
+
+	if (!rl)
+	{
+		outcap("cr");
+		outcapstr(rl->movs.downm);
+		return ;
+	}
+	get_line_info(&coords, rl);
+	get_line_info_for_pos(&maxc, rl->csr.max, rl);
+	times = maxc.y - coords.y + 1;
+	if (!(nlb = (char*)malloc(sizeof(char) * (times + 1))))
+		return ;
+	ft_memset(nlb, '\n', times);
+	nlb[times] = '\0';
+	outcap("cr");
+	ft_putstr_fd(nlb, STDIN_FILENO);
+	free(nlb);
+}
 
 static t_keyact	hist_nav(char **line, char *buff,
 						t_readline *rl, t_rl_hist **hist)
@@ -23,10 +48,15 @@ static t_keyact	hist_nav(char **line, char *buff,
 	if ((retk = rl_history_keys(buff, rl, hist)) != kKeyOK)
 		return (retk);
 	free(*line);
-	*line = ft_strdup((*hist)->line);
+	if ((*hist)->line)
+	{
+		*line = ft_strdup((*hist)->line);
+		rl->bufflen = ft_strlen(*line);
+	}
+	else
+		rl->bufflen = rl_linebuff_create(line);
 	rl->csr.max = ft_strlen(*line);
 	rl->csr.pos = rl->csr.max;
-	rl->bufflen = rl->csr.max;
 	get_line_info_for_pos(&maxc, rl->csr.max, rl);
 	go_to_pos(0, rl->csr.pos, rl);
 	outcap("cr");
@@ -59,92 +89,54 @@ static t_keyact	nav_keys(char **line, char *buff, t_readline *rl)
 	return (kKeyOK);
 }
 
-static int		act_on_buff(char *buff, char **line, t_readline *rl)
+static t_keyact	edit_keys(char **line, char *buff, t_readline *rl)
 {
-	int				retval;
-
 	if (!line || !*line || !buff || !rl)
-		return (FALSE);
-	if (rl_input_add_text(buff, line, rl))
-		return (TRUE);
-	if ((retval = rl_input_rm_text(line, buff, rl)) == 1)
-		return (TRUE);
+		return (kKeyNone);
+	if (rl_input_add_text(line, buff, rl))
+		return (kKeyOK);
+	if (rl_input_rm_text(line, buff, rl) == 1)
+		return (kKeyOK);
 	if (*buff == 4 || *buff == 3)
 	{
 		rl->bufflen = 0;
 		ft_strdel(line);
 	}
 	if (*buff == 3)
-	{
-		rl->bufflen = 10;
-		*line = ft_strnew(10);
-	}
+		rl->bufflen = rl_linebuff_create(line);
 	if (*buff == 4 || *buff == 3)
 		return (FALSE);
-	if (*buff == 21)
-	{
-		outcap("cr");
-		outcap("ce");
-		free(*line);
-		*line = ft_strnew(10);
-		rl->bufflen = 10;
-		ft_putstr_fd(rl->prompt, rl->opts->outfd);
-		ft_bzero(&rl->csr, sizeof(t_cursor));
-	}
-	return (TRUE);
-}
-
-static void		print_end_newlines(t_readline *rl)
-{
-	t_point			coords;
-	t_point			maxc;
-	size_t			times;
-	char			*nlb;
-
-	if (!rl)
-	{
-		outcap("cr");
-		outcapstr(rl->movs.downm);
-		return ;
-	}
-	get_line_info(&coords, rl);
-	get_line_info_for_pos(&maxc, rl->csr.max, rl);
-	times = maxc.y - coords.y + 1;
-	if (!(nlb = (char*)malloc(sizeof(char) * (times + 1))))
-		return ;
-	ft_memset(nlb, '\n', times);
-	nlb[times] = '\0';
-	outcap("cr");
-	ft_putstr_fd(nlb, STDIN_FILENO);
-	free(nlb);
+	if (ft_strequ(buff, "\025"))
+		rl_clear_line(line, rl);
+	if (ft_strequ(buff, "\t"))
+		rl_acroutine(line, rl);
+	return (kKeyOK);
 }
 
 char			*ft_readline(const char *prompt,
 							t_rl_opts *opts, t_rl_hist *hist)
 {
-	char			buff[5];
 	t_readline		rl;
+	char			buff[5];
 	char			*ret;
 
-	if (!rl_init(&rl, prompt, opts) || !rl_set_term(&rl, NO))
+	if (!rl_init(&rl, prompt, opts))
 		return (NULL);
 	if (prompt)
 		ft_putstr_fd(prompt, rl.opts->outfd);
 	ft_bzero(buff, sizeof(buff));
-	ret = ft_strnew(10);
-	rl.bufflen = 10;
+	rl.bufflen = rl_linebuff_create(&ret);
 	while (ret && read(STDIN_FILENO, buff, 4) > 0)
 	{
-		if (nav_keys(&ret, buff, &rl) == kKeyFail
-			|| hist_nav(&ret, buff, &rl, &hist) == kKeyFail)
+		if ((nav_keys(&ret, buff, &rl) == kKeyFail
+			|| hist_nav(&ret, buff, &rl, &hist) == kKeyFail
+			|| edit_keys(&ret, buff, &rl) == kKeyFail) && opts->bell)
 			outcap("bl");
-		if (ft_strequ(buff, "\t"))
-			rl_acroutine(&ret, &rl);
-		if (ft_strequ(buff, "\n") || !act_on_buff(buff, &ret, &rl))
+		if (ft_strequ(buff, "\n"))
 			break ;
 		ft_bzero(buff, sizeof(buff));
 	}
 	print_end_newlines(&rl);
-	rl_set_term(&rl, YES);
+	rl_deinit();
 	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 23:12:06 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 12:48:48 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/25 15:41:16 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,8 @@ t_keyact				rl_acroutine(char **line, t_readline *rl)
 
 	if (!(res = get_ac_result(*line, rl)))
 		return (kKeyFail);
-	if (!(base = (res && !res->next) ? res->content : get_highest_common(res)))
-	{
-		ft_lstdel(&res, &free_tlist);
-		return (kKeyFail);
-	}
-	if ((diff = get_diff(*line, base, rl->csr.pos)) && !*diff)
+	base = (res && !res->next) ? res->content : get_highest_common(res);
+	if (((diff = get_diff(*line, base, rl->csr.pos)) && !*diff) || !diff)
 	{
 		if (base && base != res->content)
 			ft_strdel(&base);

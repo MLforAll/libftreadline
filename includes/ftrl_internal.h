@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 12:39:01 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/25 16:21:50 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,13 +89,31 @@ typedef enum	e_direct
 }				t_direct;
 
 /*
-** autocompletion
+** line edit (keys)
 */
 
-t_keyact		rl_ac_routine(char **line, t_readline *rl);
+int				rl_input_add_text(char **line, char *buff, t_readline *rl);
+int				rl_input_rm_text(char **line, char *buff, t_readline *rl);
+t_keyact		rl_clear_line(char **line, t_readline *rl);
 
 /*
-** cursor
+** line edit (sys)
+*/
+
+void			rl_line_rm(char **line, size_t len, t_readline *rl);
+void			rl_line_add(char **line, char *add, t_readline *rl);
+
+/*
+** line buffer
+*/
+
+size_t			rl_linebuff_create(char **line);
+int				rl_linebuff_rm(char **line, size_t len, t_readline *rl);
+int				rl_linebuff_add(char **line, char *add, size_t addlen,
+								t_readline *rl);
+
+/*
+** cursor motion (left/right - home/end - alt+left/alt+right)
 */
 
 t_keyact		rl_right_key(char *line, t_readline *rl);
@@ -105,19 +123,6 @@ t_keyact		rl_end_key(char *line, t_readline *rl);
 
 t_keyact		rl_movl_key(char *line, t_readline *rl);
 t_keyact		rl_movr_key(char *line, t_readline *rl);
-
-/*
-** line edit
-*/
-
-void			rl_line_rm(char **line, size_t len, t_readline *rl);
-void			rl_line_add(char **line, char *add, t_readline *rl);
-
-int				rl_linebuff_add(char **line, char *add, size_t addlen, t_readline *rl);
-int				rl_linebuff_rm(char **line, size_t len, t_readline *rl);
-
-int				rl_input_add_text(char *buff, char **line, t_readline *rl);
-int				rl_input_rm_text(char **line, char *buff, t_readline *rl);
 
 /*
 ** autocompletion
@@ -137,8 +142,9 @@ t_keyact		rl_history_keys(char *buff, t_readline *rl, t_rl_hist **hist);
 ** terminal
 */
 
+int				rl_set_term(int echo);
+int				rl_deinit(void);
 int				rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts);
-int				rl_set_term(t_readline *rl, int echo);
 
 /*
 ** termcaps
@@ -153,7 +159,8 @@ int				outcap_arg_fb(char *cstr, char *fb, int arg, int affcnt);
 */
 
 size_t			ft_strlen_nocolor(const char *s);
-void			get_line_info_for_pos(t_point *pt, unsigned int pos, t_readline *rl);
+void			get_line_info_for_pos(t_point *pt, unsigned int pos,
+									t_readline *rl);
 void			get_line_info(t_point *pt, t_readline *rl);
 void			go_to_point(t_point *to, t_point *from, t_readline *rl);
 void			go_to_pos(unsigned int to, unsigned int from, t_readline *rl);

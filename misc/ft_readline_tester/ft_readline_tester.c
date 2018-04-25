@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 16:49:35 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 12:39:28 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/25 15:01:27 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ int		main(int ac, char **av, char **env)
 	prompt = "\033[1;33mft_readline\033[0;39m$ ";
 	ft_putstr_fd("This tool is used for debug purposes ONLY!\n"
 				"Type something and check if the returned result is OK\n"
-				"PS: Autocompletion works for files using the embbeded routines"
+				"PS: Autocompletion works for files "
+				"using the embbeded routines\n"
 				"PS2: Ctrl-D to quit!\n\n", STDIN_FILENO);
 	while ((line = ft_readline(prompt, &opts, hist)))
 	{

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/21 22:59:54 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/23 21:44:47 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/25 17:44:06 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,7 @@
 #include <stdlib.h>
 #include "ftrl_internal.h"
 
-inline static size_t	newbufflen(t_readline *rl, size_t addlen)
-{
-	size_t	goal;
-
-	goal = rl->bufflen + addlen;
-	rl->bufflen += (rl->bufflen == 0);
-	while (rl->bufflen < goal)
-		rl->bufflen *= 2;
-	return (rl->bufflen);
-}
-
-static int				buffrealloc(char **line, size_t size)
+static int	buffrealloc(char **line, size_t size)
 {
 	char	*newline;
 
@@ -37,15 +26,22 @@ static int				buffrealloc(char **line, size_t size)
 	return (TRUE);
 }
 
-int						rl_linebuff_add(char **line,
-										char *add,
-										size_t addlen,
-										t_readline *rl)
+int			rl_linebuff_add(char **line,
+							char *add,
+							size_t addlen,
+							t_readline *rl)
 {
 	char	backup[512];
+	size_t	goal;
 
 	if (rl->csr.max + addlen > rl->bufflen)
-		buffrealloc(line, newbufflen(rl, addlen));
+	{
+		goal = rl->bufflen + addlen;
+		rl->bufflen += (rl->bufflen == 0);
+		while (rl->bufflen < goal)
+			rl->bufflen *= 2;
+		buffrealloc(line, rl->bufflen);
+	}
 	if (rl->csr.pos >= rl->csr.max)
 		ft_strcpy(*line + rl->csr.max, add);
 	else
@@ -57,12 +53,19 @@ int						rl_linebuff_add(char **line,
 	return (TRUE);
 }
 
-int						rl_linebuff_rm(char **line, size_t len, t_readline *rl)
+int			rl_linebuff_rm(char **line, size_t len, t_readline *rl)
 {
-	if (rl->csr.max <= rl->bufflen / 2)
+	if (rl->csr.max <= rl->bufflen / 2 && rl->csr.max >= DFL_LINEBUFFSIZE)
 		buffrealloc(line, rl->bufflen /= 2);
 	ft_memset(*line + rl->csr.pos, '\0', len);
 	if (rl->csr.pos + len < rl->csr.max)
 		ft_strcpy(*line + rl->csr.pos, *line + rl->csr.pos + len);
 	return (TRUE);
+}
+
+size_t		rl_linebuff_create(char **line)
+{
+	if (!(*line = ft_strnew(DFL_LINEBUFFSIZE)))
+		return (0);
+	return (DFL_LINEBUFFSIZE);
 }

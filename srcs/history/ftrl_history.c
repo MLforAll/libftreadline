@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/14 07:11:00 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 12:36:37 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/25 17:33:03 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ t_rl_hist	*ft_histnew(char *line)
 	if (!(ret = (t_rl_hist*)malloc(sizeof(t_rl_hist))))
 		return (NULL);
 	ft_bzero(ret, sizeof(t_rl_hist));
+	if (!line)
+		return (ret);
 	if (!(ret->line = ft_strdup(line)))
 	{
 		free(ret);
@@ -34,12 +36,15 @@ void		ft_histadd(t_rl_hist **headref, char *line)
 
 	if (!headref || !line || !(new = ft_histnew(line)))
 		return ;
-	if (*headref)
+	if (!*headref)
+		*headref = ft_histnew(NULL);
+	if ((*headref)->next)
 	{
-		new->next = *headref;
-		(*headref)->prev = new;
+		(*headref)->next->prev = new;
+		new->next = (*headref)->next;
 	}
-	*headref = new;
+	new->prev = *headref;
+	(*headref)->next = new;
 }
 
 void		ft_histdelone(t_rl_hist **hist)
@@ -51,7 +56,8 @@ void		ft_histdelone(t_rl_hist **hist)
 	bak = (*hist)->next;
 	if ((*hist)->prev)
 		(*hist)->prev->next = (*hist)->next;
-	free((*hist)->line);
+	if ((*hist)->line)
+		free((*hist)->line);
 	free(*hist);
 	*hist = bak;
 }

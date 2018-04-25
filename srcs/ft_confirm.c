@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/24 12:50:52 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 08:10:09 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/25 15:27:02 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int					ft_confirm(const char *msg, int outfd, t_dflact dfl)
 
 	ret = 0;
 	tgetent(NULL, getenv("TERM"));
-	reset_after = rl_set_term(NULL, NO);
+	reset_after = rl_set_term(NO);
 	print_message(msg, outfd, dfl);
 	ft_bzero(buff, sizeof(buff));
 	while (read(STDIN_FILENO, buff, 4) > 0)
@@ -55,6 +55,6 @@ int					ft_confirm(const char *msg, int outfd, t_dflact dfl)
 	outcap("cr");
 	ft_putchar_fd('\n', outfd);
 	if (reset_after)
-		rl_set_term(NULL, YES);
+		rl_set_term(YES);
 	return (ret);
 }

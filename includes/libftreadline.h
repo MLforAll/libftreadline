@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 12:38:20 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/25 15:03:47 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,11 @@ int			ft_confirm(const char *msg, int outfd, t_dflact dfl);
 */
 
 char		*get_basedir(const char *f_path);
-t_list		*search_files_begin(const char *f_path, const char *s_dir, int exec);
 char		*get_last_component(const char *str, char c);
 char		*get_name_from_path(const char *path);
 char		*get_name_from_path_2(const char *path);
+t_list		*search_files_begin(const char *f_path, const char *s_dir,
+								int exec);
 
 /*
 ** List utilities (Autocompletion extensions)

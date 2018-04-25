@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 21:26:34 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 12:48:54 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/25 14:59:23 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <sys/stat.h>
 #include "libftreadline.h"
 
-char		*get_basedir(const char *f_path)
+char				*get_basedir(const char *f_path)
 {
 	char			*ret;
 	char			*rchr_ret;
@@ -33,7 +33,7 @@ char		*get_basedir(const char *f_path)
 	return (ret);
 }
 
-static char	*get_elem_path(const char *d_path, char *name)
+static char			*get_elem_path(const char *d_path, char *name)
 {
 	char			*ret;
 
@@ -47,7 +47,7 @@ static char	*get_elem_path(const char *d_path, char *name)
 	return (ret);
 }
 
-static int	is_exec(const char *d_path, char *name, int folder)
+static int			is_exec(const char *d_path, char *name, int folder)
 {
 	struct stat		st;
 	char			*elem_path;
@@ -64,7 +64,20 @@ static int	is_exec(const char *d_path, char *name, int folder)
 	return (ret);
 }
 
-t_list		*search_files_begin(const char *f_path, const char *s_dir, int exec)
+inline static void	search_files_add(struct dirent *dird, t_list **ret)
+{
+	t_list	*new;
+
+	if (!(new = ft_lstnew(dird->d_name, dird->d_namlen + 2)))
+		return ;
+	ft_strcpy(new->content + dird->d_namlen,
+		(dird->d_type == DT_DIR) ? "/" : " ");
+	ft_lstadd(ret, new);
+}
+
+t_list				*search_files_begin(const char *f_path,
+										const char *s_dir,
+										int exec)
 {
 	t_list			*ret;
 	DIR				*dirp;
@@ -79,12 +92,9 @@ t_list		*search_files_begin(const char *f_path, const char *s_dir, int exec)
 	while (dirp && (dird = readdir(dirp)))
 	{
 		if ((!exec && ft_strstart(dird->d_name, name))
-			|| (exec && ft_strstart(dird->d_name, name)
-				&& is_exec(s_dir, dird->d_name, FALSE)))
-		{
-			ft_lstadd(&ret, ft_lstnew(dird->d_name, dird->d_namlen + 2));
-			ft_strcpy(ret->content + dird->d_namlen, (dird->d_type == DT_DIR) ? "/" : " ");
-		}
+		|| (exec && ft_strstart(dird->d_name, name)
+		&& is_exec(s_dir, dird->d_name, FALSE)))
+			search_files_add(dird, &ret);
 	}
 	if (dirp)
 		closedir(dirp);

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/19 00:22:58 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/23 23:46:21 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/25 17:09:41 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ static void	move_to_next_tab(char *line, t_readline *rl, int direct)
 
 t_keyact	rl_movl_key(char *line, t_readline *rl)
 {
-	(void)line;
 	if (rl->csr.pos <= 0)
 		return (kKeyFail);
 	move_to_next_tab(line, rl, kDirectLeft);
@@ -46,7 +45,6 @@ t_keyact	rl_movl_key(char *line, t_readline *rl)
 
 t_keyact	rl_movr_key(char *line, t_readline *rl)
 {
-	(void)line;
 	if (rl->csr.pos >= rl->csr.max)
 		return (kKeyFail);
 	move_to_next_tab(line, rl, kDirectRight);

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 03:19:46 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/25 16:26:55 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,34 +24,27 @@ static void			get_winsize_hdl(unsigned long long sigc)
 	ioctl(STDIN_FILENO, TIOCGWINSZ, &rl->ws);
 }
 
-int					rl_set_term(t_readline *rl, int echo)
+int					rl_set_term(int echo)
 {
-	struct termios	t;
-	static int		state = 0;
+	static struct termios	saved_t;
+	struct termios			t;
+	static uint8_t			state = 0;
 
-	if (tcgetattr(STDIN_FILENO, &t) || state != echo)
+	if (state != echo || (!echo && tcgetattr(STDIN_FILENO, &saved_t)))
 		return (FALSE);
 	if (!echo)
 	{
+		t = saved_t;
 		t.c_lflag &= ~(ICANON | ECHO | ISIG);
 		t.c_oflag &= ~OPOST;
-		outcap("ks");
-		if (rl)
-		{
-			get_winsize_hdl((unsigned long long)rl);
-			signal(SIGWINCH, (void (*)(int))&get_winsize_hdl);
-		}
+		tcsetattr(STDIN_FILENO, TCSANOW, &t);
 		state = 1;
 	}
 	else
 	{
-		t.c_lflag |= (ICANON | ECHO | ISIG);
-		t.c_oflag |= OPOST;
-		outcap("ke");
-		signal(SIGWINCH, SIG_DFL);
+		tcsetattr(STDIN_FILENO, TCSANOW, &saved_t);
 		state = 0;
 	}
-	tcsetattr(STDIN_FILENO, TCSANOW, &t);
 	return (TRUE);
 }
 
@@ -74,6 +67,15 @@ inline static void	set_keys_movs(t_keys *keys, t_mov *movs)
 	movs->downm = tgetstr("do", NULL);
 }
 
+int					rl_deinit(void)
+{
+	if (!rl_set_term(YES))
+		return (FALSE);
+	outcap("ke");
+	signal(SIGWINCH, SIG_DFL);
+	return (TRUE);
+}
+
 int					rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts)
 {
 	char	*termenv;
@@ -92,5 +94,10 @@ int					rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts)
 	if (!(tgetent(NULL, termenv)))
 		return (FALSE);
 	set_keys_movs(&rl->keys, &rl->movs);
+	if (!(rl_set_term(NO)))
+		return (FALSE);
+	outcap("ks");
+	get_winsize_hdl((unsigned long long)rl);
+	signal(SIGWINCH, (void (*)(int))&get_winsize_hdl);
 	return (TRUE);
 }

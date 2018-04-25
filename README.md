@@ -38,4 +38,5 @@ The project, while in good shape, is not finished.
 Norm issues and bugs can exist.
 Autocompletion is done!
 History fixed and working.
-Copy and paste left to do.
+Copy and paste OK.
+NOW, ONLY CODE IMPROVEMENTS/CLEANING AND TWEAKING TO MAKE IT \`\`PERFECT''

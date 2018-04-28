@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 18:25:51 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/26 19:39:02 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ char			*ft_readline(const char *prompt,
 		if ((nav_keys(&ret, buff, &rl) == kKeyFail
 			|| hist_nav(&ret, buff, &rl, &hist) == kKeyFail
 			|| edit_keys(&ret, buff, &rl) == kKeyFail
-			|| cpypaste_keys(&ret, buff, &rl)) && opts->bell)
+			|| cpypaste_keys(&ret, buff, &rl) == kKeyFail) && opts->bell)
 			outcap("bl");
 		if (ft_strequ(buff, "\n"))
 			break ;

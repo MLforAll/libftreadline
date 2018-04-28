@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 17:51:28 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/26 20:58:09 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 int			rl_input_add_text(char **line, char *buff, t_readline *rl)
 {
-	char			add[5];
+	char			add[RL_READBUFFSIZE + 1];
 	unsigned int	idx;
 
 	if (*buff == 27)

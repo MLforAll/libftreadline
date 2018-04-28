@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/26 19:39:02 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/04/28 09:42:09 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ static t_keyact	edit_keys(char **line, char *buff, t_readline *rl)
 	if (*buff == 3)
 		rl->bufflen = rl_linebuff_create(line);
 	if (*buff == 4 || *buff == 3)
-		return (FALSE);
+		return (kKeyOK);
 	if (ft_strequ(buff, "\025"))
 		rl_clear_line(line, rl);
 	if (ft_strequ(buff, "\t"))
@@ -130,8 +130,8 @@ char			*ft_readline(const char *prompt,
 	{
 		if ((nav_keys(&ret, buff, &rl) == kKeyFail
 			|| hist_nav(&ret, buff, &rl, &hist) == kKeyFail
-			|| edit_keys(&ret, buff, &rl) == kKeyFail
-			|| cpypaste_keys(&ret, buff, &rl) == kKeyFail) && opts->bell)
+			|| cpypaste_keys(&ret, buff, &rl) == kKeyFail
+			|| edit_keys(&ret, buff, &rl) == kKeyFail) && opts->bell)
 			outcap("bl");
 		if (ft_strequ(buff, "\n"))
 			break ;

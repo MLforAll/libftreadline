@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/28 09:42:09 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/01 01:46:55 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ static void		print_end_newlines(t_readline *rl)
 
 	if (!rl)
 	{
-		outcap("cr");
-		outcapstr(rl->movs.downm);
+		ft_putchar_fd('\n', STDIN_FILENO);
 		return ;
 	}
 	get_line_info(&coords, rl);
@@ -34,7 +33,6 @@ static void		print_end_newlines(t_readline *rl)
 		return ;
 	ft_memset(nlb, '\n', times);
 	nlb[times] = '\0';
-	outcap("cr");
 	ft_putstr_fd(nlb, STDIN_FILENO);
 	free(nlb);
 }
@@ -55,14 +53,14 @@ static t_keyact	hist_nav(char **line, char *buff,
 	}
 	else
 		rl->bufflen = rl_linebuff_create(line);
-	rl->csr.max = ft_strlen(*line);
-	rl->csr.pos = rl->csr.max;
 	get_line_info_for_pos(&maxc, rl->csr.max, rl);
 	go_to_pos(0, rl->csr.pos, rl);
 	outcap("cr");
 	outcap_arg_fb(tgetstr("DL", NULL), tgetstr("dl", NULL), maxc.y, maxc.y);
 	ft_putstr_fd(rl->prompt, rl->opts->outfd);
 	ft_putstr_fd(*line, STDIN_FILENO);
+	rl->csr.max = ft_strlen(*line);
+	rl->csr.pos = rl->csr.max;
 	return (kKeyOK);
 }
 
@@ -133,11 +131,11 @@ char			*ft_readline(const char *prompt,
 			|| cpypaste_keys(&ret, buff, &rl) == kKeyFail
 			|| edit_keys(&ret, buff, &rl) == kKeyFail) && opts->bell)
 			outcap("bl");
-		if (ft_strequ(buff, "\n"))
+		if (ft_strequ(buff, "\n") || *buff == 3)
 			break ;
 		ft_bzero(buff, sizeof(buff));
 	}
-	print_end_newlines(&rl);
 	rl_deinit(&rl);
+	print_end_newlines(&rl);
 	return (ret);
 }

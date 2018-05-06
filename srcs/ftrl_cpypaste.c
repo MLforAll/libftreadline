@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 18:03:06 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 18:29:57 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/06 15:29:23 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,21 @@ static t_keyact	rl_putmrk_key(char **line, t_readline *rl)
 
 static t_keyact	rl_cpy_key(char **line, t_readline *rl)
 {
-	if (!rl || !line)
+	char	*cpy;
+	size_t	len;
+
+	if (!rl || !line
+		|| !(len = rl->cpypste.mkrs[1] - rl->cpypste.mkrs[0]))
 		return (kKeyFail);
+	if (!(cpy = ft_strsub(*line, rl->cpypste.mkrs[0], len)))
+		return (kKeyFail);
+	if (ft_strequ(rl->cpypste.dat, cpy))
+	{
+		go_to_pos(rl->cpypste.mkrs[1], rl->csr.pos, rl);
+		rl_line_rm(line, len, rl);
+	}
 	ft_strdel(&rl->cpypste.dat);
-	if (!(rl->cpypste.dat = ft_strsub(*line,
-									rl->cpypste.mkrs[0],
-									rl->cpypste.mkrs[1] - rl->cpypste.mkrs[0])))
-		return (kKeyFail);
+	rl->cpypste.dat = cpy;
 	return (kKeyOK);
 }
 
@@ -41,6 +49,7 @@ static t_keyact	rl_paste_key(char **line, t_readline *rl)
 	if (!rl || !line || !rl->cpypste.dat)
 		return (kKeyFail);
 	rl_line_add(line, rl->cpypste.dat, rl);
+	ft_bzero(&rl->cpypste.mkrs, sizeof(rl->cpypste.mkrs));
 	return (kKeyOK);
 }
 

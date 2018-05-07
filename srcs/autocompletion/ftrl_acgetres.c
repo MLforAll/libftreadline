@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/26 20:53:53 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 15:32:38 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/07 14:44:38 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ inline static char	*get_region(char *line, t_cursor *csr)
 
 	if (csr->pos == csr->max)
 	{
-		if (!(tmp = get_last_component(line, ' ')))
+		if (!(tmp = get_last_components(line, " |;>")))
 			return (NULL);
 		return (ft_strdup(tmp));
 	}
@@ -65,9 +65,7 @@ t_list				*get_ac_result_bltn(char *line, t_cursor *csr)
 {
 	t_list	*ret;
 	char	*region;
-	char	*chk_cmd_line;
 
-	chk_cmd_line = get_last_components(line, "|;");
 	region = get_region(line, csr);
 	ret = search_files_begin(region, NULL, FALSE);
 	free(region);

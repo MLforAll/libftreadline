@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 18:25:08 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/10 21:24:53 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int					rl_set_term(int echo)
 
 	if (state != echo || (!echo && tcgetattr(STDIN_FILENO, &saved_t)))
 		return (FALSE);
+	ospeed = saved_t.c_ospeed;
 	if (!echo)
 	{
 		t = saved_t;
@@ -80,20 +81,18 @@ int					rl_deinit(t_readline *rl)
 int					rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts)
 {
 	char	*termenv;
-	int		dumbmode;
+	char	*pcstr;
 
 	ft_bzero(rl, sizeof(t_readline));
 	rl->prompt = prompt;
 	rl->prlen = ft_strlen_nocolor(prompt);
 	rl->opts = opts;
-	dumbmode = FALSE;
 	if (!(termenv = getenv("TERM")))
-	{
 		termenv = "dumb";
-		dumbmode = TRUE;
-	}
 	if (!(tgetent(NULL, termenv)))
 		return (FALSE);
+	if ((pcstr = tgetstr("pc", NULL)))
+		PC = *pcstr;
 	set_keys_movs(&rl->keys, &rl->movs);
 	if (!(rl_set_term(NO)))
 		return (FALSE);

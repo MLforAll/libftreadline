@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 23:12:06 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 17:51:32 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/11 22:26:10 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,16 @@ static char				*get_diff(char *line, char *ch, unsigned int pos)
 {
 	char	*res;
 
+	if (!ch || !line)
+		return (NULL);
 	while (pos--)
 	{
-		if ((res = ft_strstart(ch, line + pos)))
-			return (res);
+		if (*ch != line[pos])
+			continue ;
+		res = ch;
+		while (*res && line[pos] && *res == line[pos++])
+			res++;
+		return (res);
 	}
 	return (NULL);
 }
@@ -80,13 +86,13 @@ t_keyact				rl_acroutine(char **line, t_readline *rl)
 	if (!(res = get_ac_result(*line, rl)))
 		return (kKeyFail);
 	base = (res && !res->next) ? res->content : get_highest_common(res);
-	if (((diff = get_diff(*line, base, rl->csr.pos)) && !*diff) || !diff)
+	if (res->next)
 	{
 		if (base && base != res->content)
 			ft_strdel(&base);
 		base = show_ac_result(*line, &res, rl);
 	}
-	if ((diff = get_diff(*line, base, rl->csr.pos)) && *diff)
+	if ((diff = get_diff(*line, base, rl->csr.pos)))
 		rl_line_add(line, diff, rl);
 	ft_lstdel(&res, &free_tlist);
 	return (kKeyOK);

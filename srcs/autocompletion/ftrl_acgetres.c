@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/26 20:53:53 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/07 14:44:38 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/11 21:57:21 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ inline static char	*get_region(char *line, t_cursor *csr)
 
 	if (csr->pos == csr->max)
 	{
-		if (!(tmp = get_last_components(line, " |;>")))
+		if (!(tmp = get_last_components(line, " |;><&")))
 			return (NULL);
 		return (ft_strdup(tmp));
 	}

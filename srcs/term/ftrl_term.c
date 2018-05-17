@@ -6,20 +6,21 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/11 20:58:57 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/17 01:59:09 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
 #include <termios.h>
+#include <limits.h>
 #include "ftrl_internal.h"
 
 static void			get_winsize_hdl(unsigned long long sigc)
 {
 	static t_readline	*rl = NULL;
 
-	if (!rl)
+	if (sigc > INT_MAX)
 		rl = (t_readline*)sigc;
 	ioctl(STDIN_FILENO, TIOCGWINSZ, &rl->ws);
 }

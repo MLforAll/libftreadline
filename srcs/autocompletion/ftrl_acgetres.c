@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ftrl_acgetres.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Kelian <Kelian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/26 20:53:53 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/11 21:57:21 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/21 01:21:49 by Kelian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,17 +44,18 @@ inline static char	*get_region(char *line, t_cursor *csr)
 {
 	char			*tmp;
 	unsigned int	idx;
+	const char		*chkcomps = " |;><&";
 
 	if (csr->pos == csr->max)
 	{
-		if (!(tmp = get_last_components(line, " |;><&")))
+		if (!(tmp = get_last_components(line, chkcomps)))
 			return (NULL);
 		return (ft_strdup(tmp));
 	}
 	idx = csr->pos;
 	while (idx--)
 	{
-		if (line[idx] == ' ')
+		if (ft_strchr(chkcomps, line[idx]))
 			break ;
 	}
 	idx++;

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/24 12:50:52 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 15:27:02 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/21 20:25:17 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ inline static void	print_message(const char *msg, int outfd, t_dflact dfl)
 
 int					ft_confirm(const char *msg, int outfd, t_dflact dfl)
 {
-	char	buff[5];
+	char	buff[RL_READBUFFSIZE + 1];
 	int		reset_after;
 	int		ret;
 
@@ -46,7 +46,7 @@ int					ft_confirm(const char *msg, int outfd, t_dflact dfl)
 	reset_after = rl_set_term(NO);
 	print_message(msg, outfd, dfl);
 	ft_bzero(buff, sizeof(buff));
-	while (read(STDIN_FILENO, buff, 4) > 0)
+	while (read(STDIN_FILENO, buff, RL_READBUFFSIZE) > 0)
 	{
 		if (ft_strlen(buff) == 1 && (ret = get_ret(*buff, dfl)) != -1)
 			break ;

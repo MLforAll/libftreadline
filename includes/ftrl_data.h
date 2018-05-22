@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 06:36:52 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 12:38:22 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/22 14:15:49 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,16 @@ typedef struct	s_cursor
 	unsigned int	pos;
 	size_t			max;
 }				t_cursor;
+
+/*
+** struct for ac results
+*/
+
+typedef struct	s_acres
+{
+	char	*visible_str;
+	char	*str;
+}				t_acres;
 
 /*
 ** options struct

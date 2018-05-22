@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 23:12:06 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/13 00:55:02 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/22 15:22:00 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 inline static char		*get_highest_common(t_list *lst)
 {
-	int				first;
+	uint8_t			first;
 	size_t			len;
 	size_t			new;
 
@@ -27,14 +27,14 @@ inline static char		*get_highest_common(t_list *lst)
 	len = 0;
 	while (lst->next)
 	{
-		new = 0;
-		new = ft_strcmpi(lst->content, lst->next->content);
+		new = ft_strcmpi(((t_acres*)lst->content)->str,
+			((t_acres*)lst->next->content)->str);
 		len = (new < len || first) ? new : len;
 		if (first)
 			first = FALSE;
 		lst = lst->next;
 	}
-	return (len == 0 ? NULL : ft_strsub(lst->content, 0, len));
+	return (len == 0 ? NULL : ft_strsub(((t_acres*)lst->content)->str, 0, len));
 }
 
 inline static t_list	*get_ac_result(char *line, t_readline *rl)
@@ -74,7 +74,7 @@ static char				*get_diff(char *line, char *ch, unsigned int pos)
 		idx = pos;
 		while (*res && line[idx] && *res == line[idx++])
 			res++;
-		return (res);
+		return ((!res || !*res) ? NULL : res);
 	}
 	return (NULL);
 }
@@ -87,15 +87,19 @@ t_keyact				rl_acroutine(char **line, t_readline *rl)
 
 	if (!(res = get_ac_result(*line, rl)))
 		return (kKeyFail);
-	base = (res && !res->next) ? res->content : get_highest_common(res);
-	if (res->next)
+	base = (res && !res->next)
+		? ((t_acres*)res->content)->str : get_highest_common(res);
+	if (!(diff = get_diff(*line, base, rl->csr.pos)))
 	{
-		if (base && base != res->content)
+		if (base != ((t_acres*)res->content)->str)
 			ft_strdel(&base);
 		base = show_ac_result(*line, &res, rl);
+		diff = get_diff(*line, base, rl->csr.pos);
 	}
-	if ((diff = get_diff(*line, base, rl->csr.pos)))
+	if (diff)
 		rl_line_add(line, diff, rl);
-	ft_lstdel(&res, &free_tlist);
+	if (base != ((t_acres*)res->content)->str)
+		ft_strdel(&base);
+	ft_lstdel(&res, &ft_acres_free);
 	return (kKeyOK);
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fsexp_utils.c                                      :+:      :+:    :+:   */
+/*   ftrl_fsfuncs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 21:26:34 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/21 20:37:23 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/22 15:02:47 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,43 @@ static int			is_exec(const char *d_path, char *name, int folder)
 	return (ret);
 }
 
-inline static void	search_files_add(struct dirent *dird, t_list **ret)
+inline static char	*get_visible_str(struct dirent *dird, char *basedir)
+{
+	char	*ret;
+	int		isexec;
+
+	if (dird->d_type == DT_DIR)
+		return (NULL);
+	isexec = is_exec(basedir, dird->d_name, NO);
+	if (!(ret = ft_strnew(dird->d_namlen + isexec)))
+		return (NULL);
+	ft_strcpy(ret, dird->d_name);
+	if (isexec)
+		ret[dird->d_namlen] = '*';
+	return (ret);
+}
+
+inline static void	search_files_add(struct dirent *dird,
+									char *basedir,
+									t_list **ret)
 {
 	t_list	*new;
+	t_acres	newcontent;
 
-	if (!(new = ft_lstnew(dird->d_name, dird->d_namlen + 2)))
+	ft_bzero((void*)&newcontent, sizeof(t_acres));
+	if (!(newcontent.str = ft_strnew(dird->d_namlen + 1)))
 		return ;
-	ft_strcpy(new->content + dird->d_namlen,
-		(dird->d_type == DT_DIR) ? "/" : " ");
+	ft_strcpy(newcontent.str, dird->d_name);
+	if (dird->d_type != DT_LNK)
+		ft_strcpy(newcontent.str + dird->d_namlen,
+			(dird->d_type == DT_DIR) ? "/" : " ");
+	newcontent.visible_str = get_visible_str(dird, basedir);
+	if (!(new = ft_lstnew((void*)&newcontent, sizeof(t_acres))))
+	{
+		ft_strdel(&newcontent.visible_str);
+		free(newcontent.str);
+		return ;
+	}
 	ft_lstadd(ret, new);
 }
 
@@ -73,10 +102,11 @@ t_list				*search_files_begin(const char *f_path,
 	ret = NULL;
 	while (dirp && (dird = readdir(dirp)))
 	{
-		if ((!exec && ft_strstart(dird->d_name, name))
-		|| (exec && ft_strstart(dird->d_name, name)
-		&& is_exec(s_dir, dird->d_name, FALSE)))
-			search_files_add(dird, &ret);
+		if (!ft_strequ(dird->d_name, ".") && !ft_strequ(dird->d_name, "..")
+			&& ((!exec && ft_strstart(dird->d_name, name))
+			|| (exec && ft_strstart(dird->d_name, name)
+			&& is_exec(s_dir, dird->d_name, FALSE))))
+			search_files_add(dird, basedir, &ret);
 	}
 	if (dirp)
 		closedir(dirp);

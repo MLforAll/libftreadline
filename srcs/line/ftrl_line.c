@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/01 01:13:48 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/24 23:08:00 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void				rl_line_add(char **line, char *add, t_readline *rl)
 	get_line_info(&coords, rl);
 	outcap("ce");
 	ft_putstr_fd(add, STDIN_FILENO);
-	if (coords.x + len == rl->ws.ws_col)
+	if (coords.x + len == g_ws.ws_col)
 	{
 		ft_putchar_fd(' ', STDIN_FILENO);
 		outcapstr(rl->movs.leftm);

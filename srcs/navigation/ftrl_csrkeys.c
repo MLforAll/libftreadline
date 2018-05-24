@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/18 09:00:17 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/23 23:45:52 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/24 23:08:18 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_keyact	rl_right_key(char *line, t_readline *rl)
 	if (rl->csr.pos >= rl->csr.max)
 		return (kKeyFail);
 	get_line_info(&coords, rl);
-	if (coords.x + 1 == rl->ws.ws_col)
+	if (coords.x + 1 == g_ws.ws_col)
 	{
 		outcap("cr");
 		outcapstr(rl->movs.downm);

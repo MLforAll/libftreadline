@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 16:49:05 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/17 01:50:25 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/24 23:05:45 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ size_t	ft_strlen_nocolor(const char *s)
 
 void	get_line_info_for_pos(t_point *pt, unsigned int pos, t_readline *rl)
 {
-	pt->x = (pos + rl->prlen) % rl->ws.ws_col;
-	pt->y = (pos + rl->prlen) / rl->ws.ws_col + 1;
+	pt->x = (pos + rl->prlen) % g_ws.ws_col;
+	pt->y = (pos + rl->prlen) / g_ws.ws_col + 1;
 }
 
 void	get_line_info(t_point *pt, t_readline *rl)

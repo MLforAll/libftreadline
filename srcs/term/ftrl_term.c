@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/17 01:59:09 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/24 23:06:13 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,11 @@
 #include <limits.h>
 #include "ftrl_internal.h"
 
-static void			get_winsize_hdl(unsigned long long sigc)
+static void			get_winsize_hdl(int sigc)
 {
-	static t_readline	*rl = NULL;
-
-	if (sigc > INT_MAX)
-		rl = (t_readline*)sigc;
-	ioctl(STDIN_FILENO, TIOCGWINSZ, &rl->ws);
+	if (sigc != SIGWINCH)
+		return ;
+	ioctl(STDIN_FILENO, TIOCGWINSZ, &g_ws);
 }
 
 int					rl_set_term(int echo)
@@ -98,7 +96,7 @@ int					rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts)
 	if (!(rl_set_term(NO)))
 		return (FALSE);
 	outcap("ks");
-	get_winsize_hdl((unsigned long long)rl);
-	signal(SIGWINCH, (void (*)(int))&get_winsize_hdl);
+	get_winsize_hdl(SIGWINCH);
+	signal(SIGWINCH, &get_winsize_hdl);
 	return (TRUE);
 }

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 19:47:08 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/22 14:56:27 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/24 23:08:57 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ static void	ft_putlst_custom(t_list *lst)
 	}
 }
 
-static int	lot_of_ch(t_list *res, struct winsize *ws)
+static int	lot_of_ch(t_list *res)
 {
 	char	buff[23];
 	size_t	len;
 
-	if ((len = ft_lstlen(res)) < ws->ws_col / 4 * 3)
+	if ((len = ft_lstlen(res)) < g_ws.ws_col / 4 * 3)
 		return (TRUE);
 	ft_strcpy(buff, "Show all ");
 	if (len < 10000)
@@ -42,12 +42,12 @@ static int	lot_of_ch(t_list *res, struct winsize *ws)
 	return (ft_confirm(buff, STDIN_FILENO, kDefaultNo));
 }
 
-char		*show_ac_result_bltn(t_list **res, struct winsize *ws)
+char		*show_ac_result_bltn(t_list **res)
 {
 	if (!res || !*res)
 		return (NULL);
 	ft_putstr_fd("\r\n", STDIN_FILENO);
-	if (!lot_of_ch(*res, ws))
+	if (!lot_of_ch(*res))
 		return (NULL);
 	ft_lstmergesort(res, &ft_acres_sortalpha, NO);
 	ft_putlst_custom(*res);

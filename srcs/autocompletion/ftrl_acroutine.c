@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 23:12:06 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/24 23:07:11 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/25 04:58:42 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ inline static char		*show_ac_result(char *line, t_list **res,
 {
 	char	*ret;
 
-	if (rl->opts->ac_get_result)
+	if (rl->opts->ac_show_result)
 		ret = (rl->opts->ac_show_result)(res);
 	else
 		ret = show_ac_result_bltn(res);

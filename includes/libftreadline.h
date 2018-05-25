@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/22 14:33:22 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/25 04:21:38 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,13 @@
 */
 
 char		*ft_readline(const char *prompt, t_rl_opts *opts, t_rl_hist *hist);
+
 t_rl_hist	*ft_histnew(char *line);
 void		ft_histadd(t_rl_hist **headref, char *line);
 void		ft_histdelone(t_rl_hist	**hist);
 void		ft_histdel(t_rl_hist **headref);
 
+t_list		*get_ac_result_bltn(char *line, t_cursor *csr);;
 void		ft_acres_free(void *content, size_t size);
 int			ft_acres_sortalpha(t_list *a, t_list *b);
 

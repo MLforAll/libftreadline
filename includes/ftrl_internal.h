@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/24 23:09:29 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/25 04:21:26 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,6 @@ t_keyact		cpypaste_keys(char **line, char *buff, t_readline *rl);
 */
 
 t_keyact		rl_acroutine(char **line, t_readline *rl);
-t_list			*get_ac_result_bltn(char *line, t_cursor *csr);
 char			*show_ac_result_bltn(t_list **res);
 
 t_list			*search_files_begin(const char *f_path, const char *s_dir,

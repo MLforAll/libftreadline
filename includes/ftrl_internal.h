@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/25 04:21:26 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/25 16:34:09 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct	s_mov
 	char	*rightm;
 	char	*upm;
 	char	*downm;
+	char	*cecap;
 }				t_mov;
 
 typedef struct	s_cpypste
@@ -71,6 +72,7 @@ typedef struct	s_readline
 	const char		*prompt;
 	size_t			prlen;
 	size_t			bufflen;
+	uint8_t			dumb;
 	t_cursor		csr;
 	t_cpypste		cpypste;
 	t_keys			keys;

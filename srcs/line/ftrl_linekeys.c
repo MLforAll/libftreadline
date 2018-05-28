@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/26 20:58:09 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/25 16:37:01 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int			rl_input_rm_text(char **line, char *buff, t_readline *rl)
 t_keyact	rl_clear_line(char **line, t_readline *rl)
 {
 	outcap("cr");
-	outcap("ce");
+	outcapstr(rl->movs.cecap);
 	free(*line);
 	rl->bufflen = rl_linebuff_create(line);
 	ft_putstr_fd(rl->prompt, rl->opts->outfd);

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 06:36:52 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/24 23:07:16 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/25 16:30:47 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,12 @@
 
 # include <sys/ioctl.h>
 # include <stdint.h>
+
+/*
+** global for window size
+*/
+
+struct winsize	g_ws;
 
 /*
 ** linked list for history mgmt
@@ -38,16 +44,6 @@ typedef struct	s_cursor
 }				t_cursor;
 
 /*
-** struct for ac results
-*/
-
-typedef struct	s_acres
-{
-	char	*visible_str;
-	char	*str;
-}				t_acres;
-
-/*
 ** options struct
 */
 
@@ -61,10 +57,14 @@ typedef struct	s_rl_opts
 }				t_rl_opts;
 
 /*
-** global for window size
+** struct for ac results
 */
 
-struct winsize	g_ws;
+typedef struct	s_acres
+{
+	char	*visible_str;
+	char	*str;
+}				t_acres;
 
 /*
 ** enum for ft_confirm

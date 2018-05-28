@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 23:12:06 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/25 04:58:42 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/28 02:26:12 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,21 +84,24 @@ t_keyact				rl_acroutine(char **line, t_readline *rl)
 	t_list		*res;
 	char		*diff;
 	char		*base;
+	uint8_t		basemalloc;
 
 	if (!(res = get_ac_result(*line, rl)))
 		return (kKeyFail);
 	base = (res && !res->next)
 		? ((t_acres*)res->content)->str : get_highest_common(res);
+	basemalloc = (base != ((t_acres*)res->content)->str);
 	if (!(diff = get_diff(*line, base, rl->csr.pos)))
 	{
-		if (base != ((t_acres*)res->content)->str)
+		if (basemalloc)
 			ft_strdel(&base);
 		base = show_ac_result(*line, &res, rl);
+		basemalloc = FALSE;
 		diff = get_diff(*line, base, rl->csr.pos);
 	}
 	if (diff)
 		rl_line_add(line, diff, rl);
-	if (base != ((t_acres*)res->content)->str)
+	if (basemalloc)
 		ft_strdel(&base);
 	ft_lstdel(&res, &ft_acres_free);
 	return (kKeyOK);

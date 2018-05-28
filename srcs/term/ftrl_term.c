@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/24 23:06:13 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/25 16:34:41 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ inline static void	set_keys_movs(t_keys *keys, t_mov *movs)
 	movs->rightm = tgetstr("nd", NULL);
 	movs->upm = tgetstr("up", NULL);
 	movs->downm = tgetstr("do", NULL);
+	movs->cecap = tgetstr("ce", NULL);
 }
 
 int					rl_deinit(t_readline *rl)
@@ -87,7 +88,10 @@ int					rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts)
 	rl->prlen = ft_strlen_nocolor(prompt);
 	rl->opts = opts;
 	if (!(termenv = getenv("TERM")))
+	{
+		rl->dumb = TRUE;
 		termenv = "dumb";
+	}
 	if (!(tgetent(NULL, termenv)))
 		return (FALSE);
 	if ((pcstr = tgetstr("pc", NULL)))

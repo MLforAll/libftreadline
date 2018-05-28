@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 18:03:06 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/08 03:21:20 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/25 16:25:45 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ static t_keyact	rl_cpy_key(char **line, t_readline *rl)
 		go_to_pos(rl->cpypste.mkrs[0], rl->csr.pos, rl);
 		ft_putstr_fd(cpy, STDIN_FILENO);
 		go_to_pos(rl->csr.pos, rl->cpypste.mkrs[1], rl);
-
 	}
 	ft_strdel(&rl->cpypste.dat);
 	rl->cpypste.dat = cpy;
@@ -84,7 +83,8 @@ t_keyact		cpypaste_keys(char **line, char *buff, t_readline *rl)
 	unsigned int	idx;
 	static t_keyact	(*f[5])(char**, t_readline*) =
 	{&rl_leftcpy_key, &rl_rightcpy_key, &rl_cpy_key, &rl_paste_key, NULL};
-	const char		*keys[5] = {"\033[1;2D", "\033[1;2C", "\033[1;2A", "\033[1;2B", NULL};
+	const char		*keys[5] = {"\033[1;2D", "\033[1;2C",
+								"\033[1;2A", "\033[1;2B", NULL};
 
 	if (!line || !*line || !buff)
 		return (kKeyFail);

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/24 23:08:00 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/25 16:45:25 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ inline static void	clr_lines(t_point *coords, t_readline *rl)
 	int		cnt;
 
 	get_line_info_for_pos(&maxc, rl->csr.max, rl);
-	outcap("ce");
+	outcapstr(rl->movs.cecap);
 	if (coords->y >= maxc.y)
 		return ;
 	cnt = maxc.y - 1;
@@ -57,13 +57,21 @@ void				rl_line_add(char **line, char *add, t_readline *rl)
 	if (!line || !add || !rl || !(len = ft_strlen(add)))
 		return ;
 	get_line_info(&coords, rl);
-	outcap("ce");
+	outcapstr(rl->movs.cecap);
 	ft_putstr_fd(add, STDIN_FILENO);
 	if (coords.x + len == g_ws.ws_col)
 	{
-		ft_putchar_fd(' ', STDIN_FILENO);
-		outcapstr(rl->movs.leftm);
-		outcap("ce");
+		if (rl->dumb)
+		{
+			ft_putchar_fd('\r', STDIN_FILENO);
+			ft_putnchar_fd(' ', g_ws.ws_col, STDIN_FILENO);
+			ft_putchar_fd('\r', STDIN_FILENO);
+		}
+		else
+		{
+			ft_putchar_fd(' ', STDIN_FILENO);
+			outcapstr(rl->movs.leftm);
+		}
 	}
 	if (rl->csr.pos < rl->csr.max)
 	{

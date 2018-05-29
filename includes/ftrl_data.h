@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 06:36:52 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/29 02:51:05 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/29 02:57:14 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,6 @@
 */
 
 struct winsize	g_ws;
-
-/*
-** linked list for history mgmt
-*/
-
-typedef struct	s_rl_hist
-{
-	char				*line;
-	struct s_rl_hist	*next;
-	struct s_rl_hist	*prev;
-}				t_rl_hist;
 
 /*
 ** struct for cursor mgmt

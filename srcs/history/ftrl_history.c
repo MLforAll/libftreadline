@@ -6,38 +6,21 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/14 07:11:00 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 17:33:03 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/28 23:20:54 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "ftrl_internal.h"
 
-t_rl_hist	*ft_histnew(char *line)
+void	ftrl_histadd(t_dlist **headref, char *line)
 {
-	t_rl_hist	*ret;
+	t_dlist	*new;
 
-	if (!(ret = (t_rl_hist*)malloc(sizeof(t_rl_hist))))
-		return (NULL);
-	ft_bzero(ret, sizeof(t_rl_hist));
-	if (!line)
-		return (ret);
-	if (!(ret->line = ft_strdup(line)))
-	{
-		free(ret);
-		return (NULL);
-	}
-	return (ret);
-}
-
-void		ft_histadd(t_rl_hist **headref, char *line)
-{
-	t_rl_hist	*new;
-
-	if (!headref || !line || !(new = ft_histnew(line)))
+	if (!headref || !line || !(new = ft_dlstnew(line, ft_strlen(line) + 1)))
 		return ;
 	if (!*headref)
-		*headref = ft_histnew(NULL);
+		*headref = ft_dlstnew(NULL, 0);
 	if ((*headref)->next)
 	{
 		(*headref)->next->prev = new;
@@ -47,30 +30,18 @@ void		ft_histadd(t_rl_hist **headref, char *line)
 	(*headref)->next = new;
 }
 
-void		ft_histdelone(t_rl_hist **hist)
+void	ftrl_histdelf(void *data, size_t size)
 {
-	t_rl_hist	*bak;
-
-	if (!hist || !*hist)
-		return ;
-	bak = (*hist)->next;
-	if ((*hist)->prev)
-		(*hist)->prev->next = (*hist)->next;
-	if ((*hist)->line)
-		free((*hist)->line);
-	free(*hist);
-	*hist = bak;
+	(void)size;
+	free(data);
 }
 
-void		ft_histdel(t_rl_hist **headref)
+void	ftrl_histdellast(t_dlist **headref)
 {
-	if (!headref)
-		return ;
-	while (*headref)
-	{
-		ft_histdelone(headref);
-		if (*headref)
-			(*headref)->prev = NULL;
-	}
-	*headref = NULL;
+	t_dlist	**tmp;
+
+	tmp = headref;
+	while ((*tmp)->next)
+		tmp = &(*tmp)->next;
+	ft_dlstdelone(tmp, &ftrl_histdelf);
 }

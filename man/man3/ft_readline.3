@@ -19,7 +19,27 @@ It takes a prompt as a C-string, a series of options via a ref
 to a
 .B t_rl_opts struct
 and a ref to the head of a
-.B t_rl_hist linked list.
+.B t_dlist doubly-linked list.
+
+.SH OPTIONS
+Options should be passed via the
+.B t_rl_opts
+struct. The struct looks like the following:
+.LP
+.B typedef struct	s_rl_opts
+.br
+.B {
+.br
+	uint8_t	bell;
+.br
+	int	outfd;
+.br
+	t_list	*(*ac_get_result)(char *, t_cursor *);
+.br
+	char	*(*ac_show_result)(t_list **);
+.br
+.B }		t_rl_opts;
+.br
 
 .SH RETURN VALUES
 If EOF is catched,

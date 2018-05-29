@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 21:26:34 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/22 15:02:47 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/29 01:39:41 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,6 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include "libftreadline.h"
-
-static char			*get_elem_path(const char *d_path, char *name)
-{
-	char			*ret;
-
-	if (!d_path || !name)
-		return (NULL);
-	if (!(ret = ft_strnew(ft_strlen(d_path) + ft_strlen(name) + 1)))
-		return (NULL);
-	ft_strcpy(ret, d_path);
-	ft_strcat(ret, "/");
-	ft_strcat(ret, name);
-	return (ret);
-}
 
 static int			is_exec(const char *d_path, char *name, int folder)
 {

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 16:49:35 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 15:01:27 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/28 20:03:33 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		main(int ac, char **av, char **env)
 	char		*line;
 	char		*prompt;
 	t_rl_opts	opts;
-	t_rl_hist	*hist;
+	t_dlist		*hist;
 
 
 	ft_bzero(&opts, sizeof(t_rl_opts));
@@ -38,9 +38,9 @@ int		main(int ac, char **av, char **env)
 		ft_putstr_fd("-----------> ", STDIN_FILENO);
 		ft_putstr_fd(line, STDIN_FILENO);
 		ft_putstr_fd("\n\n", STDIN_FILENO);
-		ft_histadd(&hist, line);
+		ftrl_histadd(&hist, line);
 		ft_strdel(&line);
 	}
-	ft_histdel(&hist);
+	ft_dlstdel(&hist, &ftrl_histdelf);
 	return (0);
 }

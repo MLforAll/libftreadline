@@ -6,13 +6,13 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 11:06:01 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/01 01:07:19 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/28 19:46:43 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftrl_internal.h"
 
-t_keyact	rl_history_keys(char *buff, t_readline *rl, t_rl_hist **history)
+t_keyact	rl_history_keys(char *buff, t_readline *rl, t_dlist **history)
 {
 	int		keys[2];
 

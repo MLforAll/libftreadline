@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/25 16:34:09 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/29 02:10:42 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define FTRL_INTERNAL_H
 
 # include "libftreadline.h"
+# include "ftrl_termcap.h"
 # include <termcap.h>
 # include <sys/ioctl.h>
 
@@ -144,7 +145,6 @@ t_keyact		cpypaste_keys(char **line, char *buff, t_readline *rl);
 */
 
 t_keyact		rl_acroutine(char **line, t_readline *rl);
-char			*show_ac_result_bltn(t_list **res);
 
 t_list			*search_files_begin(const char *f_path, const char *s_dir,
 									int exec);
@@ -153,23 +153,21 @@ t_list			*search_files_begin(const char *f_path, const char *s_dir,
 ** history
 */
 
-t_keyact		rl_history_keys(char *buff, t_readline *rl, t_rl_hist **hist);
+t_keyact		rl_history_keys(char *buff, t_readline *rl, t_dlist **hist);
 
 /*
 ** terminal
 */
 
-int				rl_set_term(int echo);
-int				rl_deinit(t_readline *rl);
-int				rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts);
+int				rl_set_term(uint8_t echo);
+int				rl_set_opost(uint8_t opost);
 
 /*
-** termcaps
+** init
 */
 
-int				outcap(char *name);
-int				outcapstr(char *cstr);
-int				outcap_arg_fb(char *cstr, char *fb, int arg, int affcnt);
+int				rl_deinit(t_readline *rl);
+int				rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts);
 
 /*
 ** utils

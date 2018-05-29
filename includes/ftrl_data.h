@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 06:36:52 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/25 16:30:47 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/29 02:51:05 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ typedef struct	s_rl_opts
 	int			outfd;
 	t_list		*(*ac_get_result)(char *, t_cursor *);
 	char		*(*ac_show_result)(t_list **);
-	t_rl_hist	*hist;
 }				t_rl_opts;
 
 /*

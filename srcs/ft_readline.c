@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/01 01:46:55 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/28 19:48:25 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void		print_end_newlines(t_readline *rl)
 }
 
 static t_keyact	hist_nav(char **line, char *buff,
-						t_readline *rl, t_rl_hist **hist)
+						t_readline *rl, t_dlist **hist)
 {
 	t_point		maxc;
 	t_keyact	retk;
@@ -46,9 +46,9 @@ static t_keyact	hist_nav(char **line, char *buff,
 	if ((retk = rl_history_keys(buff, rl, hist)) != kKeyOK)
 		return (retk);
 	free(*line);
-	if ((*hist)->line)
+	if ((char*)(*hist)->content)
 	{
-		*line = ft_strdup((*hist)->line);
+		*line = ft_strdup((char*)(*hist)->content);
 		rl->bufflen = ft_strlen(*line);
 	}
 	else
@@ -112,7 +112,7 @@ static t_keyact	edit_keys(char **line, char *buff, t_readline *rl)
 }
 
 char			*ft_readline(const char *prompt,
-							t_rl_opts *opts, t_rl_hist *hist)
+							t_rl_opts *opts, t_dlist *hist)
 {
 	t_readline		rl;
 	char			buff[RL_READBUFFSIZE + 1];

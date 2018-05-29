@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/25 04:21:38 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/29 02:10:58 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@
 ** ft_readine -- Read a line from stdin
 */
 
-char		*ft_readline(const char *prompt, t_rl_opts *opts, t_rl_hist *hist);
+char		*ft_readline(const char *prompt, t_rl_opts *opts, t_dlist *hist);
 
-t_rl_hist	*ft_histnew(char *line);
-void		ft_histadd(t_rl_hist **headref, char *line);
-void		ft_histdelone(t_rl_hist	**hist);
-void		ft_histdel(t_rl_hist **headref);
+void		ftrl_histadd(t_dlist **headref, char *line);
+void		ftrl_histdelf(void *data, size_t size);
+void		ftrl_histdellast(t_dlist **headref);
 
-t_list		*get_ac_result_bltn(char *line, t_cursor *csr);;
+t_list		*get_ac_result_bltn(char *line, t_cursor *csr);
+char		*show_ac_result_bltn(t_list **res);
 void		ft_acres_free(void *content, size_t size);
 int			ft_acres_sortalpha(t_list *a, t_list *b);
 

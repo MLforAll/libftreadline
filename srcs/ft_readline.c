@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/30 20:09:57 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/30 23:51:38 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static t_keyact	nav_keys(char *buff, t_readline *rl)
 								rl->keys.homek, rl->keys.endk,
 								ESC_MOVL, ESC_MOVR, NULL};
 
-	if (!rl || !*rl->line || !buff)
+	if (!rl || !buff)
 		return (kKeyFail);
 	idx = 0;
 	while (f[idx] && keys[idx])
@@ -89,7 +89,7 @@ static t_keyact	nav_keys(char *buff, t_readline *rl)
 
 static t_keyact	edit_keys(char *buff, t_readline *rl)
 {
-	if (!rl || !*rl->line || !buff)
+	if (!rl || !buff)
 		return (kKeyNone);
 	if (rl_input_add_text(buff, rl))
 		return (kKeyOK);

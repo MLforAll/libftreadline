@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 18:03:06 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/30 20:02:07 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/30 23:51:24 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static t_keyact	rl_cpy_key(t_readline *rl)
 	char	*cpy;
 	size_t	len;
 
-	if (!rl || !rl->line
+	if (!rl || !*rl->line
 		|| !(len = rl->cpypste.mkrs[1] - rl->cpypste.mkrs[0]))
 		return (kKeyFail);
 	if (!(cpy = ft_strsub(rl->line, rl->cpypste.mkrs[0], len)))
@@ -84,7 +84,7 @@ t_keyact		cpypaste_keys(char *buff, t_readline *rl)
 	const char		*keys[5] = {"\033[1;2D", "\033[1;2C",
 								"\033[1;2A", "\033[1;2B", NULL};
 
-	if (!buff || !rl || !*rl->line)
+	if (!buff || !rl)
 		return (kKeyFail);
 	idx = 0;
 	while (f[idx] && keys[idx])

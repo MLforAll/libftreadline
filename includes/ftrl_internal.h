@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/29 06:22:52 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/30 20:09:20 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct	s_readline
 {
 	const char		*prompt;
 	size_t			prlen;
+	char			*line;
 	size_t			bufflen;
 	uint8_t			dumb;
 	t_cursor		csr;
@@ -102,50 +103,48 @@ typedef enum	e_direct
 ** line edit (keys)
 */
 
-int				rl_input_add_text(char **line, char *buff, t_readline *rl);
-int				rl_input_rm_text(char **line, char *buff, t_readline *rl);
-t_keyact		rl_clear_line(char **line, t_readline *rl);
+int				rl_input_add_text(char *buff, t_readline *rl);
+int				rl_input_rm_text(char *buff, t_readline *rl);
+t_keyact		rl_clear_line(t_readline *rl);
 
 /*
 ** line edit (sys)
 */
 
-void			rl_line_rm(char **line, size_t len, t_readline *rl);
-void			rl_line_add(char **line, char *add, t_readline *rl);
+void			rl_line_rm(size_t len, t_readline *rl);
+void			rl_line_add(char *add, t_readline *rl);
 
 /*
 ** line buffer
 */
 
 size_t			rl_linebuff_create(char **line);
-int				rl_linebuff_rm(char **line, size_t len, t_readline *rl);
-int				rl_linebuff_add(char **line, char *add, size_t addlen,
-								t_readline *rl);
+int				rl_linebuff_rm(size_t len, t_readline *rl);
+int				rl_linebuff_add(char *add, size_t addlen, t_readline *rl);
 
 /*
 ** cursor motion (left/right - home/end - alt+left/alt+right)
 */
 
-t_keyact		rl_right_key(char *line, t_readline *rl);
-t_keyact		rl_left_key(char *line, t_readline *rl);
-t_keyact		rl_home_key(char *line, t_readline *rl);
-t_keyact		rl_end_key(char *line, t_readline *rl);
+t_keyact		rl_right_key(t_readline *rl);
+t_keyact		rl_left_key(t_readline *rl);
+t_keyact		rl_home_key(t_readline *rl);
+t_keyact		rl_end_key(t_readline *rl);
 
-t_keyact		rl_movl_key(char *line, t_readline *rl);
-t_keyact		rl_movr_key(char *line, t_readline *rl);
+t_keyact		rl_movl_key(t_readline *rl);
+t_keyact		rl_movr_key(t_readline *rl);
 
 /*
 ** copy/paste (to be changed, refined etc!!!)
 */
 
-t_keyact		cpypaste_keys(char **line, char *buff, t_readline *rl);
+t_keyact		cpypaste_keys(char *buff, t_readline *rl);
 
 /*
 ** autocompletion
 */
 
-t_keyact		rl_acroutine(char **line, t_readline *rl);
-
+t_keyact		rl_acroutine(t_readline *rl);
 t_list			*search_files_begin(const char *f_path, const char *s_dir,
 									int exec);
 

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/18 09:00:17 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/24 23:08:18 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/30 20:02:12 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,10 @@
 #include "libft.h"
 #include "ftrl_internal.h"
 
-t_keyact	rl_right_key(char *line, t_readline *rl)
+t_keyact	rl_right_key(t_readline *rl)
 {
 	t_point	coords;
 
-	(void)line;
 	if (rl->csr.pos >= rl->csr.max)
 		return (kKeyFail);
 	get_line_info(&coords, rl);
@@ -34,12 +33,11 @@ t_keyact	rl_right_key(char *line, t_readline *rl)
 	return (kKeyOK);
 }
 
-t_keyact	rl_left_key(char *line, t_readline *rl)
+t_keyact	rl_left_key(t_readline *rl)
 {
 	t_point		coords;
 	t_point		gtc;
 
-	(void)line;
 	if (rl->csr.pos <= 0)
 		return (kKeyFail);
 	get_line_info(&coords, rl);
@@ -49,12 +47,11 @@ t_keyact	rl_left_key(char *line, t_readline *rl)
 	return (kKeyOK);
 }
 
-t_keyact	rl_home_key(char *line, t_readline *rl)
+t_keyact	rl_home_key(t_readline *rl)
 {
 	t_point	coords;
 	t_point	homec;
 
-	(void)line;
 	get_line_info(&coords, rl);
 	if (rl->csr.pos <= 0)
 		return (kKeyFail);
@@ -65,12 +62,11 @@ t_keyact	rl_home_key(char *line, t_readline *rl)
 	return (kKeyOK);
 }
 
-t_keyact	rl_end_key(char *line, t_readline *rl)
+t_keyact	rl_end_key(t_readline *rl)
 {
 	t_point	coords;
 	t_point	maxc;
 
-	(void)line;
 	get_line_info(&coords, rl);
 	get_line_info_for_pos(&maxc, rl->csr.max, rl);
 	if (rl->csr.pos >= rl->csr.max)

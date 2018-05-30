@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/25 16:45:25 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/30 19:51:22 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ inline static void	clr_lines(t_point *coords, t_readline *rl)
 	outcapstr(rl->movs.upm);
 }
 
-void				rl_line_rm(char **line, size_t len, t_readline *rl)
+void				rl_line_rm(size_t len, t_readline *rl)
 {
 	t_point			coords;
 	t_point			csrm;
 
-	if (!line || len == 0 || !rl)
+	if (len == 0 || !rl)
 		return ;
 	get_line_info(&coords, rl);
 	rl->csr.pos -= len;
@@ -43,18 +43,18 @@ void				rl_line_rm(char **line, size_t len, t_readline *rl)
 	clr_lines(&coords, rl);
 	outcap("sc");
 	if (rl->csr.pos + len < rl->csr.max)
-		ft_putstr_fd(*line + rl->csr.pos + len, STDIN_FILENO);
+		ft_putstr_fd(rl->line + rl->csr.pos + len, STDIN_FILENO);
 	outcap("rc");
-	rl_linebuff_rm(line, len, rl);
+	rl_linebuff_rm(len, rl);
 	rl->csr.max -= len;
 }
 
-void				rl_line_add(char **line, char *add, t_readline *rl)
+void				rl_line_add(char *add, t_readline *rl)
 {
 	size_t			len;
 	t_point			coords;
 
-	if (!line || !add || !rl || !(len = ft_strlen(add)))
+	if (!add || !rl || !(len = ft_strlen(add)))
 		return ;
 	get_line_info(&coords, rl);
 	outcapstr(rl->movs.cecap);
@@ -76,10 +76,10 @@ void				rl_line_add(char **line, char *add, t_readline *rl)
 	if (rl->csr.pos < rl->csr.max)
 	{
 		outcap("sc");
-		ft_putstr_fd(*line + rl->csr.pos, STDIN_FILENO);
+		ft_putstr_fd(rl->line + rl->csr.pos, STDIN_FILENO);
 		outcap("rc");
 	}
-	rl_linebuff_add(line, add, len, rl);
+	rl_linebuff_add(add, len, rl);
 	rl->csr.pos += len;
 	rl->csr.max += len;
 }

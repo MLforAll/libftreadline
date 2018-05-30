@@ -6,13 +6,13 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/19 00:22:58 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 17:09:41 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/30 20:10:09 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftrl_internal.h"
 
-static void	move_to_next_tab(char *line, t_readline *rl, int direct)
+static void	move_to_next_tab(t_readline *rl, int direct)
 {
 	unsigned int	pos;
 	t_point			newpoint;
@@ -20,12 +20,12 @@ static void	move_to_next_tab(char *line, t_readline *rl, int direct)
 
 	pos = rl->csr.pos - (rl->csr.pos > 0 && direct == kDirectLeft);
 	while (((pos > 0 && direct == kDirectLeft)
-		|| (line[pos] && direct == kDirectRight))
-		&& !ft_isalpha(line[pos]))
+		|| (rl->line[pos] && direct == kDirectRight))
+		&& !ft_isalpha(rl->line[pos]))
 		pos += direct;
 	while (((pos > 0 && direct == kDirectLeft)
-		|| (line[pos] && direct == kDirectRight))
-		&& ft_isalpha(line[pos]))
+		|| (rl->line[pos] && direct == kDirectRight))
+		&& ft_isalpha(rl->line[pos]))
 		pos += direct;
 	if (pos > 0 && direct == kDirectLeft)
 		pos++;
@@ -35,18 +35,18 @@ static void	move_to_next_tab(char *line, t_readline *rl, int direct)
 	rl->csr.pos = pos;
 }
 
-t_keyact	rl_movl_key(char *line, t_readline *rl)
+t_keyact	rl_movl_key(t_readline *rl)
 {
 	if (rl->csr.pos <= 0)
 		return (kKeyFail);
-	move_to_next_tab(line, rl, kDirectLeft);
+	move_to_next_tab(rl, kDirectLeft);
 	return (kKeyOK);
 }
 
-t_keyact	rl_movr_key(char *line, t_readline *rl)
+t_keyact	rl_movr_key(t_readline *rl)
 {
 	if (rl->csr.pos >= rl->csr.max)
 		return (kKeyFail);
-	move_to_next_tab(line, rl, kDirectRight);
+	move_to_next_tab(rl, kDirectRight);
 	return (kKeyOK);
 }

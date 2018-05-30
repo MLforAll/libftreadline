@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/21 22:59:54 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 17:44:06 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/30 19:48:46 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,7 @@ static int	buffrealloc(char **line, size_t size)
 	return (TRUE);
 }
 
-int			rl_linebuff_add(char **line,
-							char *add,
-							size_t addlen,
-							t_readline *rl)
+int			rl_linebuff_add(char *add, size_t addlen, t_readline *rl)
 {
 	char	backup[512];
 	size_t	goal;
@@ -40,26 +37,26 @@ int			rl_linebuff_add(char **line,
 		rl->bufflen += (rl->bufflen == 0);
 		while (rl->bufflen < goal)
 			rl->bufflen *= 2;
-		buffrealloc(line, rl->bufflen);
+		buffrealloc(&rl->line, rl->bufflen);
 	}
 	if (rl->csr.pos >= rl->csr.max)
-		ft_strcpy(*line + rl->csr.max, add);
+		ft_strcpy(rl->line + rl->csr.max, add);
 	else
 	{
-		ft_strcpy(backup, *line + rl->csr.pos);
-		ft_strcpy(*line + rl->csr.pos, add);
-		ft_strcpy(*line + rl->csr.pos + addlen, backup);
+		ft_strcpy(backup, rl->line + rl->csr.pos);
+		ft_strcpy(rl->line + rl->csr.pos, add);
+		ft_strcpy(rl->line + rl->csr.pos + addlen, backup);
 	}
 	return (TRUE);
 }
 
-int			rl_linebuff_rm(char **line, size_t len, t_readline *rl)
+int			rl_linebuff_rm(size_t len, t_readline *rl)
 {
 	if (rl->csr.max <= rl->bufflen / 2 && rl->csr.max >= DFL_LINEBUFFSIZE)
-		buffrealloc(line, rl->bufflen /= 2);
-	ft_memset(*line + rl->csr.pos, '\0', len);
+		buffrealloc(&rl->line, rl->bufflen /= 2);
+	ft_memset(rl->line + rl->csr.pos, '\0', len);
 	if (rl->csr.pos + len < rl->csr.max)
-		ft_strcpy(*line + rl->csr.pos, *line + rl->csr.pos + len);
+		ft_strcpy(rl->line + rl->csr.pos, rl->line + rl->csr.pos + len);
 	return (TRUE);
 }
 

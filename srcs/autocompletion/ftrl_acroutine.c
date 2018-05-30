@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 23:12:06 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/29 01:56:39 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/05/30 19:56:06 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,14 @@ inline static char		*get_highest_common(t_list *lst)
 	return (len == 0 ? NULL : ft_strsub(((t_acres*)lst->content)->str, 0, len));
 }
 
-inline static t_list	*get_ac_result(char *line, t_readline *rl)
+inline static t_list	*get_ac_result(t_readline *rl)
 {
 	if (rl->opts->ac_get_result)
-		return ((rl->opts->ac_get_result)(line, &rl->csr));
-	return (get_ac_result_bltn(line, &rl->csr));
+		return ((rl->opts->ac_get_result)(rl->line, &rl->csr));
+	return (get_ac_result_bltn(rl->line, &rl->csr));
 }
 
-inline static char		*show_ac_result(char *line, t_list **res,
-										t_readline *rl)
+inline static char		*show_ac_result(t_list **res, t_readline *rl)
 {
 	char	*ret;
 
@@ -56,7 +55,7 @@ inline static char		*show_ac_result(char *line, t_list **res,
 	else
 		ret = show_ac_result_bltn(res);
 	ft_putstr_fd(rl->prompt, rl->opts->outfd);
-	ft_putstr_fd(line, STDIN_FILENO);
+	ft_putstr_fd(rl->line, STDIN_FILENO);
 	rl_set_opost(FALSE);
 	outcap("ks");
 	go_to_pos(rl->csr.pos, rl->csr.max, rl);
@@ -83,28 +82,28 @@ static char				*get_diff(char *line, char *ch, unsigned int pos)
 	return (NULL);
 }
 
-t_keyact				rl_acroutine(char **line, t_readline *rl)
+t_keyact				rl_acroutine(t_readline *rl)
 {
 	t_list		*res;
 	char		*diff;
 	char		*base;
 	uint8_t		basemalloc;
 
-	if (!(res = get_ac_result(*line, rl)))
+	if (!(res = get_ac_result(rl)))
 		return (kKeyFail);
 	base = (res && !res->next)
 		? ((t_acres*)res->content)->str : get_highest_common(res);
 	basemalloc = (base != ((t_acres*)res->content)->str);
-	if (!(diff = get_diff(*line, base, rl->csr.pos)))
+	if (!(diff = get_diff(rl->line, base, rl->csr.pos)))
 	{
 		if (basemalloc)
 			ft_strdel(&base);
-		base = show_ac_result(*line, &res, rl);
+		base = show_ac_result(&res, rl);
 		basemalloc = FALSE;
-		diff = get_diff(*line, base, rl->csr.pos);
+		diff = get_diff(rl->line, base, rl->csr.pos);
 	}
 	if (diff)
-		rl_line_add(line, diff, rl);
+		rl_line_add(diff, rl);
 	if (basemalloc)
 		ft_strdel(&base);
 	ft_lstdel(&res, &ft_acres_free);

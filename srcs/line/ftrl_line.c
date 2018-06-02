@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/30 19:51:22 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/02 05:16:43 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ inline static void	clr_lines(t_point *coords, t_readline *rl)
 		return ;
 	cnt = maxc.y - 1;
 	outcapstr(rl->movs.downm);
+	//outcap_arg_fb(NULL, rl->movs.rightm, rl->csr.pos, 1);
 	outcap_arg_fb(tgetstr("DL", NULL), tgetstr("dl", NULL), cnt, cnt);
 	outcapstr(rl->movs.upm);
 }

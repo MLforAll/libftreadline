@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/30 23:51:38 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/06 23:25:57 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,14 @@ static t_keyact	hist_nav(char *buff,
 static t_keyact	nav_keys(char *buff, t_readline *rl)
 {
 	unsigned int	idx;
-	static t_keyact	(*f[7])(t_readline*) =
+	static t_keyact	(*f[])(t_readline*) =
 	{&rl_right_key, &rl_left_key, &rl_home_key, &rl_end_key,
-	&rl_movl_key, &rl_movr_key, NULL};
-	const char		*keys[7] = {rl->keys.rightk, rl->keys.leftk,
+	&rl_movl_key, &rl_movr_key, &rl_leftcpy_key, &rl_rightcpy_key,
+	&rl_cpy_key, &rl_paste_key, NULL};
+	const char		*keys[] = {rl->keys.rightk, rl->keys.leftk,
 								rl->keys.homek, rl->keys.endk,
-								ESC_MOVL, ESC_MOVR, NULL};
+								ESC_MOVL, ESC_MOVR, "\033[1;2D", "\033[1;2C",
+								"\033[1;2A", "\033[1;2B", NULL};
 
 	if (!rl || !buff)
 		return (kKeyFail);
@@ -127,7 +129,6 @@ char			*ft_readline(const char *prompt,
 	{
 		if ((nav_keys(buff, &rl) == kKeyFail
 			|| hist_nav(buff, &rl, &hist) == kKeyFail
-			|| cpypaste_keys(buff, &rl) == kKeyFail
 			|| edit_keys(buff, &rl) == kKeyFail) && opts->bell)
 			outcap("bl");
 		if (ft_strequ(buff, "\n") || *buff == 3)

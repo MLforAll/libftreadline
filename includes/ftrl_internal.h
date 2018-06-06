@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/30 20:09:20 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/06 23:45:12 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "libftreadline.h"
 # include "ftrl_termcap.h"
+# include "ftrl_dev.h"
 # include <termcap.h>
 # include <sys/ioctl.h>
 
@@ -138,7 +139,10 @@ t_keyact		rl_movr_key(t_readline *rl);
 ** copy/paste (to be changed, refined etc!!!)
 */
 
-t_keyact		cpypaste_keys(char *buff, t_readline *rl);
+t_keyact		rl_paste_key(t_readline *rl);
+t_keyact		rl_cpy_key(t_readline *rl);
+t_keyact		rl_rightcpy_key(t_readline *rl);
+t_keyact		rl_leftcpy_key(t_readline *rl);
 
 /*
 ** autocompletion

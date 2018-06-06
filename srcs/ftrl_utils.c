@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 16:49:05 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/06 18:09:49 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/06 21:32:13 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,22 +48,24 @@ void	get_line_info(t_point *pt, t_readline *rl)
 
 void	go_to_point(t_point *to, t_point *from, t_readline *rl)
 {
-	//char			*tch;
+	char			*tch;
 	char			*tcv;
-	//int				lenh;
+	int				lenh;
 	int				lenv;
 
 	if (from->x == to->x && from->y == to->y)
 		return ;
-	//tch = (from->x < to->x) ? rl->movs.rightm : rl->movs.leftm;
 	tcv = (from->y < to->y) ? rl->movs.downm : rl->movs.upm;
-	//lenh = (from->x < to->x) ? to->x - from->x : from->x - to->x;
 	lenv = (from->y < to->y) ? to->y - from->y : from->y - to->y;
 	//outcap_arg_fb(NULL, tch, lenh, 1);
+	outcap_arg_fb(NULL, tcv, lenv, lenv);
 	if (lenv == 0)
-		outcap("cr");
-	else
-		outcap_arg_fb(NULL, tcv, lenv, lenv);
+	{
+		tch = (from->x < to->x) ? rl->movs.rightm : rl->movs.leftm;
+		lenh = (from->x < to->x) ? to->x - from->x : from->x - to->x;
+		outcap_arg_fb(NULL, tch, lenh, 1);
+		return ;
+	}
 	outcap_arg_fb(NULL, rl->movs.rightm, to->x, 1);
 }
 

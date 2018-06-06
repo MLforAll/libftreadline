@@ -6,14 +6,14 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 18:03:06 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/30 23:51:24 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/06 22:46:40 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "ftrl_internal.h"
 
-static t_keyact	rl_leftcpy_key(t_readline *rl)
+t_keyact	rl_leftcpy_key(t_readline *rl)
 {
 	if (!rl || rl->cpypste.mkrs[1] <= rl->cpypste.mkrs[0]
 		|| rl->cpypste.mkrs[1] == 0)
@@ -26,7 +26,7 @@ static t_keyact	rl_leftcpy_key(t_readline *rl)
 	return (kKeyOK);
 }
 
-static t_keyact	rl_rightcpy_key(t_readline *rl)
+t_keyact	rl_rightcpy_key(t_readline *rl)
 {
 	static uint8_t	idx = 0;
 
@@ -41,7 +41,7 @@ static t_keyact	rl_rightcpy_key(t_readline *rl)
 	return (kKeyOK);
 }
 
-static t_keyact	rl_cpy_key(t_readline *rl)
+t_keyact	rl_cpy_key(t_readline *rl)
 {
 	char	*cpy;
 	size_t	len;
@@ -67,32 +67,11 @@ static t_keyact	rl_cpy_key(t_readline *rl)
 	return (kKeyOK);
 }
 
-static t_keyact	rl_paste_key(t_readline *rl)
+t_keyact	rl_paste_key(t_readline *rl)
 {
 	if (!rl || !rl->cpypste.dat)
 		return (kKeyFail);
 	rl_line_add(rl->cpypste.dat, rl);
 	ft_bzero(&rl->cpypste.mkrs, sizeof(rl->cpypste.mkrs));
-	return (kKeyOK);
-}
-
-t_keyact		cpypaste_keys(char *buff, t_readline *rl)
-{
-	unsigned int	idx;
-	static t_keyact	(*f[5])(t_readline*) =
-	{&rl_leftcpy_key, &rl_rightcpy_key, &rl_cpy_key, &rl_paste_key, NULL};
-	const char		*keys[5] = {"\033[1;2D", "\033[1;2C",
-								"\033[1;2A", "\033[1;2B", NULL};
-
-	if (!buff || !rl)
-		return (kKeyFail);
-	idx = 0;
-	while (f[idx] && keys[idx])
-	{
-		if (ft_strequ(keys[idx], buff)
-			&& f[idx](rl) == kKeyFail)
-			return (kKeyFail);
-		idx++;
-	}
 	return (kKeyOK);
 }

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 06:36:52 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/29 02:57:14 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/06 22:55:09 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,6 @@ typedef struct	s_rl_opts
 	t_list		*(*ac_get_result)(char *, t_cursor *);
 	char		*(*ac_show_result)(t_list **);
 }				t_rl_opts;
-
-/*
-** struct for ac results
-*/
-
-typedef struct	s_acres
-{
-	char	*visible_str;
-	char	*str;
-}				t_acres;
 
 /*
 ** enum for ft_confirm

@@ -6,14 +6,14 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 21:26:34 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/29 01:39:41 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/06 23:55:32 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <dirent.h>
 #include <sys/stat.h>
-#include "libftreadline.h"
+#include "ftrl_internal.h"
 
 static int			is_exec(const char *d_path, char *name, int folder)
 {

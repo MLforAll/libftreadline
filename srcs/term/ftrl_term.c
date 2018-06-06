@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/02 05:13:56 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/06 15:36:53 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int					rl_set_term(uint8_t echo)
 	{
 		t = saved_t;
 		t.c_lflag &= ~(ICANON | ECHO | ISIG);
-		t.c_oflag &= ~OPOST;
 		tcsetattr(STDIN_FILENO, TCSANOW, &t);
 		state = 1;
 	}
@@ -41,7 +40,7 @@ int					rl_set_term(uint8_t echo)
 	return (TRUE);
 }
 
-int					rl_set_opost(uint8_t opost)
+/*int					rl_set_opost(uint8_t opost)
 {
 	struct termios	t;
 
@@ -53,4 +52,4 @@ int					rl_set_opost(uint8_t opost)
 		t.c_oflag &= ~OPOST;
 	tcsetattr(STDIN_FILENO, TCSANOW, &t);
 	return (TRUE);
-}
+}*/

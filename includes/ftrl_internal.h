@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/06 23:45:12 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/07 02:06:11 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,13 @@ typedef struct	s_cpypste
 	char			*dat;
 }				t_cpypste;
 
+typedef enum	e_abort
+{
+	kAbortNone,
+	kAbortQuit,
+	kAbortReload
+}				t_abort;
+
 /*
 ** struct for moving around data
 */
@@ -76,6 +83,7 @@ typedef struct	s_readline
 	char			*line;
 	size_t			bufflen;
 	uint8_t			dumb;
+	t_abort			abort_reason;
 	t_cursor		csr;
 	t_cpypste		cpypste;
 	t_keys			keys;
@@ -182,5 +190,6 @@ void			get_line_info_for_pos(t_point *pt, unsigned int pos,
 void			get_line_info(t_point *pt, t_readline *rl);
 void			go_to_point(t_point *to, t_point *from, t_readline *rl);
 void			go_to_pos(unsigned int to, unsigned int from, t_readline *rl);
+t_readline	*rl_latest_session(t_readline *set);
 
 #endif

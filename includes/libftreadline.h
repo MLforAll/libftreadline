@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/06 23:51:14 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/07 02:10:36 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 char		*ft_readline(const char *prompt, t_rl_opts *opts, t_dlist *hist);
 
 uint8_t		ftrl_quit(void);
+uint8_t		ftrl_insert_msg(const char *msg, int fd);
 
 void		ftrl_histadd(t_dlist **headref, char *line);
 void		ftrl_histdelf(void *data, size_t size);

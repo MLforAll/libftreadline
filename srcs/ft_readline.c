@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/06 23:25:57 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/07 02:41:02 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,29 +113,44 @@ static t_keyact	edit_keys(char *buff, t_readline *rl)
 	return (kKeyOK);
 }
 
-char			*ft_readline(const char *prompt,
-							t_rl_opts *opts, t_dlist *hist)
+static t_abort	ft_readline_core(t_readline *rl, t_dlist **hist)
 {
-	t_readline		rl;
 	char			buff[RL_READBUFFSIZE + 1];
 
-	if (!rl_init(&rl, prompt, opts))
-		return (NULL);
-	if (prompt)
-		ft_putstr_fd(prompt, rl.opts->outfd);
-	rl.bufflen = rl_linebuff_create(&rl.line);
 	ft_bzero(buff, sizeof(buff));
-	while (rl.line && read(STDIN_FILENO, buff, RL_READBUFFSIZE) > 0)
+	while (rl->line && read(STDIN_FILENO, buff, RL_READBUFFSIZE) > 0)
 	{
-		if ((nav_keys(buff, &rl) == kKeyFail
-			|| hist_nav(buff, &rl, &hist) == kKeyFail
-			|| edit_keys(buff, &rl) == kKeyFail) && opts->bell)
+		if ((nav_keys(buff, rl) == kKeyFail
+			|| hist_nav(buff, rl, hist) == kKeyFail
+			|| edit_keys(buff, rl) == kKeyFail) && rl->opts->bell)
 			outcap("bl");
 		if (ft_strequ(buff, "\n") || *buff == 3)
 			break ;
 		ft_bzero(buff, sizeof(buff));
 	}
+	return (rl->abort_reason);
+}
+
+char			*ft_readline(const char *prompt,
+							t_rl_opts *opts, t_dlist *hist)
+{
+	t_readline		rl;
+	t_readline		*bak;
+
+	if (!rl_init(&rl, prompt, opts))
+		return (NULL);
+	ft_putstrsec_fd(prompt, opts->outfd);
+	bak = rl_latest_session(NULL);
+	rl_latest_session(&rl);
+	rl.bufflen = rl_linebuff_create(&rl.line);
+	while (TRUE)
+	{
+		if (ft_readline_core(&rl, &hist) != kAbortReload)
+			break ;
+		rl.abort_reason = kAbortNone;
+	}
 	rl_deinit(&rl);
+	rl_latest_session(bak);
 	print_end_newlines(&rl);
 	return (rl.line);
 }

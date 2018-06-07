@@ -6,7 +6,7 @@
 #    By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/04 06:10:18 by kdumarai          #+#    #+#              #
-#    Updated: 2018/06/06 23:51:33 by kdumarai         ###   ########.fr        #
+#    Updated: 2018/06/07 01:47:22 by kdumarai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ SRCFILES = ft_readline.c \
 	line/ftrl_linebuff.c \
 	navigation/ftrl_csrkeys.c \
 	navigation/ftrl_movtab.c \
+	ftrl_cpypaste.c \
 	autocompletion/ftrl_acroutine.c \
 	autocompletion/ftrl_acgetres.c \
 	autocompletion/ftrl_fsfuncs.c \
@@ -33,9 +34,9 @@ SRCFILES = ft_readline.c \
 	term/ftrl_termcaps.c \
 	ftrl_init.c \
 	ftrl_utils.c \
+	ftrl_str.c \
 	history/ftrl_history.c \
 	history/ftrl_historykeys.c \
-	ftrl_cpypaste.c \
 	ftrl_quit.c
 SRCS = $(addprefix $(SRCDIR)/, $(SRCFILES))
 

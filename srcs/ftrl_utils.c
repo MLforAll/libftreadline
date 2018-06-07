@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 16:49:05 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/06 21:32:13 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/07 02:00:06 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,39 +14,18 @@
 #include <stdlib.h>
 #include "ftrl_internal.h"
 
-size_t	ft_strlen_nocolor(const char *s)
-{
-	size_t		ret;
-	size_t		chk;
-
-	ret = 0;
-	while (*s)
-	{
-		if (*s == '\033')
-		{
-			chk = 0;
-			while (chk++ < 7 && s && *s != 'm')
-				s++;
-			ret--;
-		}
-		ret++;
-		s++;
-	}
-	return (ret);
-}
-
-void	get_line_info_for_pos(t_point *pt, unsigned int pos, t_readline *rl)
+void		get_line_info_for_pos(t_point *pt, unsigned int pos, t_readline *rl)
 {
 	pt->x = (pos + rl->prlen) % g_ws.ws_col;
 	pt->y = (pos + rl->prlen) / g_ws.ws_col + 1;
 }
 
-void	get_line_info(t_point *pt, t_readline *rl)
+void		get_line_info(t_point *pt, t_readline *rl)
 {
 	get_line_info_for_pos(pt, rl->csr.pos, rl);
 }
 
-void	go_to_point(t_point *to, t_point *from, t_readline *rl)
+void		go_to_point(t_point *to, t_point *from, t_readline *rl)
 {
 	char			*tch;
 	char			*tcv;
@@ -57,7 +36,6 @@ void	go_to_point(t_point *to, t_point *from, t_readline *rl)
 		return ;
 	tcv = (from->y < to->y) ? rl->movs.downm : rl->movs.upm;
 	lenv = (from->y < to->y) ? to->y - from->y : from->y - to->y;
-	//outcap_arg_fb(NULL, tch, lenh, 1);
 	outcap_arg_fb(NULL, tcv, lenv, lenv);
 	if (lenv == 0)
 	{
@@ -69,7 +47,7 @@ void	go_to_point(t_point *to, t_point *from, t_readline *rl)
 	outcap_arg_fb(NULL, rl->movs.rightm, to->x, 1);
 }
 
-void	go_to_pos(unsigned int to, unsigned int from, t_readline *rl)
+void		go_to_pos(unsigned int to, unsigned int from, t_readline *rl)
 {
 	t_point		toc;
 	t_point		fromc;
@@ -77,4 +55,13 @@ void	go_to_pos(unsigned int to, unsigned int from, t_readline *rl)
 	get_line_info_for_pos(&toc, to, rl);
 	get_line_info_for_pos(&fromc, from, rl);
 	go_to_point(&toc, &fromc, rl);
+}
+
+t_readline	*rl_latest_session(t_readline *set)
+{
+	static t_readline	*session;
+
+	if (set)
+		session = set;
+	return (session);
 }

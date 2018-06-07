@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 16:49:35 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/06 23:56:17 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/07 02:41:58 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 static void	sighdl(int sigc)
 {
-	ftrl_quit();
+	ftrl_insert_msg("salut", STDOUT_FILENO);
 }
 
 int			main(int ac, char **av, char **env)

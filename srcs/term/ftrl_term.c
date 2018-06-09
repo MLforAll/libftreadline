@@ -6,17 +6,16 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/06 22:40:58 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/09 03:00:33 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
-#include <termios.h>
 #include <limits.h>
 #include "ftrl_internal.h"
 
-int					rl_set_term(uint8_t echo)
+int			rl_set_term(uint8_t echo)
 {
 	static struct termios	saved_t;
 	struct termios			t;
@@ -38,4 +37,15 @@ int					rl_set_term(uint8_t echo)
 		state = 0;
 	}
 	return (TRUE);
+}
+
+uint8_t		rl_set_timeout(uint8_t enable, cc_t timeout)
+{
+	struct termios		t;
+
+	if (tcgetattr(STDIN_FILENO, &t) == -1)
+		return (FALSE);
+	t.c_cc[VMIN] = !enable;
+	t.c_cc[VTIME] = timeout;
+	return (tcsetattr(STDIN_FILENO, TCSANOW, &t) != -1);
 }

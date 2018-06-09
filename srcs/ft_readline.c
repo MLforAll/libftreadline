@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/07 02:41:02 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/09 03:04:06 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,10 +113,12 @@ static t_keyact	edit_keys(char *buff, t_readline *rl)
 	return (kKeyOK);
 }
 
-static t_abort	ft_readline_core(t_readline *rl, t_dlist **hist)
+static void		ft_readline_core(t_readline *rl, t_dlist **hist)
 {
 	char			buff[RL_READBUFFSIZE + 1];
 
+	ft_putstrsec_fd(rl->prompt, rl->opts->outfd);
+	ft_putstrsec_fd(rl->line, STDIN_FILENO);
 	ft_bzero(buff, sizeof(buff));
 	while (rl->line && read(STDIN_FILENO, buff, RL_READBUFFSIZE) > 0)
 	{
@@ -128,7 +130,7 @@ static t_abort	ft_readline_core(t_readline *rl, t_dlist **hist)
 			break ;
 		ft_bzero(buff, sizeof(buff));
 	}
-	return (rl->abort_reason);
+	print_end_newlines(rl);
 }
 
 char			*ft_readline(const char *prompt,
@@ -139,18 +141,23 @@ char			*ft_readline(const char *prompt,
 
 	if (!rl_init(&rl, prompt, opts))
 		return (NULL);
-	ft_putstrsec_fd(prompt, opts->outfd);
 	bak = rl_latest_session(NULL);
 	rl_latest_session(&rl);
 	rl.bufflen = rl_linebuff_create(&rl.line);
 	while (TRUE)
 	{
-		if (ft_readline_core(&rl, &hist) != kAbortReload)
+		ft_readline_core(&rl, &hist);
+		if (rl.quit.reason == kAbortNone)
 			break ;
-		rl.abort_reason = kAbortNone;
+		if (rl.quit.func)
+		{
+			(rl.quit.func)(rl.quit.func_data);
+			ft_memdel(&rl.quit.func_data);
+		}
+		rl_set_timeout(NO, 0);
+		ft_bzero(&rl.quit, sizeof(t_quit));
 	}
 	rl_deinit(&rl);
 	rl_latest_session(bak);
-	print_end_newlines(&rl);
 	return (rl.line);
 }

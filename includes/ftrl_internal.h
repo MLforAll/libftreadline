@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/07 02:06:11 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/09 03:00:28 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "ftrl_termcap.h"
 # include "ftrl_dev.h"
 # include <termcap.h>
+# include <termios.h>
 # include <sys/ioctl.h>
 
 /*
@@ -72,6 +73,13 @@ typedef enum	e_abort
 	kAbortReload
 }				t_abort;
 
+typedef struct	s_quit
+{
+	t_abort			reason;
+	void			(*func)(void *);
+	void			*func_data;
+}				t_quit;
+
 /*
 ** struct for moving around data
 */
@@ -83,7 +91,7 @@ typedef struct	s_readline
 	char			*line;
 	size_t			bufflen;
 	uint8_t			dumb;
-	t_abort			abort_reason;
+	t_quit			quit;
 	t_cursor		csr;
 	t_cpypste		cpypste;
 	t_keys			keys;
@@ -171,7 +179,7 @@ t_keyact		rl_history_keys(char *buff, t_readline *rl, t_dlist **hist);
 */
 
 int				rl_set_term(uint8_t echo);
-int				rl_set_opost(uint8_t opost);
+uint8_t			rl_set_timeout(uint8_t enable, cc_t timeout);
 
 /*
 ** init

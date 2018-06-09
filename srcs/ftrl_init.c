@@ -6,13 +6,12 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/30 00:45:31 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/09 03:00:38 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
-#include <termios.h>
 #include <limits.h>
 #include "ftrl_internal.h"
 

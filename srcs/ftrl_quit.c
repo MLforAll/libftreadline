@@ -6,39 +6,56 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/06 23:37:55 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/07 02:34:58 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/09 03:00:45 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
-#include <termios.h>
 #include "ftrl_internal.h"
+#include "ftrl_quit.h"
 
-static uint8_t	quit_with_reason(t_abort reason)
+static void		quit_putmsg(void *data)
 {
-	struct termios	t;
+	t_quitmsgdat	*msg;
+
+	if (!(msg = (t_quitmsgdat*)data))
+		return ;
+	ft_putendlsec_fd(msg->msg, msg->fd);
+}
+
+static uint8_t	quit_with_reason(t_abort reason,
+								void (*func)(void *),
+								void *data)
+{
 	t_readline		*rl;
 
-	if (!(rl = rl_latest_session(NULL)) || tcgetattr(STDIN_FILENO, &t) == -1)
+	if (!(rl = rl_latest_session(NULL)) || !rl_set_timeout(YES, 0))
 		return (FALSE);
-	t.c_cc[VMIN] = 0;
-	t.c_cc[VTIME] = 0;
-	tcsetattr(STDIN_FILENO, TCSANOW, &t);
-	rl->abort_reason = reason;
+	rl->quit.reason = reason;
+	rl->quit.func = func;
+	rl->quit.func_data = data;
 	return (TRUE);
 }
 
 uint8_t			ftrl_quit(void)
 {
-	return (quit_with_reason(kAbortQuit));
+	return (quit_with_reason(kAbortQuit, NULL, NULL));
 }
 
 
 uint8_t			ftrl_insert_msg(const char *msg, int fd)
 {
-	if (!quit_with_reason(kAbortReload))
+	t_quitmsgdat	*data;
+
+	if (!(data = (t_quitmsgdat*)malloc(sizeof(t_quitmsgdat))))
 		return (FALSE);
-	ft_putendlsec_fd(msg, fd);
+	data->msg = msg;
+	data->fd = fd;
+	if (!quit_with_reason(kAbortReload, &quit_putmsg, data))
+	{
+		free(data);
+		return (FALSE);
+	}
 	return (TRUE);
 }

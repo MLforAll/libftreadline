@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/09 03:00:28 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/09 04:00:28 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,36 +35,18 @@
 # define ESC_MOVR			"\033f"
 
 /*
-** structs for termcaps
+** cpy/paste structs
 */
-
-typedef struct	s_keys
-{
-	char	*leftk;
-	char	*rightk;
-	char	*upk;
-	char	*downk;
-	char	*homek;
-	char	*endk;
-	char	*delk;
-	char	*clrk;
-	char	*tabk;
-}				t_keys;
-
-typedef struct	s_mov
-{
-	char	*leftm;
-	char	*rightm;
-	char	*upm;
-	char	*downm;
-	char	*cecap;
-}				t_mov;
 
 typedef struct	s_cpypste
 {
 	unsigned int	mkrs[2];
 	char			*dat;
 }				t_cpypste;
+
+/*
+** quit functions data
+*/
 
 typedef enum	e_abort
 {
@@ -78,6 +60,7 @@ typedef struct	s_quit
 	t_abort			reason;
 	void			(*func)(void *);
 	void			*func_data;
+	void			(*free_func)(void *);
 }				t_quit;
 
 /*
@@ -189,6 +172,15 @@ int				rl_deinit(t_readline *rl);
 int				rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts);
 
 /*
+** quit functions
+*/
+
+uint8_t		quit_with_reason(t_abort reason,
+								void (*func)(void *),
+								void *data,
+								void (*free_func)(void *));
+
+/*
 ** utils
 */
 
@@ -198,6 +190,6 @@ void			get_line_info_for_pos(t_point *pt, unsigned int pos,
 void			get_line_info(t_point *pt, t_readline *rl);
 void			go_to_point(t_point *to, t_point *from, t_readline *rl);
 void			go_to_pos(unsigned int to, unsigned int from, t_readline *rl);
-t_readline	*rl_latest_session(t_readline *set);
+t_readline		*rl_latest_session(uint8_t set, t_readline *new_session);
 
 #endif

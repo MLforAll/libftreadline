@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 16:49:05 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/07 02:00:06 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/09 03:32:47 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,11 @@ void		go_to_pos(unsigned int to, unsigned int from, t_readline *rl)
 	go_to_point(&toc, &fromc, rl);
 }
 
-t_readline	*rl_latest_session(t_readline *set)
+t_readline	*rl_latest_session(uint8_t set, t_readline *new_session)
 {
-	static t_readline	*session;
+	static t_readline	*session = NULL;
 
 	if (set)
-		session = set;
+		session = new_session;
 	return (session);
 }

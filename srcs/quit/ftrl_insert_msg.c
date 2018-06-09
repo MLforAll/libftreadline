@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ftrl_quit.c                                        :+:      :+:    :+:   */
+/*   ftrl_insert_msg.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/06 23:37:55 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/09 03:00:45 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/09 04:03:18 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,19 @@
 #include <stdlib.h>
 #include "ftrl_internal.h"
 #include "ftrl_quit.h"
+
+static void		quit_simplefree(void *data)
+{
+	if (!data)
+		return ;
+	free(data);
+}
+
+static void		quit_msgfree(void *data)
+{
+	free((void*)((t_quitmsgdat*)data)->msg);
+	free(data);
+}
 
 static void		quit_putmsg(void *data)
 {
@@ -24,35 +37,17 @@ static void		quit_putmsg(void *data)
 	ft_putendlsec_fd(msg->msg, msg->fd);
 }
 
-static uint8_t	quit_with_reason(t_abort reason,
-								void (*func)(void *),
-								void *data)
-{
-	t_readline		*rl;
-
-	if (!(rl = rl_latest_session(NULL)) || !rl_set_timeout(YES, 0))
-		return (FALSE);
-	rl->quit.reason = reason;
-	rl->quit.func = func;
-	rl->quit.func_data = data;
-	return (TRUE);
-}
-
-uint8_t			ftrl_quit(void)
-{
-	return (quit_with_reason(kAbortQuit, NULL, NULL));
-}
-
-
-uint8_t			ftrl_insert_msg(const char *msg, int fd)
+uint8_t			ftrl_insert_msg(const char *msg, int fd, uint8_t free_msg)
 {
 	t_quitmsgdat	*data;
+	void			(*free_func)(void *);
 
 	if (!(data = (t_quitmsgdat*)malloc(sizeof(t_quitmsgdat))))
 		return (FALSE);
 	data->msg = msg;
 	data->fd = fd;
-	if (!quit_with_reason(kAbortReload, &quit_putmsg, data))
+	free_func = (free_msg) ? &quit_msgfree : &quit_simplefree;
+	if (!quit_with_reason(kAbortReload, &quit_putmsg, data, free_func))
 	{
 		free(data);
 		return (FALSE);

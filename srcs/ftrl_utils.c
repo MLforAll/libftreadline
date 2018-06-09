@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 16:49:05 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/09 03:32:47 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/09 20:31:09 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void		go_to_point(t_point *to, t_point *from, t_readline *rl)
 	if (from->x == to->x && from->y == to->y)
 		return ;
 	tcv = (from->y < to->y) ? rl->movs.downm : rl->movs.upm;
-	lenv = (from->y < to->y) ? to->y - from->y : from->y - to->y;
+	if ((lenv = (from->y < to->y) ? to->y - from->y : from->y - to->y) > 0)
 	outcap_arg_fb(NULL, tcv, lenv, lenv);
 	if (lenv == 0)
 	{

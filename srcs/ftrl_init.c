@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/09 03:34:17 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/12 23:26:01 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ inline static void	rl_makesure_start(void)
 	ft_putstr_fd("%\n", STDIN_FILENO);
 	outcap("cr");
 	outcap("me");
-
 }
 
 int					rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts)

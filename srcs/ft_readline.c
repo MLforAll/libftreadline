@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/09 03:53:48 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/12 23:43:30 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,33 +35,6 @@ static void		print_end_newlines(t_readline *rl)
 	nlb[times] = '\0';
 	ft_putstr_fd(nlb, STDIN_FILENO);
 	free(nlb);
-}
-
-static t_keyact	hist_nav(char *buff,
-						t_readline *rl, t_dlist **hist)
-{
-	t_point		maxc;
-	t_keyact	retk;
-
-	if ((retk = rl_history_keys(buff, rl, hist)) != kKeyOK)
-		return (retk);
-	free(rl->line);
-	if ((char*)(*hist)->content)
-	{
-		rl->line = ft_strdup((char*)(*hist)->content);
-		rl->bufflen = ft_strlen(rl->line);
-	}
-	else
-		rl->bufflen = rl_linebuff_create(&rl->line);
-	get_line_info_for_pos(&maxc, rl->csr.max, rl);
-	go_to_pos(0, rl->csr.pos, rl);
-	outcap("cr");
-	outcap_arg_fb(tgetstr("DL", NULL), tgetstr("dl", NULL), maxc.y, maxc.y);
-	ft_putstr_fd(rl->prompt, rl->opts->outfd);
-	ft_putstr_fd(rl->line, STDIN_FILENO);
-	rl->csr.max = ft_strlen(rl->line);
-	rl->csr.pos = rl->csr.max;
-	return (kKeyOK);
 }
 
 static t_keyact	nav_keys(char *buff, t_readline *rl)

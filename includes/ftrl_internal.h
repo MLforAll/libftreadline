@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/09 04:00:28 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/12 23:43:06 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ t_list			*search_files_begin(const char *f_path, const char *s_dir,
 ** history
 */
 
-t_keyact		rl_history_keys(char *buff, t_readline *rl, t_dlist **hist);
+t_keyact		hist_nav(char *buff, t_readline *rl, t_dlist **hist);
 
 /*
 ** terminal

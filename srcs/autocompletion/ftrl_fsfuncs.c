@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 21:26:34 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/06 23:55:32 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/14 04:38:18 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ inline static char	*get_visible_str(struct dirent *dird, char *basedir)
 	if (dird->d_type == DT_DIR)
 		return (NULL);
 	isexec = is_exec(basedir, dird->d_name, NO);
-	if (!(ret = ft_strnew(dird->d_namlen + isexec)))
+	if (!(ret = ft_strnew(dird->d_namlen + (size_t)isexec)))
 		return (NULL);
 	ft_strcpy(ret, dird->d_name);
 	if (isexec)
@@ -73,16 +73,16 @@ inline static void	search_files_add(struct dirent *dird,
 }
 
 t_list				*search_files_begin(const char *f_path,
-										const char *s_dir,
+										char *s_dir,
 										int exec)
 {
 	t_list			*ret;
 	DIR				*dirp;
 	struct dirent	*dird;
 	char			*basedir;
-	char			*name;
+	const char		*name;
 
-	basedir = (!s_dir) ? get_basedir(f_path) : (char*)s_dir;
+	basedir = (!s_dir) ? get_basedir(f_path) : s_dir;
 	name = get_name_from_path(f_path);
 	dirp = opendir(basedir);
 	ret = NULL;

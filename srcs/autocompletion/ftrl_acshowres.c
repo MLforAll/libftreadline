@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 19:47:08 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/24 23:08:57 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/14 04:39:16 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	lot_of_ch(t_list *res)
 		return (TRUE);
 	ft_strcpy(buff, "Show all ");
 	if (len < 10000)
-		ft_nbrcat(buff, len);
+		ft_nbrcat(buff, (long)len);
 	ft_strcat(buff, " results");
 	return (ft_confirm(buff, STDIN_FILENO, kDefaultNo));
 }

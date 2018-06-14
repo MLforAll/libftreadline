@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/06 23:37:55 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/09 04:03:18 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/14 04:51:52 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void		quit_putmsg(void *data)
 	ft_putendlsec_fd(msg->msg, msg->fd);
 }
 
-uint8_t			ftrl_insert_msg(const char *msg, int fd, uint8_t free_msg)
+uint8_t			ftrl_insert_msg(char *msg, int fd, uint8_t free_msg)
 {
 	t_quitmsgdat	*data;
 	void			(*free_func)(void *);

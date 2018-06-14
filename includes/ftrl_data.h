@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 06:36:52 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/06 22:55:09 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/14 05:02:12 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,38 +20,40 @@
 ** global for window size
 */
 
-struct winsize	g_ws;
+extern struct winsize	g_ws;
+struct winsize			g_ws;
 
 /*
 ** struct for cursor mgmt
 */
 
-typedef struct	s_cursor
+typedef struct			s_cursor
 {
-	unsigned int	pos;
+	unsigned long	pos;
 	size_t			max;
-}				t_cursor;
+}						t_cursor;
 
 /*
 ** options struct
 */
 
-typedef struct	s_rl_opts
+typedef struct			s_rl_opts
 {
-	uint8_t		bell;
-	int			outfd;
 	t_list		*(*ac_get_result)(char *, t_cursor *);
 	char		*(*ac_show_result)(t_list **);
-}				t_rl_opts;
+	int			outfd;
+	uint8_t		bell;
+	char		reserved_pad[3];
+}						t_rl_opts;
 
 /*
 ** enum for ft_confirm
 */
 
-typedef enum	e_dflact
+typedef enum			e_dflact
 {
 	kDefaultYes,
 	kDefaultNo
-}				t_dflact;
+}						t_dflact;
 
 #endif

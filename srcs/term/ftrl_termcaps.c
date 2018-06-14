@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 18:20:20 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/29 01:36:26 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/14 04:41:59 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 static int			putcf(int c)
 {
-	return (write(STDIN_FILENO, &c, 1));
+	return ((int)write(STDIN_FILENO, &c, 1));
 }
 
 int					outcap(char *name)

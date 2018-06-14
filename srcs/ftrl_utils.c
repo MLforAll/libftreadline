@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 16:49:05 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/12 23:23:11 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/14 05:05:23 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 #include <stdlib.h>
 #include "ftrl_internal.h"
 
-void		get_line_info_for_pos(t_point *pt, unsigned int pos, t_readline *rl)
+void		get_line_info_for_pos(t_point *pt,
+								unsigned long pos,
+								t_readline *rl)
 {
 	pt->x = (pos + rl->prlen) % g_ws.ws_col;
 	pt->y = (pos + rl->prlen) / g_ws.ws_col + 1;
@@ -27,27 +29,29 @@ void		get_line_info(t_point *pt, t_readline *rl)
 
 void		go_to_point(t_point *to, t_point *from, t_readline *rl)
 {
-	char			*tch;
-	char			*tcv;
-	int				lenh;
-	int				lenv;
+	char		*tch;
+	char		*tcv;
+	int			lenh;
+	int			lenv;
 
 	if (from->x == to->x && from->y == to->y)
 		return ;
 	tcv = (from->y < to->y) ? rl->movs.downm : rl->movs.upm;
-	if ((lenv = (from->y < to->y) ? to->y - from->y : from->y - to->y) > 0)
+	lenv = (from->y < to->y) ? (int)(to->y - from->y) : (int)(from->y - to->y);
+	if (lenv > 0)
 		outcap_arg_fb(NULL, tcv, lenv, lenv);
 	if (lenv == 0)
 	{
 		tch = (from->x < to->x) ? rl->movs.rightm : rl->movs.leftm;
-		lenh = (from->x < to->x) ? to->x - from->x : from->x - to->x;
+		lenh = (from->x < to->x) ? (int)(to->x - from->x)
+								: (int)(from->x - to->x);
 		outcap_arg_fb(NULL, tch, lenh, 1);
 		return ;
 	}
-	outcap_arg_fb(NULL, rl->movs.rightm, to->x, 1);
+	outcap_arg_fb(NULL, rl->movs.rightm, (int)to->x, 1);
 }
 
-void		go_to_pos(unsigned int to, unsigned int from, t_readline *rl)
+void		go_to_pos(unsigned long to, unsigned long from, t_readline *rl)
 {
 	t_point		toc;
 	t_point		fromc;

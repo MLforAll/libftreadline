@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 11:06:01 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/12 23:44:04 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/14 04:48:56 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ t_keyact		hist_nav(char *buff, t_readline *rl, t_dlist **hist)
 	get_line_info_for_pos(&maxc, rl->csr.max, rl);
 	go_to_pos(0, rl->csr.pos, rl);
 	outcap("cr");
-	outcap_arg_fb(tgetstr("DL", NULL), tgetstr("dl", NULL), maxc.y, maxc.y);
+	outcap_arg_fb(tgetstr("DL", NULL), tgetstr("dl", NULL),
+		(int)maxc.y, (int)maxc.y);
 	ft_putstr_fd(rl->prompt, rl->opts->outfd);
 	ft_putstr_fd(rl->line, STDIN_FILENO);
 	rl->csr.max = ft_strlen(rl->line);

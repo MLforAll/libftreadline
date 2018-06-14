@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/26 20:53:53 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/22 14:36:45 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/14 05:06:34 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,24 @@
 #include <dirent.h>
 #include "ftrl_internal.h"
 
-static char			*get_last_components(const char *s, const char *comps)
+static const char	*get_last_components(const char *s, const char *comps)
 {
-	char	*ret;
-	char	*tmp;
-	char	*chk;
+	const char	*ret;
+	const char	*chk;
 
 	if (!s || !comps)
 		return (NULL);
-	tmp = (char*)s;
-	ret = tmp;
-	while (*tmp)
+	ret = s;
+	while (*s)
 	{
-		chk = (char*)comps;
+		chk = comps;
 		while (*chk)
 		{
-			if (*tmp == *chk)
-				ret = tmp;
+			if (*s == *chk)
+				ret = s;
 			chk++;
 		}
-		tmp++;
+		s++;
 	}
 	ret += (ret > s);
 	return (ret);
@@ -42,8 +40,8 @@ static char			*get_last_components(const char *s, const char *comps)
 
 inline static char	*get_region(char *line, t_cursor *csr)
 {
-	char			*tmp;
-	unsigned int	idx;
+	const char		*tmp;
+	unsigned long	idx;
 	const char		*chkcomps = " |;><&=";
 
 	if (csr->pos == csr->max)
@@ -59,7 +57,7 @@ inline static char	*get_region(char *line, t_cursor *csr)
 			break ;
 	}
 	idx++;
-	return (ft_strsub(line, idx, csr->pos - idx));
+	return (ft_strsub(line, (unsigned int)idx, csr->pos - idx));
 }
 
 t_list				*get_ac_result_bltn(char *line, t_cursor *csr)

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/09 03:00:33 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/14 04:41:25 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ int			rl_set_term(uint8_t echo)
 
 	if (state != echo || (!echo && tcgetattr(STDIN_FILENO, &saved_t) == -1))
 		return (FALSE);
-	ospeed = saved_t.c_ospeed;
+	ospeed = (short)saved_t.c_ospeed;
 	if (!echo)
 	{
 		t = saved_t;
-		t.c_lflag &= ~(ICANON | ECHO | ISIG);
+		t.c_lflag &= (unsigned long)~(ICANON | ECHO | ISIG);
 		tcsetattr(STDIN_FILENO, TCSANOW, &t);
 		state = 1;
 	}

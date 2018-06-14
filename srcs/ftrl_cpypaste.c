@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 18:03:06 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/09 20:31:42 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/14 04:32:56 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_keyact	rl_cpy_key(t_readline *rl)
 	if (!rl || !*rl->line
 		|| !(len = rl->cpypste.mkrs[1] - rl->cpypste.mkrs[0]))
 		return (kKeyFail);
-	if (!(cpy = ft_strsub(rl->line, rl->cpypste.mkrs[0], len)))
+	if (!(cpy = ft_strsub(rl->line, (unsigned int)rl->cpypste.mkrs[0], len)))
 		return (kKeyFail);
 	if (ft_strequ(rl->cpypste.dat, cpy))
 	{

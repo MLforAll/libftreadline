@@ -6,12 +6,12 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/29 01:36:45 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/09 03:51:52 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/14 05:03:07 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FTRL_TERMCAP
-# define FTRL_TERMCAP
+#ifndef FTRL_TERMCAP_H
+# define FTRL_TERMCAP_H
 
 /*
 ** structs for termcaps

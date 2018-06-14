@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/19 00:22:58 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/30 20:10:09 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/14 04:31:43 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	move_to_next_tab(t_readline *rl, int direct)
 {
-	unsigned int	pos;
+	unsigned long	pos;
 	t_point			newpoint;
 	t_point			coords;
 
@@ -22,11 +22,11 @@ static void	move_to_next_tab(t_readline *rl, int direct)
 	while (((pos > 0 && direct == kDirectLeft)
 		|| (rl->line[pos] && direct == kDirectRight))
 		&& !ft_isalpha(rl->line[pos]))
-		pos += direct;
+		(direct = kDirectLeft) ? pos++ : pos--;
 	while (((pos > 0 && direct == kDirectLeft)
 		|| (rl->line[pos] && direct == kDirectRight))
 		&& ft_isalpha(rl->line[pos]))
-		pos += direct;
+		(direct = kDirectLeft) ? pos++ : pos--;
 	if (pos > 0 && direct == kDirectLeft)
 		pos++;
 	get_line_info(&coords, rl);

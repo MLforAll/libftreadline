@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 23:12:06 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/12 23:25:49 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/14 04:33:28 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,10 @@ inline static char		*show_ac_result(t_list **res, t_readline *rl)
 	return (ret);
 }
 
-static char				*get_diff(char *line, char *ch, unsigned int pos)
+static char				*get_diff(char *line, char *ch, unsigned long pos)
 {
 	char			*res;
-	unsigned int	idx;
+	unsigned long	idx;
 
 	if (!ch || !line)
 		return (NULL);

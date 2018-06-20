@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 16:49:05 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/20 03:39:13 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/20 03:42:51 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void		get_line_info(t_point *pt, t_readline *rl)
 static void	go_to_point_dumb(t_point *to, t_point *from, t_readline *rl)
 {
 	const t_direct		dir = to->x > from->x ? kDirectRight : kDirectLeft;
-	unsigned int		pos;
+	unsigned long		pos;
 
 	if (to->y != from->y)
 	{

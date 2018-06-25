@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/26 20:53:53 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/14 05:06:34 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/25 21:14:53 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ static const char	*get_last_components(const char *s, const char *comps)
 inline static char	*get_region(char *line, t_cursor *csr)
 {
 	const char		*tmp;
-	unsigned long	idx;
 	const char		*chkcomps = " |;><&=";
+	unsigned long	idx;
 
 	if (csr->pos == csr->max)
 	{

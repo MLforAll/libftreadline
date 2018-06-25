@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/14 04:58:41 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/25 22:40:36 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,21 @@ static void			get_winsize_hdl(int sigc)
 	ioctl(STDIN_FILENO, TIOCGWINSZ, &g_ws);
 }
 
-inline static void	set_keys_movs(t_keys *keys, t_mov *movs)
+inline static void	set_keys_movs(t_keys *keys, t_mov *movs, uint8_t dumb)
 {
 	char			**keysptr;
 	unsigned int	idx;
 	const char		*caps[8] = {"kl", "kr", "ku", "kd", "kh", "@7", "kD", "kE"};
+	const char		*dfl[8] = {"\033[D", "\033[C", "\033[A", "\033[B",
+							"\033[H", "\033[F", "\033[3~", "\025"};
 
 	keysptr = (char**)keys;
 	idx = 0;
 	while (idx < sizeof(caps) / sizeof(caps[0]))
 	{
-		keysptr[idx] = tgetstr((char*)((uintptr_t)caps[idx]), NULL);
+		if (dumb
+			|| !(keysptr[idx] = tgetstr((char*)((uintptr_t)caps[idx]), NULL)))
+			keysptr[idx] = (char*)(uintptr_t)dfl[idx];
 		idx++;
 	}
 	movs->leftm = tgetstr("le", NULL);
@@ -87,7 +91,7 @@ int					rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts)
 		return (FALSE);
 	if ((pcstr = tgetstr("pc", NULL)))
 		PC = *pcstr;
-	set_keys_movs(&rl->keys, &rl->movs);
+	set_keys_movs(&rl->keys, &rl->movs, rl->dumb);
 	if (!(rl_set_term(NO)))
 		return (FALSE);
 	rl_makesure_start();

@@ -6,12 +6,14 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/06 22:53:36 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/14 05:01:16 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/25 21:49:01 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FTRL_DEV_H
 # define FTRL_DEV_H
+
+# include "ftrl_data.h"
 
 /*
 ** struct for ac results

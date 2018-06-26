@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/14 05:02:04 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/26 02:21:07 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,17 @@ t_keyact		rl_movl_key(t_readline *rl);
 t_keyact		rl_movr_key(t_readline *rl);
 
 /*
-** copy/paste (to be changed, refined etc!!!)
+** navigation funcs
+*/
+
+void			get_line_info_for_pos(t_point *pt, unsigned long pos,
+									t_readline *rl);
+void			get_line_info(t_point *pt, t_readline *rl);
+void			go_to_point(t_point *to, t_point *from, t_readline *rl);
+void			go_to_pos(unsigned long to, unsigned long from, t_readline *rl);
+
+/*
+** copy/paste
 */
 
 t_keyact		rl_paste_key(t_readline *rl);
@@ -186,12 +196,9 @@ uint8_t			quit_with_reason(t_abort reason,
 ** utils
 */
 
+char			*ft_prompt_nocolor(const char *prompt);
 size_t			ft_strlen_nocolor(const char *s);
-void			get_line_info_for_pos(t_point *pt, unsigned long pos,
-									t_readline *rl);
-void			get_line_info(t_point *pt, t_readline *rl);
-void			go_to_point(t_point *to, t_point *from, t_readline *rl);
-void			go_to_pos(unsigned long to, unsigned long from, t_readline *rl);
+
 t_readline		*rl_latest_session(uint8_t set, t_readline *new_session);
 
 #endif

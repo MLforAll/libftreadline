@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/25 22:40:36 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/26 02:25:45 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,14 +79,14 @@ int					rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts)
 	char	*pcstr;
 
 	ft_bzero(rl, sizeof(t_readline));
-	rl->prompt = prompt;
-	rl->prlen = ft_strlen_nocolor(prompt);
-	rl->opts = opts;
 	if (!(termenv = getenv("TERM")))
 	{
 		rl->dumb = TRUE;
 		termenv = "dumb";
 	}
+	rl->prlen = ft_strlen_nocolor(prompt);
+	rl->prompt = (rl->dumb) ? ft_prompt_nocolor(prompt) : prompt;
+	rl->opts = opts;
 	if (!(tgetent(NULL, termenv)))
 		return (FALSE);
 	if ((pcstr = tgetstr("pc", NULL)))

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/18 09:00:17 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/25 22:25:34 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/27 04:07:16 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,24 @@
 #include "libft.h"
 #include "ftrl_internal.h"
 
+static void	check_selection(t_readline *rl)
+{
+	if (rl->cpypste.mkrs[0] == 0 && rl->cpypste.mkrs[1] == 0)
+		return ;
+	go_to_pos(rl->cpypste.mkrs[0], rl->csr.pos, rl);
+	ft_putstrmax_fd(rl->line + rl->cpypste.mkrs[0],
+		rl->cpypste.mkrs[1] - rl->cpypste.mkrs[0], STDIN_FILENO);
+	go_to_pos(rl->csr.pos, rl->cpypste.mkrs[1], rl);
+	ft_bzero(rl->cpypste.mkrs, sizeof(rl->cpypste.mkrs));
+}
+
 t_keyact	rl_right_key(t_readline *rl)
 {
 	t_point	coords;
 
 	if (rl->csr.pos >= rl->csr.max)
 		return (kKeyFail);
+	check_selection(rl);
 	get_line_info(&coords, rl);
 	if (coords.x + 1 == g_ws.ws_col)
 	{
@@ -45,6 +57,7 @@ t_keyact	rl_left_key(t_readline *rl)
 
 	if (rl->csr.pos <= 0)
 		return (kKeyFail);
+	check_selection(rl);
 	get_line_info(&coords, rl);
 	rl->csr.pos--;
 	get_line_info(&gtc, rl);

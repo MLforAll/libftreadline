@@ -6,20 +6,20 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 16:49:35 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/28 20:03:33 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/27 20:54:13 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include <signal.h>
 #include "libftreadline.h"
 
-int		main(int ac, char **av, char **env)
+int			main(int ac, char **av, char **env)
 {
 	char		*line;
 	char		*prompt;
 	t_rl_opts	opts;
 	t_dlist		*hist;
-
 
 	ft_bzero(&opts, sizeof(t_rl_opts));
 	opts.bell = TRUE;

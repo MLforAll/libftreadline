@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/21 22:59:54 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/30 19:48:46 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/27 21:33:44 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include "ftrl_internal.h"
 
-static int	buffrealloc(char **line, size_t size)
+static int		buffrealloc(char **line, size_t size)
 {
 	char	*newline;
 
@@ -26,9 +26,30 @@ static int	buffrealloc(char **line, size_t size)
 	return (TRUE);
 }
 
-int			rl_linebuff_add(char *add, size_t addlen, t_readline *rl)
+static uint8_t	insert_to_buff(char *add, size_t addlen, t_readline *rl)
 {
-	char	backup[512];
+	char	backup_static[512];
+	char	*backup_dyn;
+	char	*backup_ptr;
+
+	backup_dyn = NULL;
+	if (rl->csr.max - rl->csr.pos > sizeof(backup_static) / sizeof(char) - 1)
+	{
+		if (!(backup_dyn = ft_strnew(rl->csr.max - rl->csr.pos)))
+			return (FALSE);
+		backup_ptr = backup_dyn;
+	}
+	else
+		backup_ptr = backup_static;
+	ft_strcpy(backup_ptr, rl->line + rl->csr.pos);
+	ft_strcpy(rl->line + rl->csr.pos, add);
+	ft_strcpy(rl->line + rl->csr.pos + addlen, backup_ptr);
+	free(backup_dyn);
+	return (TRUE);
+}
+
+int				rl_linebuff_add(char *add, size_t addlen, t_readline *rl)
+{
 	size_t	goal;
 
 	if (rl->csr.max + addlen > rl->bufflen)
@@ -41,16 +62,12 @@ int			rl_linebuff_add(char *add, size_t addlen, t_readline *rl)
 	}
 	if (rl->csr.pos >= rl->csr.max)
 		ft_strcpy(rl->line + rl->csr.max, add);
-	else
-	{
-		ft_strcpy(backup, rl->line + rl->csr.pos);
-		ft_strcpy(rl->line + rl->csr.pos, add);
-		ft_strcpy(rl->line + rl->csr.pos + addlen, backup);
-	}
+	else if (insert_to_buff(add, addlen, rl))
+		return (FALSE);
 	return (TRUE);
 }
 
-int			rl_linebuff_rm(size_t len, t_readline *rl)
+int				rl_linebuff_rm(size_t len, t_readline *rl)
 {
 	if (rl->csr.max <= rl->bufflen / 2 && rl->csr.max >= DFL_LINEBUFFSIZE)
 		buffrealloc(&rl->line, rl->bufflen /= 2);
@@ -60,7 +77,7 @@ int			rl_linebuff_rm(size_t len, t_readline *rl)
 	return (TRUE);
 }
 
-size_t		rl_linebuff_create(char **line)
+size_t			rl_linebuff_create(char **line)
 {
 	if (!(*line = ft_strnew(DFL_LINEBUFFSIZE)))
 		return (0);

@@ -15,7 +15,7 @@
 #include "ftrl_internal.h"
 #include "ftrl_quit.h"
 
-uint8_t		quit_with_reason(t_abort reason,
+t_uint8		quit_with_reason(t_abort reason,
 								void (*func)(void *),
 								void *data,
 								void (*free_func)(void *))
@@ -36,7 +36,7 @@ uint8_t		quit_with_reason(t_abort reason,
 	return (TRUE);
 }
 
-uint8_t		ftrl_quit(void)
+t_uint8		ftrl_quit(void)
 {
 	return (quit_with_reason(kAbortQuit, NULL, NULL, NULL));
 }

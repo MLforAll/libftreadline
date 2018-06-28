@@ -22,8 +22,8 @@
 
 char		*ft_readline(const char *prompt, t_rl_opts *opts, t_dlist *hist);
 
-uint8_t		ftrl_quit(void);
-uint8_t		ftrl_insert_msg(char *msg, int fd, uint8_t free_msg);
+t_uint8		ftrl_quit(void);
+t_uint8		ftrl_insert_msg(char *msg, int fd, t_uint8 free_msg);
 
 void		ftrl_histadd(t_dlist **headref, char *line);
 void		ftrl_histdelf(void *data, size_t size);

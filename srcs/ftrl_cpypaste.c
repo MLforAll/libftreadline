@@ -28,7 +28,7 @@ t_keyact	rl_leftcpy_key(t_readline *rl)
 
 t_keyact	rl_rightcpy_key(t_readline *rl)
 {
-	static uint8_t	idx = 0;
+	static t_uint8	idx = 0;
 	t_point			pos;
 
 	if (!rl)

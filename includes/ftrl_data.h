@@ -42,7 +42,7 @@ typedef struct			s_rl_opts
 	t_list		*(*ac_get_result)(char *, t_cursor *);
 	char		*(*ac_show_result)(t_list **);
 	int			outfd;
-	uint8_t		bell;
+	t_uint8		bell;
 	char		reserved_pad[3];
 }						t_rl_opts;
 

@@ -37,7 +37,7 @@ static void		quit_putmsg(void *data)
 	ft_putendlsec_fd(msg->msg, msg->fd);
 }
 
-uint8_t			ftrl_insert_msg(char *msg, int fd, uint8_t free_msg)
+t_uint8			ftrl_insert_msg(char *msg, int fd, t_uint8 free_msg)
 {
 	t_quitmsgdat	*data;
 	void			(*free_func)(void *);

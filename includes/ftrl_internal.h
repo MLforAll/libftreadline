@@ -80,7 +80,7 @@ typedef struct	s_readline
 	t_quit			quit;
 	t_mov			movs;
 	t_keys			keys;
-	uint8_t			dumb;
+	t_uint8			dumb;
 	char			reserved_pad[7];
 }				t_readline;
 
@@ -173,8 +173,8 @@ t_keyact		hist_nav(char *buff, t_readline *rl, t_dlist **hist);
 ** terminal
 */
 
-int				rl_set_term(uint8_t echo);
-uint8_t			rl_set_timeout(uint8_t enable, cc_t timeout);
+int				rl_set_term(t_uint8 echo);
+t_uint8			rl_set_timeout(t_uint8 enable, cc_t timeout);
 
 /*
 ** init
@@ -187,7 +187,7 @@ int				rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts);
 ** quit functions
 */
 
-uint8_t			quit_with_reason(t_abort reason,
+t_uint8			quit_with_reason(t_abort reason,
 								void (*func)(void *),
 								void *data,
 								void (*free_func)(void *));
@@ -199,6 +199,6 @@ uint8_t			quit_with_reason(t_abort reason,
 char			*ft_prompt_nocolor(const char *prompt);
 size_t			ft_strlen_nocolor(const char *s);
 
-t_readline		*rl_latest_session(uint8_t set, t_readline *new_session);
+t_readline		*rl_latest_session(t_uint8 set, t_readline *new_session);
 
 #endif

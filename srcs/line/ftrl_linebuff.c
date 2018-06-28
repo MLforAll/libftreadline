@@ -26,7 +26,7 @@ static int		buffrealloc(char **line, size_t size)
 	return (TRUE);
 }
 
-static uint8_t	insert_to_buff(char *add, size_t addlen, t_readline *rl)
+static t_uint8	insert_to_buff(char *add, size_t addlen, t_readline *rl)
 {
 	char	backup_static[512];
 	char	*backup_dyn;

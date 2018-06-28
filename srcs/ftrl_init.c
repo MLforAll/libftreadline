@@ -22,7 +22,7 @@ static void			get_winsize_hdl(int sigc)
 	(void)ioctl(STDIN_FILENO, TIOCGWINSZ, &g_ws);
 }
 
-inline static void	set_keys_movs(t_keys *keys, t_mov *movs, uint8_t dumb)
+inline static void	set_keys_movs(t_keys *keys, t_mov *movs, t_uint8 dumb)
 {
 	char			**keysptr;
 	unsigned int	idx;

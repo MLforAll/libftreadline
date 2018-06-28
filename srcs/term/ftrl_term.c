@@ -15,11 +15,11 @@
 #include <limits.h>
 #include "ftrl_internal.h"
 
-int			rl_set_term(uint8_t echo)
+int			rl_set_term(t_uint8 echo)
 {
 	static struct termios	saved_t;
 	struct termios			t;
-	static uint8_t			state = 0;
+	static t_uint8			state = 0;
 
 	if (state != echo || (!echo && tcgetattr(STDIN_FILENO, &saved_t) == -1))
 		return (FALSE);
@@ -39,7 +39,7 @@ int			rl_set_term(uint8_t echo)
 	return (TRUE);
 }
 
-uint8_t		rl_set_timeout(uint8_t enable, cc_t timeout)
+t_uint8		rl_set_timeout(t_uint8 enable, cc_t timeout)
 {
 	struct termios		t;
 

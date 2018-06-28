@@ -17,7 +17,7 @@
 
 inline static char		*get_highest_common(t_list *lst)
 {
-	uint8_t			first;
+	t_uint8			first;
 	size_t			len;
 	size_t			new;
 
@@ -94,7 +94,7 @@ t_keyact				rl_acroutine(t_readline *rl)
 	t_list		*res;
 	char		*diff;
 	char		*base;
-	uint8_t		basemalloc;
+	t_uint8		basemalloc;
 
 	if (!(res = get_ac_result(rl)))
 		return (kKeyFail);

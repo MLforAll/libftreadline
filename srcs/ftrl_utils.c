@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include "ftrl_internal.h"
 
-t_readline	*rl_latest_session(uint8_t set, t_readline *new_session)
+t_readline	*rl_latest_session(t_uint8 set, t_readline *new_session)
 {
 	static t_readline	*session = NULL;
 

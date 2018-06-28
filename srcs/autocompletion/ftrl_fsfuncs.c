@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 21:26:34 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/14 04:38:18 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/28 03:27:09 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ inline static char	*get_visible_str(struct dirent *dird, char *basedir)
 	isexec = is_exec(basedir, dird->d_name, NO);
 	if (!(ret = ft_strnew(dird->d_namlen + (size_t)isexec)))
 		return (NULL);
-	ft_strcpy(ret, dird->d_name);
+	(void)ft_strcpy(ret, dird->d_name);
 	if (isexec)
 		ret[dird->d_namlen] = '*';
 	return (ret);
@@ -58,9 +58,9 @@ inline static void	search_files_add(struct dirent *dird,
 	ft_bzero((void*)&newcontent, sizeof(t_acres));
 	if (!(newcontent.str = ft_strnew(dird->d_namlen + 1)))
 		return ;
-	ft_strcpy(newcontent.str, dird->d_name);
+	(void)ft_strcpy(newcontent.str, dird->d_name);
 	if (dird->d_type != DT_LNK)
-		ft_strcpy(newcontent.str + dird->d_namlen,
+		(void)ft_strcpy(newcontent.str + dird->d_namlen,
 			(dird->d_type == DT_DIR) ? "/" : " ");
 	newcontent.visible_str = get_visible_str(dird, basedir);
 	if (!(new = ft_lstnew((void*)&newcontent, sizeof(t_acres))))

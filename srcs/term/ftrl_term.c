@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/14 04:41:25 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/28 03:28:05 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ int			rl_set_term(uint8_t echo)
 	{
 		t = saved_t;
 		t.c_lflag &= (unsigned long)~(ICANON | ECHO | ISIG);
-		tcsetattr(STDIN_FILENO, TCSANOW, &t);
+		(void)tcsetattr(STDIN_FILENO, TCSANOW, &t);
 		state = 1;
 	}
 	else
 	{
-		tcsetattr(STDIN_FILENO, TCSANOW, &saved_t);
+		(void)tcsetattr(STDIN_FILENO, TCSANOW, &saved_t);
 		state = 0;
 	}
 	return (TRUE);

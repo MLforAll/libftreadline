@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/27 20:54:25 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/28 03:32:24 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void			get_winsize_hdl(int sigc)
 {
 	if (sigc != SIGWINCH)
 		return ;
-	ioctl(STDIN_FILENO, TIOCGWINSZ, &g_ws);
+	(void)ioctl(STDIN_FILENO, TIOCGWINSZ, &g_ws);
 }
 
 inline static void	set_keys_movs(t_keys *keys, t_mov *movs, uint8_t dumb)
@@ -50,8 +50,8 @@ int					rl_deinit(t_readline *rl)
 {
 	if (!rl_set_term(YES))
 		return (FALSE);
-	outcap("ke");
-	signal(SIGWINCH, SIG_DFL);
+	(void)outcap("ke");
+	(void)signal(SIGWINCH, SIG_DFL);
 	ft_strdel(&rl->cpypste.dat);
 	return (TRUE);
 }
@@ -67,10 +67,10 @@ inline static void	rl_makesure_start(void)
 		return ;
 	if (!(tmp = ft_strrchr(rbuff, ';')) || ft_atoi(tmp + 1) < 2)
 		return ;
-	outcap("mr");
+	(void)outcap("mr");
 	ft_putstr_fd("%\n", STDIN_FILENO);
-	outcap("cr");
-	outcap("me");
+	(void)outcap("cr");
+	(void)outcap("me");
 }
 
 int					rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts)
@@ -84,19 +84,20 @@ int					rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts)
 		rl->dumb = TRUE;
 		termenv = "dumb";
 	}
-	rl->prlen = ft_strlen_nocolor(prompt);
-	rl->prompt = (rl->dumb) ? ft_prompt_nocolor(prompt) : prompt;
-	rl->opts = opts;
 	if (!(tgetent(NULL, termenv)))
 		return (FALSE);
 	if ((pcstr = tgetstr("pc", NULL)))
 		PC = *pcstr;
+	rl->prlen = ft_strlen_nocolor(prompt);
+	rl->prompt = (rl->dumb || tgetnum("Co") < 8) ? ft_prompt_nocolor(prompt)
+												: prompt;
+	rl->opts = opts;
 	set_keys_movs(&rl->keys, &rl->movs, rl->dumb);
 	if (!(rl_set_term(NO)))
 		return (FALSE);
 	rl_makesure_start();
-	outcap("ks");
+	(void)outcap("ks");
 	get_winsize_hdl(SIGWINCH);
-	signal(SIGWINCH, &get_winsize_hdl);
+	(void)signal(SIGWINCH, &get_winsize_hdl);
 	return (TRUE);
 }

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 11:06:01 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/28 03:13:29 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/28 03:23:41 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ static void		disp_new_line(t_point *maxc, t_readline *rl)
 		ft_putstrmax_fd(rl->line, g_ws.ws_col - rl->prlen - 2, STDIN_FILENO);
 		return ;	
 	}
-	outcap("cr");
-	outcap_arg_fb(tgetstr("DL", NULL), tgetstr("dl", NULL),
+	(void)outcap("cr");
+	(void)outcap_arg_fb(tgetstr("DL", NULL), tgetstr("dl", NULL),
 		(int)maxc->y, (int)maxc->y);
 	ft_putstr_fd(rl->prompt, rl->opts->outfd);
 	ft_putstr_fd(rl->line, STDIN_FILENO);

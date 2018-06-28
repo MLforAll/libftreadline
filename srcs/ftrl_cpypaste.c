@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 18:03:06 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/28 03:02:09 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/28 03:28:25 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ t_keyact	rl_rightcpy_key(t_readline *rl)
 	}
 	else
 	{
-		outcap("mr");
+		(void)outcap("mr");
 		ft_putchar_fd(rl->line[rl->csr.pos], STDIN_FILENO);
-		outcap("me");
+		(void)outcap("me");
 	}
 	rl->csr.pos++;
 	return (kKeyOK);

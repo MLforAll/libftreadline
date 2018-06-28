@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/21 22:59:54 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/27 21:33:44 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/28 03:25:25 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int		buffrealloc(char **line, size_t size)
 
 	if (!(newline = ft_strnew(size)))
 		return (FALSE);
-	ft_strcpy(newline, *line);
+	(void)ft_strcpy(newline, *line);
 	free(*line);
 	*line = newline;
 	return (TRUE);
@@ -41,9 +41,9 @@ static uint8_t	insert_to_buff(char *add, size_t addlen, t_readline *rl)
 	}
 	else
 		backup_ptr = backup_static;
-	ft_strcpy(backup_ptr, rl->line + rl->csr.pos);
-	ft_strcpy(rl->line + rl->csr.pos, add);
-	ft_strcpy(rl->line + rl->csr.pos + addlen, backup_ptr);
+	(void)ft_strcpy(backup_ptr, rl->line + rl->csr.pos);
+	(void)ft_strcpy(rl->line + rl->csr.pos, add);
+	(void)ft_strcpy(rl->line + rl->csr.pos + addlen, backup_ptr);
 	free(backup_dyn);
 	return (TRUE);
 }
@@ -58,10 +58,10 @@ int				rl_linebuff_add(char *add, size_t addlen, t_readline *rl)
 		rl->bufflen += (rl->bufflen == 0);
 		while (rl->bufflen < goal)
 			rl->bufflen *= 2;
-		buffrealloc(&rl->line, rl->bufflen);
+		(void)buffrealloc(&rl->line, rl->bufflen);
 	}
 	if (rl->csr.pos >= rl->csr.max)
-		ft_strcpy(rl->line + rl->csr.max, add);
+		(void)ft_strcpy(rl->line + rl->csr.max, add);
 	else if (insert_to_buff(add, addlen, rl))
 		return (FALSE);
 	return (TRUE);
@@ -70,10 +70,10 @@ int				rl_linebuff_add(char *add, size_t addlen, t_readline *rl)
 int				rl_linebuff_rm(size_t len, t_readline *rl)
 {
 	if (rl->csr.max <= rl->bufflen / 2 && rl->csr.max >= DFL_LINEBUFFSIZE)
-		buffrealloc(&rl->line, rl->bufflen /= 2);
+		(void)buffrealloc(&rl->line, rl->bufflen /= 2);
 	ft_memset(rl->line + rl->csr.pos, '\0', len);
 	if (rl->csr.pos + len < rl->csr.max)
-		ft_strcpy(rl->line + rl->csr.pos, rl->line + rl->csr.pos + len);
+		(void)ft_strcpy(rl->line + rl->csr.pos, rl->line + rl->csr.pos + len);
 	return (TRUE);
 }
 

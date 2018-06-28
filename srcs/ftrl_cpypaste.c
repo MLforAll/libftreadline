@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 18:03:06 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/27 03:54:55 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/28 03:02:09 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,19 @@ t_keyact	rl_leftcpy_key(t_readline *rl)
 t_keyact	rl_rightcpy_key(t_readline *rl)
 {
 	static uint8_t	idx = 0;
+	t_point			pos;
 
 	if (!rl)
 		return (kKeyFail);
 	rl->cpypste.mkrs[idx] = rl->csr.pos + (idx == 1);
 	idx = 1;
 	if (rl->dumb)
+	{
+		get_line_info(&pos, rl);
+		if (pos.x + 2 == g_ws.ws_col)
+			go_to_pos(rl->csr.pos + 1, rl->csr.pos, rl);
 		ft_putchar_fd(ft_toupper(rl->line[rl->csr.pos]), STDIN_FILENO);
+	}
 	else
 	{
 		outcap("mr");

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 11:06:01 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/14 04:48:56 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/28 03:13:29 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,24 @@ static t_keyact	rl_history_keys(char *buff, t_readline *rl, t_dlist **history)
 	return (kKeyOK);
 }
 
+static void		disp_new_line(t_point *maxc, t_readline *rl)
+{
+	if (rl->dumb)
+	{
+		ft_putchar('\r');
+		ft_putnchar_fd(' ', g_ws.ws_col, STDIN_FILENO);
+		ft_putchar_fd('\r', STDIN_FILENO);
+		ft_putstr_fd(rl->prompt, STDIN_FILENO);
+		ft_putstrmax_fd(rl->line, g_ws.ws_col - rl->prlen - 2, STDIN_FILENO);
+		return ;	
+	}
+	outcap("cr");
+	outcap_arg_fb(tgetstr("DL", NULL), tgetstr("dl", NULL),
+		(int)maxc->y, (int)maxc->y);
+	ft_putstr_fd(rl->prompt, rl->opts->outfd);
+	ft_putstr_fd(rl->line, STDIN_FILENO);
+}
+
 t_keyact		hist_nav(char *buff, t_readline *rl, t_dlist **hist)
 {
 	t_point		maxc;
@@ -40,6 +58,8 @@ t_keyact		hist_nav(char *buff, t_readline *rl, t_dlist **hist)
 
 	if ((retk = rl_history_keys(buff, rl, hist)) != kKeyOK)
 		return (retk);
+	get_line_info_for_pos(&maxc, rl->csr.max, rl);
+	go_to_pos(0, rl->csr.pos, rl);
 	free(rl->line);
 	if ((char*)(*hist)->content)
 	{
@@ -48,15 +68,9 @@ t_keyact		hist_nav(char *buff, t_readline *rl, t_dlist **hist)
 	}
 	else
 		rl->bufflen = rl_linebuff_create(&rl->line);
-	get_line_info_for_pos(&maxc, rl->csr.max, rl);
-	go_to_pos(0, rl->csr.pos, rl);
-	outcap("cr");
-	outcap_arg_fb(tgetstr("DL", NULL), tgetstr("dl", NULL),
-		(int)maxc.y, (int)maxc.y);
-	ft_putstr_fd(rl->prompt, rl->opts->outfd);
-	ft_putstr_fd(rl->line, STDIN_FILENO);
 	rl->csr.max = ft_strlen(rl->line);
 	rl->csr.pos = rl->csr.max;
+	disp_new_line(&maxc, rl);
 	return (kKeyOK);
 }
 

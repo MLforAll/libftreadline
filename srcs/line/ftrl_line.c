@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/20 03:35:33 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/28 02:02:54 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,12 @@ void				rl_line_add(char *add, t_readline *rl)
 		return ;
 	get_line_info(&coords, rl);
 	outcapstr(rl->movs.cecap);
-	ft_putstr_fd(add, STDIN_FILENO);
-	if (coords.x + len == g_ws.ws_col)
+	if (!rl->dumb)
+		ft_putstr_fd(add, STDIN_FILENO);
+	if (coords.x + len + rl->dumb == g_ws.ws_col)
 		line_add_border(rl);
+	if (rl->dumb)
+		ft_putstr_fd(add, STDIN_FILENO);
 	if (rl->csr.pos < rl->csr.max)
 	{
 		outcap("sc");

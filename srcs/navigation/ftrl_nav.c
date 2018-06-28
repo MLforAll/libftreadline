@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 16:49:05 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/25 22:50:59 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/28 03:01:14 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void		get_line_info_for_pos(t_point *pt,
 								unsigned long pos,
 								t_readline *rl)
 {
-	pt->x = (pos + rl->prlen) % g_ws.ws_col;
-	pt->y = (pos + rl->prlen) / g_ws.ws_col + 1;
+	pt->x = (pos + rl->prlen) % (g_ws.ws_col - rl->dumb);
+	pt->y = (pos + rl->prlen) / (g_ws.ws_col - rl->dumb) + 1;
 }
 
 void		get_line_info(t_point *pt, t_readline *rl)
@@ -39,19 +39,18 @@ static void	go_to_point_dumb(t_point *to, t_point *from, t_readline *rl)
 		ft_putchar_fd('\r', STDIN_FILENO);
 		if (to->y == 1 && rl->prompt)
 			ft_putstr_fd(rl->prompt, STDIN_FILENO);
-		ft_putstrmax_fd(rl->line + g_ws.ws_col * (to->y - 1),
-			g_ws.ws_col - ((to->y == 1) ? rl->prlen : 0) - 1,
-			STDIN_FILENO);
-		pos = g_ws.ws_col - 1;
+		ft_putstrmax_fd(rl->line + g_ws.ws_col * (to->y - 1) - ((to->y > 1) ? rl->prlen + 2 : 0),
+				g_ws.ws_col - ((to->y == 1) ? rl->prlen : 0) - 2,
+				STDIN_FILENO);
+		pos = g_ws.ws_col - 2;
 	}
 	else
 		pos = from->x;
+	if (pos > g_ws.ws_col)
+		return ;
 	while (pos != to->x)
 	{
-		if (dir == kDirectRight)
-			ft_putchar_fd(rl->line[pos], STDIN_FILENO);
-		else
-			ft_putchar_fd(8, STDIN_FILENO);
+		ft_putchar_fd((dir == kDirectRight) ? rl->line[pos] : 8, STDIN_FILENO);
 		(dir == kDirectRight) ? pos++ : pos--;
 	}
 }

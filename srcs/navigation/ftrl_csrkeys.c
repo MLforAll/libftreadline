@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/18 09:00:17 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/27 04:07:16 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/28 02:59:34 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,20 @@ t_keyact	rl_right_key(t_readline *rl)
 		return (kKeyFail);
 	check_selection(rl);
 	get_line_info(&coords, rl);
-	if (coords.x + 1 == g_ws.ws_col)
-	{
-		outcap("cr");
-		outcapstr(rl->movs.downm);
-	}
-	else
+	if (coords.x + 1 + ((rl->dumb) ? 2 : 0) == g_ws.ws_col)
 	{
 		if (rl->dumb)
-			ft_putchar_fd(rl->line[rl->csr.pos], STDIN_FILENO);
+			go_to_pos(rl->csr.pos + 2, rl->csr.pos, rl);
 		else
-			outcapstr(rl->movs.rightm);
+		{
+			outcap("cr");
+			outcapstr(rl->movs.downm);
+		}
 	}
+	else if (rl->dumb)
+		ft_putchar_fd(rl->line[rl->csr.pos], STDIN_FILENO);
+	else
+		outcapstr(rl->movs.rightm);
 	rl->csr.pos++;
 	return (kKeyOK);
 }

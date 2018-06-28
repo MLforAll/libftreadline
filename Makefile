@@ -6,15 +6,24 @@
 #    By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/04 06:10:18 by kdumarai          #+#    #+#              #
-#    Updated: 2018/06/25 22:50:31 by kdumarai         ###   ########.fr        #
+#    Updated: 2018/06/28 21:31:10 by kdumarai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftreadline.a
 
 CC_FLAGS = -Wall -Werror -Wextra
-CC_LIB = -I includes -I ../libft/includes
-LD_FLAGS = -L ../libft -lft
+CC_LIB = -I includes -I libft/includes
+LD_FLAGS = -L libft -lft
+
+INCDIR = includes
+INCFILES = libftreadline.h \
+			ftrl_data.h \
+			ftrl_dev.h \
+			ftrl_internal.h \
+			ftrl_quit.h \
+			ftrl_termcap.h
+INCLUDES = $(addprefix $(INCDIR)/, $(INCFILES))
 
 SRCDIR = srcs
 SRCFILES = ft_readline.c \
@@ -56,13 +65,13 @@ PROJTEXT = \033[1;35mlibftreadline \033[0;39m
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) $(INCLUDES)
 	@ printf "\033[K$(PROJTEXT)Compiling\n"
 	@ printf "$(PROJTEXT)Linking\n"
 	@ ar rcs $(NAME) $?
 	@ printf "$(PROJTEXT)\033[1;32mLib built at $(NAME)\033[0;39m\n"
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c
+$(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLUDES)
 	@ if [ ! -d $(dir $@) ]; then mkdir -p $(dir $@); fi
 	@ printf "\033[K$(PROJTEXT)Compiling \033[1;33m$<"
 ifneq ($(CSRC),0)

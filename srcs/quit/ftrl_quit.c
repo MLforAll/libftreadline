@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/06 23:37:55 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/09 03:59:43 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/28 21:10:38 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,17 @@ uint8_t		quit_with_reason(t_abort reason,
 {
 	t_readline		*rl;
 
-	if (!(rl = rl_latest_session(NO, NULL)) || !rl_set_timeout(YES, 0))
+	if (!(rl = rl_latest_session(NO, NULL)))
 		return (FALSE);
 	rl->quit.reason = reason;
 	rl->quit.func = func;
 	rl->quit.func_data = data;
 	rl->quit.free_func = free_func;
+	if (!rl_set_timeout(YES, 0))
+	{
+		ft_bzero(&rl->quit, sizeof(t_quit));
+		return (FALSE);
+	}
 	return (TRUE);
 }
 

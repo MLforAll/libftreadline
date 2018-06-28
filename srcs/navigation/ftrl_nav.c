@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 16:49:05 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/28 03:01:14 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/28 18:24:09 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,14 @@ static void	go_to_point_dumb(t_point *to, t_point *from, t_readline *rl)
 		ft_putchar_fd('\r', STDIN_FILENO);
 		if (to->y == 1 && rl->prompt)
 			ft_putstr_fd(rl->prompt, STDIN_FILENO);
-		ft_putstrmax_fd(rl->line + g_ws.ws_col * (to->y - 1) - ((to->y > 1) ? rl->prlen + 2 : 0),
+		pos = ft_putstrmax_fd(rl->line + g_ws.ws_col * (to->y - 1) - ((to->y > 1) ? rl->prlen + 2 : 0),
 				g_ws.ws_col - ((to->y == 1) ? rl->prlen : 0) - 2,
 				STDIN_FILENO);
-		pos = g_ws.ws_col - 2;
+		(to->y == 1) ? pos += rl->prlen : pos--;
 	}
 	else
 		pos = from->x;
-	if (pos > g_ws.ws_col)
+	if (pos > g_ws.ws_col - 2)
 		return ;
 	while (pos != to->x)
 	{

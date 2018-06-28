@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/18 09:00:17 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/28 03:27:42 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/28 18:23:14 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ t_keyact	rl_right_key(t_readline *rl)
 		return (kKeyFail);
 	check_selection(rl);
 	get_line_info(&coords, rl);
-	if (coords.x + 1 + ((rl->dumb) ? 2 : 0) == g_ws.ws_col)
+	if (coords.x + 1 + rl->dumb == g_ws.ws_col)
 	{
 		if (rl->dumb)
-			go_to_pos(rl->csr.pos + 2, rl->csr.pos, rl);
+			go_to_pos(rl->csr.pos + 1, rl->csr.pos, rl);
 		else
 		{
 			(void)outcap("cr");

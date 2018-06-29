@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/28 03:24:04 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/06/29 02:59:23 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,10 @@ static t_keyact	nav_keys(char *buff, t_readline *rl)
 
 static t_keyact	edit_keys(char *buff, t_readline *rl)
 {
+	t_keyact	tmp;
+
 	if (!rl || !buff)
 		return (kKeyNone);
-	if (rl_input_add_text(buff, rl))
-		return (kKeyOK);
-	if (rl_input_rm_text(buff, rl) == 1)
-		return (kKeyOK);
 	if (*buff == 4 || *buff == 3)
 	{
 		rl->bufflen = 0;
@@ -80,10 +78,14 @@ static t_keyact	edit_keys(char *buff, t_readline *rl)
 	if (*buff == 4 || *buff == 3)
 		return (kKeyOK);
 	if (ft_strequ(buff, "\025"))
-		rl_clear_line(rl);
+		return (rl_clear_line(rl));
 	if (ft_strequ(buff, "\t"))
-		rl_acroutine(rl);
-	return (kKeyOK);
+		return (rl_acroutine(rl));
+	if ((tmp = rl_input_rm_text(buff, rl)) != kKeyNone)
+		return (tmp);
+	if ((tmp = rl_input_add_text(buff, rl)) != kKeyNone)
+		return (tmp);
+	return (kKeyNone);
 }
 
 static void		ft_readline_core(t_readline *rl, t_dlist **hist)
@@ -95,12 +97,12 @@ static void		ft_readline_core(t_readline *rl, t_dlist **hist)
 	ft_bzero(buff, sizeof(buff));
 	while (rl->line && read(STDIN_FILENO, buff, RL_READBUFFSIZE) > 0)
 	{
+		if (ft_strequ(buff, "\n") || *buff == 3)
+			break ;
 		if ((nav_keys(buff, rl) == kKeyFail
 			|| hist_nav(buff, rl, hist) == kKeyFail
 			|| edit_keys(buff, rl) == kKeyFail) && rl->opts->bell && !rl->dumb)
 			(void)outcap("bl");
-		if (ft_strequ(buff, "\n") || *buff == 3)
-			break ;
 		ft_bzero(buff, sizeof(buff));
 	}
 	print_end_newlines(rl);

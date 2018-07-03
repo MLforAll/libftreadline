@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 23:12:06 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/20 04:27:26 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/03 07:05:37 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static char				*get_diff(char *line, char *ch, unsigned long pos)
 		}
 		return ((!res || !*res) ? NULL : res);
 	}
-	return (NULL);
+	return (ch);
 }
 
 t_keyact				rl_acroutine(t_readline *rl)

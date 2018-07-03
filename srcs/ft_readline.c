@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/29 02:59:23 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/03 02:21:16 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ char			*ft_readline(const char *prompt,
 		rl_set_timeout(NO, 0);
 		ft_bzero(&rl.quit, sizeof(t_quit));
 	}
+	(rl.prompt != prompt) ? free((void*)(ptrdiff_t)rl.prompt) : 0;
 	rl_deinit(&rl);
 	rl_latest_session(YES, bak);
 	return (rl.line);

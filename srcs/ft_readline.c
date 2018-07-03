@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/03 02:21:16 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/03 04:22:02 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ static t_keyact	edit_keys(char *buff, t_readline *rl)
 		rl->bufflen = 0;
 		ft_strdel(&rl->line);
 	}
-	if (*buff == 3)
-		rl->bufflen = rl_linebuff_create(&rl->line);
+	if (*buff == 3 && !rl_linebuff_create(rl))
+		return (kKeyFatal);
 	if (*buff == 4 || *buff == 3)
 		return (kKeyOK);
 	if (ft_strequ(buff, "\025"))
@@ -117,8 +117,9 @@ char			*ft_readline(const char *prompt,
 	if (!rl_init(&rl, prompt, opts))
 		return (NULL);
 	bak = rl_latest_session(NO, NULL);
-	rl_latest_session(YES, &rl);
-	rl.bufflen = rl_linebuff_create(&rl.line);
+	(void)rl_latest_session(YES, &rl);
+	if (!rl_linebuff_create(&rl))
+		return (NULL);
 	while (TRUE)
 	{
 		ft_readline_core(&rl, &hist);
@@ -129,11 +130,10 @@ char			*ft_readline(const char *prompt,
 			(rl.quit.func)(rl.quit.func_data);
 			(rl.quit.free_func)(rl.quit.func_data);
 		}
-		rl_set_timeout(NO, 0);
+		(void)rl_set_timeout(NO, 0);
 		ft_bzero(&rl.quit, sizeof(t_quit));
 	}
-	(rl.prompt != prompt) ? free((void*)(ptrdiff_t)rl.prompt) : 0;
-	rl_deinit(&rl);
-	rl_latest_session(YES, bak);
+	(void)rl_deinit(&rl, prompt);
+	(void)rl_latest_session(YES, bak);
 	return (rl.line);
 }

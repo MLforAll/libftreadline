@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 11:06:01 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/28 03:23:41 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/03 04:20:44 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ t_keyact		hist_nav(char *buff, t_readline *rl, t_dlist **hist)
 		rl->line = ft_strdup((char*)(*hist)->content);
 		rl->bufflen = ft_strlen(rl->line);
 	}
-	else
-		rl->bufflen = rl_linebuff_create(&rl->line);
+	else if (!rl_linebuff_create(rl))
+		return (kKeyFatal);
 	rl->csr.max = ft_strlen(rl->line);
 	rl->csr.pos = rl->csr.max;
 	disp_new_line(&maxc, rl);

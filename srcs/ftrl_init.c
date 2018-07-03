@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/28 03:32:24 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/03 04:18:29 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,13 @@ inline static void	set_keys_movs(t_keys *keys, t_mov *movs, t_uint8 dumb)
 	movs->cecap = tgetstr("ce", NULL);
 }
 
-int					rl_deinit(t_readline *rl)
+int					rl_deinit(t_readline *rl, const char *orig_pr)
 {
 	if (!rl_set_term(YES))
 		return (FALSE);
 	(void)outcap("ke");
 	(void)signal(SIGWINCH, SIG_DFL);
+	(rl->prompt != orig_pr) ? free((void*)(ptrdiff_t)rl->prompt) : 0;
 	ft_strdel(&rl->cpypste.dat);
 	return (TRUE);
 }

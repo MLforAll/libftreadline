@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/29 02:47:16 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/03 04:20:30 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ typedef enum	e_keyact
 {
 	kKeyNone,
 	kKeyOK,
-	kKeyFail
+	kKeyFail,
+	kKeyFatal
 }				t_keyact;
 
 typedef enum	e_direct
@@ -120,7 +121,7 @@ void			rl_line_add(char *add, t_readline *rl);
 ** line buffer
 */
 
-size_t			rl_linebuff_create(char **line);
+t_uint8			rl_linebuff_create(t_readline *rl);
 int				rl_linebuff_rm(size_t len, t_readline *rl);
 int				rl_linebuff_add(char *add, size_t addlen, t_readline *rl);
 
@@ -180,7 +181,7 @@ t_uint8			rl_set_timeout(t_uint8 enable, cc_t timeout);
 ** init
 */
 
-int				rl_deinit(t_readline *rl);
+int				rl_deinit(t_readline *rl, const char *orig_pr);
 int				rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts);
 
 /*

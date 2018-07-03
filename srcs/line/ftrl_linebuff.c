@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/21 22:59:54 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/28 03:25:25 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/03 04:14:45 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,10 @@ int				rl_linebuff_rm(size_t len, t_readline *rl)
 	return (TRUE);
 }
 
-size_t			rl_linebuff_create(char **line)
+t_uint8			rl_linebuff_create(t_readline *rl)
 {
-	if (!(*line = ft_strnew(DFL_LINEBUFFSIZE)))
-		return (0);
-	return (DFL_LINEBUFFSIZE);
+	if (!(rl->line = ft_strnew(DFL_LINEBUFFSIZE)))
+		return (FALSE);
+	rl->bufflen = DFL_LINEBUFFSIZE;
+	return (TRUE);
 }

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/29 02:59:06 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/03 04:20:50 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ t_keyact	rl_clear_line(t_readline *rl)
 	outcap("cr");
 	outcapstr(rl->movs.cecap);
 	free(rl->line);
-	rl->bufflen = rl_linebuff_create(&rl->line);
+	if (!rl_linebuff_create(rl))
+		return (kKeyFatal);
 	ft_putstr_fd(rl->prompt, rl->opts->outfd);
 	ft_bzero(&rl->csr, sizeof(t_cursor));
 	return (kKeyOK);

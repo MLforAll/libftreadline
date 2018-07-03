@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 16:49:05 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/03 05:29:11 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/03 06:10:21 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void		get_line_info_for_pos(t_point *pt,
 	pt->y = (pos + rl->prlen) / (g_ws.ws_col - rl->dumb) + 1;
 }
 
-void		get_line_info(t_point *pt, t_readline *rl)
+inline void	get_line_info(t_point *pt, t_readline *rl)
 {
 	get_line_info_for_pos(pt, rl->csr.pos, rl);
 }

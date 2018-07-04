@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/04 17:21:00 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/04 18:14:50 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/04 18:54:33 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static void	rl_generic_sig_hdl(int sigc)
 {
 	t_readline	*session;
 
-	if (sigc == SIGINT || sigc == SIGTSTP
+	if (g_sig_origs[sigc] == (void (*)(int))-1
+		|| sigc == SIGINT || sigc == SIGTSTP
 		|| !(session = rl_latest_session(NO, NULL)))
 		return ;
 	(void)rl_deinit(session);
@@ -66,7 +67,7 @@ void		restore_signals(void)
 	sig = 0;
 	while (++sig < 32)
 	{
-		if (g_sig_origs[sig] != (void (*)(int))-1)
+		if (g_sig_origs[sig] == (void (*)(int))-1)
 			continue ;
 		(void)signal(sig, g_sig_origs[sig]);
 	}

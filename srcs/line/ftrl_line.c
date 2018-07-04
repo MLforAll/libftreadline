@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/04 15:01:43 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/04 18:56:37 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ inline static void	clr_lines(t_point *coords, t_readline *rl)
 	(void)outcap_arg_fb(tgetstr("DL", NULL), tgetstr("dl", NULL), cnt, cnt);
 	(void)outcapstr(rl->movs.upm);
 	(void)outcap_arg_fb(NULL, rl->movs.rightm, (int)rl->csr.pos, 1);
-	(void)outcap("sc");
 }
 
 void				rl_line_rm(size_t len, t_readline *rl)
@@ -52,6 +51,7 @@ void				rl_line_rm(size_t len, t_readline *rl)
 	}
 	else
 		clr_lines(&coords, rl);
+	(void)outcap("sc");
 	ft_putstr_fd(rl->line + rl->csr.pos + len, STDIN_FILENO);
 	if (!rl->dumb)
 		(void)outcap("rc");

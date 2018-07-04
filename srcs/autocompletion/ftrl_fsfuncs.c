@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 21:26:34 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/28 03:27:09 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/04 15:11:54 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ t_list				*search_files_begin(const char *f_path,
 			search_files_add(dird, basedir, &ret);
 	}
 	if (dirp)
-		closedir(dirp);
+		(void)closedir(dirp);
 	if (!s_dir)
 		ft_strdel(&basedir);
 	return (ret);

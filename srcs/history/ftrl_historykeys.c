@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 11:06:01 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/03 05:28:48 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/04 16:06:53 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,17 @@ static void		disp_new_line(t_point *maxc, t_readline *rl)
 {
 	if (rl->dumb)
 	{
-		ft_putchar('\r');
-		ft_putnchar_fd(' ', g_ws.ws_col, STDIN_FILENO);
-		ft_putchar_fd('\r', STDIN_FILENO);
-		ft_putstr_fd(rl->prompt, STDIN_FILENO);
-		ft_putstrmax_fd(rl->line, g_ws.ws_col - rl->prlen - 2, STDIN_FILENO);
+		if (maxc->y == 1)
+		{
+			ft_putchar('\r');
+			ft_putnchar_fd(' ', g_ws.ws_col, STDIN_FILENO);
+			ft_putchar_fd('\r', STDIN_FILENO);
+			ft_putstr_fd(rl->prompt, STDIN_FILENO);
+			(void)ft_putstrmax_fd(rl->line,
+								g_ws.ws_col - rl->prlen - 2, STDIN_FILENO);
+		}
+		else
+			go_to_pos(rl->csr.max, 0, rl);
 		return ;
 	}
 	(void)outcap("cr");

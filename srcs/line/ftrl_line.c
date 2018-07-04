@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/28 02:02:54 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/04 15:01:43 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,15 @@ inline static void	clr_lines(t_point *coords, t_readline *rl)
 	int		cnt;
 
 	get_line_info_for_pos(&maxc, rl->csr.max, rl);
-	outcapstr(rl->movs.cecap);
+	(void)outcapstr(rl->movs.cecap);
 	if (coords->y >= maxc.y)
 		return ;
 	cnt = (int)maxc.y - 1;
-	outcapstr(rl->movs.downm);
-	outcap_arg_fb(tgetstr("DL", NULL), tgetstr("dl", NULL), cnt, cnt);
-	outcapstr(rl->movs.upm);
-	outcap_arg_fb(NULL, rl->movs.rightm, (int)rl->csr.pos, 1);
+	(void)outcapstr(rl->movs.downm);
+	(void)outcap_arg_fb(tgetstr("DL", NULL), tgetstr("dl", NULL), cnt, cnt);
+	(void)outcapstr(rl->movs.upm);
+	(void)outcap_arg_fb(NULL, rl->movs.rightm, (int)rl->csr.pos, 1);
+	(void)outcap("sc");
 }
 
 void				rl_line_rm(size_t len, t_readline *rl)
@@ -44,17 +45,16 @@ void				rl_line_rm(size_t len, t_readline *rl)
 	go_to_point(&csrm, &coords, rl);
 	if (rl->dumb)
 	{
-		ft_putnchar_fd(' ', g_ws.ws_col - csrm.x - 1, STDIN_FILENO);
+		ft_putnchar_fd(' ', g_ws.ws_col - csrm.x - 2, STDIN_FILENO);
 		back = csrm;
-		back.x = g_ws.ws_col - 1;
+		back.x = g_ws.ws_col - 2;
 		go_to_point(&csrm, &back, rl);
 	}
 	else
 		clr_lines(&coords, rl);
-	outcap("sc");
-	if (rl->csr.pos + len < rl->csr.max)
-		ft_putstr_fd(rl->line + rl->csr.pos + len, STDIN_FILENO);
-	outcap("rc");
+	ft_putstr_fd(rl->line + rl->csr.pos + len, STDIN_FILENO);
+	if (!rl->dumb)
+		(void)outcap("rc");
 	rl_linebuff_rm(len, rl);
 	rl->csr.max -= len;
 }
@@ -70,7 +70,7 @@ inline static void	line_add_border(t_readline *rl)
 	else
 	{
 		ft_putchar_fd(' ', STDIN_FILENO);
-		outcapstr(rl->movs.leftm);
+		(void)outcapstr(rl->movs.leftm);
 	}
 }
 
@@ -82,7 +82,7 @@ void				rl_line_add(char *add, t_readline *rl)
 	if (!add || !rl || !(len = ft_strlen(add)))
 		return ;
 	get_line_info(&coords, rl);
-	outcapstr(rl->movs.cecap);
+	(void)outcapstr(rl->movs.cecap);
 	if (!rl->dumb)
 		ft_putstr_fd(add, STDIN_FILENO);
 	if (coords.x + len + rl->dumb == g_ws.ws_col)
@@ -91,9 +91,9 @@ void				rl_line_add(char *add, t_readline *rl)
 		ft_putstr_fd(add, STDIN_FILENO);
 	if (rl->csr.pos < rl->csr.max)
 	{
-		outcap("sc");
+		(void)outcap("sc");
 		ft_putstr_fd(rl->line + rl->csr.pos, STDIN_FILENO);
-		outcap("rc");
+		(void)outcap("rc");
 	}
 	rl_linebuff_add(add, len, rl);
 	rl->csr.pos += len;

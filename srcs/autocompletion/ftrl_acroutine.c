@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 23:12:06 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/03 07:05:37 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/04 18:50:45 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,14 @@ inline static char		*show_ac_result(t_list **res, t_readline *rl)
 {
 	char	*ret;
 
-	outcap("ke");
-	if (rl->opts->ac_show_result)
+	(void)outcap("ke");
+	if (rl->opts->ac_show_result && !rl->dumb)
 		ret = (rl->opts->ac_show_result)(res);
 	else
 		ret = show_ac_result_bltn(res);
 	ft_putstr_fd(rl->prompt, rl->opts->outfd);
 	ft_putstr_fd(rl->line, STDIN_FILENO);
-	outcap("ks");
+	(void)outcap("ks");
 	go_to_pos(rl->csr.pos, rl->csr.max, rl);
 	return (ret);
 }

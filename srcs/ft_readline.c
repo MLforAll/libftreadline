@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/04 18:12:24 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/04 18:49:52 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void		print_end_newlines(t_readline *rl)
 	times = maxc.y - coords.y + 1;
 	if (!(nlb = (char*)malloc(sizeof(char) * (times + 1))))
 		return ;
-	ft_memset(nlb, '\n', times);
+	(void)ft_memset(nlb, '\n', times);
 	nlb[times] = '\0';
 	ft_putstr_fd(nlb, STDIN_FILENO);
 	free(nlb);

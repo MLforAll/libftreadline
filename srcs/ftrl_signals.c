@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/04 17:21:00 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/04 18:13:15 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/04 18:14:50 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <signal.h>
 #include "ftrl_internal.h"
 
-static void	(*sigorigs[32])(int);
+static void	(*g_sig_origs[32])(int);
 
 static void	rl_generic_sig_hdl(int sigc)
 {
@@ -26,13 +26,13 @@ static void	rl_generic_sig_hdl(int sigc)
 		return ;
 	(void)rl_deinit(session);
 	ft_putchar('\n');
-	if (sigorigs[sigc] == SIG_DFL || sigorigs[sigc] == SIG_IGN)
+	if (g_sig_origs[sigc] == SIG_DFL || g_sig_origs[sigc] == SIG_IGN)
 	{
-		(void)signal(sigc, sigorigs[sigc]);
+		(void)signal(sigc, g_sig_origs[sigc]);
 		raise(sigc);
 		return ;
 	}
-	(sigorigs[sigc])(sigc);
+	(g_sig_origs[sigc])(sigc);
 }
 
 static void	get_winsize_hdl(int sigc)
@@ -51,12 +51,12 @@ void		set_signals(void)
 	{
 		if (sig == SIGURG || sig == SIGCONT || sig == SIGCHLD
 			|| sig == SIGIO || sig == SIGWINCH || sig == SIGINFO)
-			sigorigs[sig] = (void (*)(int))-1;
+			g_sig_origs[sig] = (void (*)(int))-1;
 		else
-			sigorigs[sig] = signal(sig, &rl_generic_sig_hdl);
+			g_sig_origs[sig] = signal(sig, &rl_generic_sig_hdl);
 	}
 	get_winsize_hdl(SIGWINCH);
-	sigorigs[SIGWINCH] = signal(SIGWINCH, &get_winsize_hdl);
+	g_sig_origs[SIGWINCH] = signal(SIGWINCH, &get_winsize_hdl);
 }
 
 void		restore_signals(void)
@@ -66,8 +66,8 @@ void		restore_signals(void)
 	sig = 0;
 	while (++sig < 32)
 	{
-		if (sigorigs[sig] != (void (*)(int))-1)
+		if (g_sig_origs[sig] != (void (*)(int))-1)
 			continue ;
-		(void)signal(sig, sigorigs[sig]);
+		(void)signal(sig, g_sig_origs[sig]);
 	}
 }

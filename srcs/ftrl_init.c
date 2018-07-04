@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/03 04:18:29 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/04 18:11:57 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,6 @@
 #include <stdlib.h>
 #include <limits.h>
 #include "ftrl_internal.h"
-
-static void			get_winsize_hdl(int sigc)
-{
-	if (sigc != SIGWINCH)
-		return ;
-	(void)ioctl(STDIN_FILENO, TIOCGWINSZ, &g_ws);
-}
 
 inline static void	set_keys_movs(t_keys *keys, t_mov *movs, t_uint8 dumb)
 {
@@ -46,13 +39,14 @@ inline static void	set_keys_movs(t_keys *keys, t_mov *movs, t_uint8 dumb)
 	movs->cecap = tgetstr("ce", NULL);
 }
 
-int					rl_deinit(t_readline *rl, const char *orig_pr)
+int					rl_deinit(t_readline *rl)
 {
 	if (!rl_set_term(YES))
 		return (FALSE);
 	(void)outcap("ke");
-	(void)signal(SIGWINCH, SIG_DFL);
-	(rl->prompt != orig_pr) ? free((void*)(ptrdiff_t)rl->prompt) : 0;
+	restore_signals();
+	if (rl->dumb)
+		free((void*)(ptrdiff_t)rl->prompt);
 	ft_strdel(&rl->cpypste.dat);
 	return (TRUE);
 }
@@ -96,9 +90,9 @@ int					rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts)
 	set_keys_movs(&rl->keys, &rl->movs, rl->dumb);
 	if (!(rl_set_term(NO)))
 		return (FALSE);
-	rl_makesure_start();
+	if (!rl->dumb)
+		rl_makesure_start();
+	set_signals();
 	(void)outcap("ks");
-	get_winsize_hdl(SIGWINCH);
-	(void)signal(SIGWINCH, &get_winsize_hdl);
 	return (TRUE);
 }

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/03 04:20:30 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/04 18:12:18 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,8 +181,15 @@ t_uint8			rl_set_timeout(t_uint8 enable, cc_t timeout);
 ** init
 */
 
-int				rl_deinit(t_readline *rl, const char *orig_pr);
+int				rl_deinit(t_readline *rl);
 int				rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts);
+
+/*
+** signals
+*/
+
+void			set_signals(void);
+void			restore_signals(void);
 
 /*
 ** quit functions

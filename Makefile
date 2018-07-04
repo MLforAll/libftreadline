@@ -6,7 +6,7 @@
 #    By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/04 06:10:18 by kdumarai          #+#    #+#              #
-#    Updated: 2018/06/28 21:31:10 by kdumarai         ###   ########.fr        #
+#    Updated: 2018/07/04 18:03:16 by kdumarai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,6 +45,7 @@ SRCFILES = ft_readline.c \
 	ftrl_init.c \
 	ftrl_utils.c \
 	ftrl_str.c \
+	ftrl_signals.c \
 	history/ftrl_history.c \
 	history/ftrl_historykeys.c \
 	quit/ftrl_quit.c \

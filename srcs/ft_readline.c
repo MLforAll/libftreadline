@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/03 04:22:02 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/04 18:12:24 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,9 +114,8 @@ char			*ft_readline(const char *prompt,
 	t_readline		rl;
 	t_readline		*bak;
 
-	if (!rl_init(&rl, prompt, opts))
+	if (!rl_init(&rl, prompt, opts) || (bak = rl_latest_session(NO, NULL)))
 		return (NULL);
-	bak = rl_latest_session(NO, NULL);
 	(void)rl_latest_session(YES, &rl);
 	if (!rl_linebuff_create(&rl))
 		return (NULL);
@@ -133,7 +132,7 @@ char			*ft_readline(const char *prompt,
 		(void)rl_set_timeout(NO, 0);
 		ft_bzero(&rl.quit, sizeof(t_quit));
 	}
-	(void)rl_deinit(&rl, prompt);
+	(void)rl_deinit(&rl);
 	(void)rl_latest_session(YES, bak);
 	return (rl.line);
 }

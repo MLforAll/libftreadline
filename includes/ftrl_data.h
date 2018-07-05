@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 06:36:52 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/14 05:02:12 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/05 04:27:17 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct			s_rl_opts
 {
 	t_list		*(*ac_get_result)(char *, t_cursor *);
 	char		*(*ac_show_result)(t_list **);
+	char		*(*ac_show_result_dumb)(t_list **);
 	int			outfd;
 	t_uint8		bell;
 	char		reserved_pad[3];

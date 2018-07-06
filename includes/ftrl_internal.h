@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/04 18:12:18 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/06 03:55:46 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ typedef struct	s_quit
 typedef struct	s_readline
 {
 	t_rl_opts		*opts;
-	const char		*prompt;
+	char			*prompt;
 	size_t			prlen;
 	char			*line;
 	size_t			bufflen;
@@ -181,6 +181,7 @@ t_uint8			rl_set_timeout(t_uint8 enable, cc_t timeout);
 ** init
 */
 
+void			rl_prompt_init(t_readline *rl, const char *prompt);
 int				rl_deinit(t_readline *rl);
 int				rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts);
 
@@ -205,7 +206,7 @@ t_uint8			quit_with_reason(t_abort reason,
 */
 
 char			*ft_prompt_nocolor(const char *prompt);
-size_t			ft_strlen_nocolor(const char *s);
+size_t			ft_prompt_len(const char *s);
 
 t_readline		*rl_latest_session(t_uint8 set, t_readline *new_session);
 

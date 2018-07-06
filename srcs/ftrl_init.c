@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/04 18:11:57 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/06 03:56:11 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,7 @@ int					rl_deinit(t_readline *rl)
 		return (FALSE);
 	(void)outcap("ke");
 	restore_signals();
-	if (rl->dumb)
-		free((void*)(ptrdiff_t)rl->prompt);
+	free(rl->prompt);
 	ft_strdel(&rl->cpypste.dat);
 	return (TRUE);
 }
@@ -83,9 +82,6 @@ int					rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts)
 		return (FALSE);
 	if ((pcstr = tgetstr("pc", NULL)))
 		PC = *pcstr;
-	rl->prlen = ft_strlen_nocolor(prompt);
-	rl->prompt = (rl->dumb || tgetnum("Co") < 8) ? ft_prompt_nocolor(prompt)
-												: prompt;
 	rl->opts = opts;
 	set_keys_movs(&rl->keys, &rl->movs, rl->dumb);
 	if (!(rl_set_term(NO)))
@@ -93,6 +89,7 @@ int					rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts)
 	if (!rl->dumb)
 		rl_makesure_start();
 	set_signals();
+	rl_prompt_init(rl, prompt);
 	(void)outcap("ks");
 	return (TRUE);
 }

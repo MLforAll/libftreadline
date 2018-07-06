@@ -6,14 +6,14 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/07 01:46:20 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/26 02:26:07 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/06 02:45:40 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftrl_internal.h"
 #include "libft.h"
 
-static inline const char	*skip_esc_seq(const char *s)
+inline static const char	*skip_esc_seq(const char *s)
 {
 	size_t	chk;
 
@@ -23,7 +23,7 @@ static inline const char	*skip_esc_seq(const char *s)
 	return (s);
 }
 
-size_t						ft_strlen_nocolor(const char *s)
+size_t						ft_prompt_len(const char *s)
 {
 	size_t		ret;
 
@@ -31,11 +31,11 @@ size_t						ft_strlen_nocolor(const char *s)
 	while (*s)
 	{
 		if (*s == '\033')
-		{
 			s = skip_esc_seq(s);
-			ret--;
-		}
-		ret++;
+		else if (*s == '\n')
+			ret = 0;
+		else
+			ret++;
 		s++;
 	}
 	return (ret);

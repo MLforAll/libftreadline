@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/04 18:49:52 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/06 02:35:45 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ static void		print_end_newlines(t_readline *rl)
 
 static t_keyact	nav_keys(char *buff, t_readline *rl)
 {
+	t_keyact		status;
 	unsigned int	idx;
 	static t_keyact	(*f[])(t_readline*) =
 	{&rl_right_key, &rl_left_key, &rl_home_key, &rl_end_key,
@@ -55,8 +56,8 @@ static t_keyact	nav_keys(char *buff, t_readline *rl)
 	while (f[idx] && keys[idx])
 	{
 		if (ft_strequ(keys[idx], buff)
-			&& f[idx](rl) == kKeyFail)
-			return (kKeyFail);
+			&& (status = f[idx](rl)) >= kKeyFail)
+			return (status);
 		idx++;
 	}
 	return (kKeyOK);
@@ -90,22 +91,31 @@ static t_keyact	edit_keys(char *buff, t_readline *rl)
 
 static void		ft_readline_core(t_readline *rl, t_dlist **hist)
 {
+	t_keyact		status;
 	char			buff[RL_READBUFFSIZE + 1];
 
-	ft_putstrsec_fd(rl->prompt, rl->opts->outfd);
-	ft_putstrsec_fd(rl->line, STDIN_FILENO);
-	ft_bzero(buff, sizeof(buff));
-	while (rl->line && read(STDIN_FILENO, buff, RL_READBUFFSIZE) > 0)
+	ft_putstr_fd(rl->prompt, rl->opts->outfd);
+	ft_putstr_fd(rl->line, STDIN_FILENO);
+	(rl->csr.pos != rl->csr.max) ? go_to_pos(rl->csr.pos, rl->csr.max, rl) : 0;
+	while (rl->line)
 	{
-		if (ft_strequ(buff, "\n") || *buff == 3)
-			break ;
-		if ((nav_keys(buff, rl) == kKeyFail
-			|| hist_nav(buff, rl, hist) == kKeyFail
-			|| edit_keys(buff, rl) == kKeyFail) && rl->opts->bell && !rl->dumb)
-			(void)outcap("bl");
 		ft_bzero(buff, sizeof(buff));
+		if (read(STDIN_FILENO, buff, RL_READBUFFSIZE) < 1
+			|| ft_strequ(buff, "\n") || *buff == 3)
+			break ;
+		if (((status = nav_keys(buff, rl)) >= kKeyFail
+			|| (status = hist_nav(buff, rl, hist)) >= kKeyFail
+			|| (status = edit_keys(buff, rl)) >= kKeyFail))
+		{
+			if (status == kKeyFail && rl->opts->bell && !rl->dumb)
+				(void)outcap("bl");
+			else if (status == kKeyFatal)
+			{
+				ft_putendl("\nft_readline(): Fatal error");
+				break ;
+			}
+		}
 	}
-	print_end_newlines(rl);
 }
 
 char			*ft_readline(const char *prompt,
@@ -122,6 +132,7 @@ char			*ft_readline(const char *prompt,
 	while (TRUE)
 	{
 		ft_readline_core(&rl, &hist);
+		print_end_newlines(&rl);
 		if (rl.quit.reason != kAbortReload)
 			break ;
 		if (rl.quit.func)

@@ -12,4 +12,4 @@ libftp="../../libft"
 
 make -C "$libftp"
 make -C "$librlp"
-gcc -o ft_readline_tester ft_readline_tester.c -I "$libftp/includes" -I "$librlp/includes" -L "$libftp" -L "$librlp" -lft -lftreadline -ltermcap
+gcc -o ft_readline_tester ft_readline_tester.c -I "$libftp/includes" -I "$librlp/includes" -L "$libftp" -L "$librlp" -lft -lftreadline -ltermcap $@

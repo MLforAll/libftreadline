@@ -6,36 +6,57 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 16:49:35 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/27 20:54:13 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/06 04:04:34 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <signal.h>
 #include "libftreadline.h"
+#include "ftrl_internal.h"
+
+#ifdef INSMSG
+static void	quit_hdl(int sigc)
+{
+	(void)sigc;
+	ftrl_insert_msg("Yolo", STDOUT_FILENO, NO);
+}
+#endif
+
+#ifdef MLPR
+# define PRSTR "\033[1;33mft_readline\033[0;39m\nmultiline_prompt$ "
+#elif LGPR
+# define PRSTR "IAmAVeryLongPromptAndIHaveNoColorWhatsSoEverMyGoalIsToBeLargerThanAllOfYouToTestAGreatFeatureCauseICanUseVarPromptsThatTheUserCanSelectWithin21sh$ "
+#else
+# define PRSTR "\033[1;33mft_readline\033[0;39m$ "
+#endif
 
 int			main(int ac, char **av, char **env)
 {
 	char		*line;
-	char		*prompt;
 	t_rl_opts	opts;
 	t_dlist		*hist;
+	size_t		len;
 
+#ifdef INSMSG
+	signal(SIGUSR1, &quit_hdl);
+#endif
 	ft_bzero(&opts, sizeof(t_rl_opts));
 	opts.bell = TRUE;
 	opts.outfd = STDIN_FILENO;
 	opts.ac_get_result = NULL;
 	opts.ac_show_result = NULL;
 	hist = NULL;
-	prompt = "\033[1;33mft_readline\033[0;39m$ ";
 	ft_putstr_fd("This tool is used for debug purposes ONLY!\n"
 				"Type something and check if the returned result is OK\n"
 				"PS: Autocompletion works for files "
 				"using the embbeded routines\n"
 				"PS2: Ctrl-D to quit!\n\n", STDIN_FILENO);
-	while ((line = ft_readline(prompt, &opts, hist)))
+	while ((line = ft_readline(PRSTR, &opts, hist)))
 	{
-		ft_putstr_fd("-----------> ", STDIN_FILENO);
+		len = !ftrl_prompt_isvalid_dumb(PRSTR) ? 11 : ft_prompt_len(PRSTR) - 2;
+		ft_putnchar_fd('-', len, STDIN_FILENO);
+		ft_putstr_fd("> ", STDIN_FILENO);
 		ft_putstr_fd(line, STDIN_FILENO);
 		ft_putstr_fd("\n\n", STDIN_FILENO);
 		ftrl_histadd(&hist, line);

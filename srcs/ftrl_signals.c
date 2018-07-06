@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/04 17:21:00 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/04 18:54:33 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/06 02:24:26 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ static void	rl_generic_sig_hdl(int sigc)
 		|| sigc == SIGINT || sigc == SIGTSTP
 		|| !(session = rl_latest_session(NO, NULL)))
 		return ;
-	(void)rl_deinit(session);
-	ft_putchar('\n');
 	if (g_sig_origs[sigc] == SIG_DFL || g_sig_origs[sigc] == SIG_IGN)
 	{
+		(void)rl_deinit(session);
+		ft_putchar('\n');
 		(void)signal(sigc, g_sig_origs[sigc]);
 		raise(sigc);
 		return ;

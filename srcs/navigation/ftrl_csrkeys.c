@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/18 09:00:17 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/28 18:23:14 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/06 03:07:38 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,7 @@ t_keyact	rl_home_key(t_readline *rl)
 	get_line_info(&coords, rl);
 	if (rl->csr.pos <= 0)
 		return (kKeyFail);
-	homec.x = rl->prlen;
-	homec.y = 1;
+	get_line_info_for_pos(&homec, 0, rl);
 	go_to_point(&homec, &coords, rl);
 	rl->csr.pos = 0;
 	return (kKeyOK);

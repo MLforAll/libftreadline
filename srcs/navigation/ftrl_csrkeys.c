@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/18 09:00:17 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/06 03:07:38 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/15 21:32:57 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "libft.h"
 #include "ftrl_internal.h"
 
-static void	check_selection(t_readline *rl)
+void		check_selection(t_readline *rl)
 {
 	if (rl->cpypste.mkrs[0] == 0 && rl->cpypste.mkrs[1] == 0)
 		return ;
@@ -32,7 +32,6 @@ t_keyact	rl_right_key(t_readline *rl)
 
 	if (rl->csr.pos >= rl->csr.max)
 		return (kKeyFail);
-	check_selection(rl);
 	get_line_info(&coords, rl);
 	if (coords.x + 1 + rl->dumb == g_ws.ws_col)
 	{
@@ -59,7 +58,6 @@ t_keyact	rl_left_key(t_readline *rl)
 
 	if (rl->csr.pos <= 0)
 		return (kKeyFail);
-	check_selection(rl);
 	get_line_info(&coords, rl);
 	rl->csr.pos--;
 	get_line_info(&gtc, rl);

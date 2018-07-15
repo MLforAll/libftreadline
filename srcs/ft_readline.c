@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/06 02:35:45 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/15 19:39:17 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,22 +42,25 @@ static t_keyact	nav_keys(char *buff, t_readline *rl)
 	t_keyact		status;
 	unsigned int	idx;
 	static t_keyact	(*f[])(t_readline*) =
-	{&rl_right_key, &rl_left_key, &rl_home_key, &rl_end_key,
-	&rl_movl_key, &rl_movr_key, &rl_leftcpy_key, &rl_rightcpy_key,
-	&rl_cpy_key, &rl_paste_key, NULL};
-	const char		*keys[] = {rl->keys.rightk, rl->keys.leftk,
-								rl->keys.homek, rl->keys.endk,
-								ESC_MOVL, ESC_MOVR, "\033[1;2D", "\033[1;2C",
-								"\033[1;2A", "\033[1;2B", NULL};
+	{&rl_leftcpy_key, &rl_rightcpy_key, &rl_cpy_key, &rl_paste_key,
+	&rl_right_key, &rl_left_key, &rl_home_key, &rl_end_key, &rl_movl_key,
+	&rl_movr_key, NULL};
+	const char		*keys[] = {"\033[1;2D", "\033[1;2C", "\033[1;2A",
+								"\033[1;2B", rl->keys.rightk, rl->keys.leftk,
+								rl->keys.homek, rl->keys.endk, ESC_MOVL,
+								ESC_MOVR, NULL};
 
 	if (!rl || !buff)
 		return (kKeyFail);
 	idx = 0;
 	while (f[idx] && keys[idx])
 	{
-		if (ft_strequ(keys[idx], buff)
-			&& (status = f[idx](rl)) >= kKeyFail)
-			return (status);
+		if (ft_strequ(keys[idx], buff))
+		{
+			(idx > 3) ? check_selection(rl) : 0;
+			if ((status = f[idx](rl)) >= kKeyFail)
+				return (status);
+		}
 		idx++;
 	}
 	return (kKeyOK);
@@ -124,14 +127,13 @@ char			*ft_readline(const char *prompt,
 	t_readline		rl;
 	t_readline		*bak;
 
-	if (!rl_init(&rl, prompt, opts) || (bak = rl_latest_session(NO, NULL)))
+	if ((bak = rl_latest_session(NO, NULL)) || !rl_init(&rl, prompt, opts))
 		return (NULL);
 	(void)rl_latest_session(YES, &rl);
-	if (!rl_linebuff_create(&rl))
-		return (NULL);
 	while (TRUE)
 	{
 		ft_readline_core(&rl, &hist);
+		check_selection(&rl);
 		print_end_newlines(&rl);
 		if (rl.quit.reason != kAbortReload)
 			break ;

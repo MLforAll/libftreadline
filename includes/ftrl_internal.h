@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/15 03:10:55 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/15 19:31:27 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,8 @@ void			go_to_pos(unsigned long to, unsigned long from, t_readline *rl);
 /*
 ** copy/paste
 */
+
+void			check_selection(t_readline *rl);
 
 t_keyact		rl_paste_key(t_readline *rl);
 t_keyact		rl_cpy_key(t_readline *rl);

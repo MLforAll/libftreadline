@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/15 02:26:11 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/15 21:33:23 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int					rl_deinit(t_readline *rl)
 	(void)outcap("ke");
 	restore_signals();
 	free(rl->prompt);
+	free(rl->cpypste.dat);
 	ft_strdel(&rl->cpypste.dat);
 	return (TRUE);
 }
@@ -100,5 +101,7 @@ int					rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts)
 	set_signals();
 	rl_prompt_init(rl, prompt);
 	(void)outcap("ks");
+	if (!rl_linebuff_create(rl))
+		return (FALSE);
 	return (TRUE);
 }

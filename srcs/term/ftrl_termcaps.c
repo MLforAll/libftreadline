@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 18:20:20 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/25 22:26:48 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/15 03:11:26 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,23 @@
 #include <stdlib.h>
 #include "ftrl_internal.h"
 
+static int			g_termcaps_fd = TERMCAPS_DFL_FD;
+
 static int			putcf(int c)
 {
-	return ((int)write(STDIN_FILENO, &c, 1));
+	return ((int)write(g_termcaps_fd, &c, 1));
+}
+
+inline int			outcap_fd(char *name, int fd)
+{
+	int		bak;
+	int		ret;
+
+	bak = g_termcaps_fd;
+	g_termcaps_fd = fd;
+	ret = outcap(name);
+	g_termcaps_fd = bak;
+	return (ret);
 }
 
 int					outcap(char *name)

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/04 15:02:34 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/15 03:15:02 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,7 @@ t_keyact	rl_input_rm_text(char *buff, t_readline *rl)
 	}
 	else if (keys[1] && rl->csr.pos < rl->csr.max)
 	{
-		(void)outcapstr(rl->movs.rightm);
-		rl->csr.pos++;
+		rl_right_key(rl);
 		rl_line_rm(1, rl);
 		return (kKeyOK);
 	}
@@ -61,6 +60,8 @@ t_keyact	rl_input_rm_text(char *buff, t_readline *rl)
 
 t_keyact	rl_clear_line(t_readline *rl)
 {
+	if (rl->dumb)
+		return (kKeyFail);
 	(void)outcap("cr");
 	(void)outcapstr(rl->movs.cecap);
 	free(rl->line);

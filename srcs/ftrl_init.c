@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/06 03:56:11 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/15 02:26:11 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,20 +50,30 @@ int					rl_deinit(t_readline *rl)
 	return (TRUE);
 }
 
-inline static void	rl_makesure_start(void)
+inline static void	rl_makesure_start(const char *termenv, t_uint8 dumb)
 {
 	char	rbuff[8];
 	char	*tmp;
+	ssize_t	rb;
 
+	if (dumb || (!ft_strequ(termenv, "xterm")
+				&& !ft_strequ(termenv, "xterm-256color")))
+	{
+		ft_putchar_fd('\n', STDIN_FILENO);
+		return ;
+	}
 	ft_putstr_fd("\033[6n", STDIN_FILENO);
 	bzero(rbuff, sizeof(rbuff));
-	if (read(STDIN_FILENO, rbuff, 7) < 1)
+	rb = 8;
+	while (rb == 8)
+		if ((rb = read(STDIN_FILENO, rbuff, 8)) < 1)
+			return ;
+	if (rbuff[7] != '\0')
 		return ;
 	if (!(tmp = ft_strrchr(rbuff, ';')) || ft_atoi(tmp + 1) < 2)
 		return ;
 	(void)outcap("mr");
 	ft_putstr_fd("%\n", STDIN_FILENO);
-	(void)outcap("cr");
 	(void)outcap("me");
 }
 
@@ -86,8 +96,7 @@ int					rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts)
 	set_keys_movs(&rl->keys, &rl->movs, rl->dumb);
 	if (!(rl_set_term(NO)))
 		return (FALSE);
-	if (!rl->dumb)
-		rl_makesure_start();
+	rl_makesure_start(termenv, rl->dumb);
 	set_signals();
 	rl_prompt_init(rl, prompt);
 	(void)outcap("ks");

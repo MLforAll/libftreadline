@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/29 01:36:45 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/14 05:03:07 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/15 01:46:00 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct	s_mov
 ** termcap functions
 */
 
+int				outcap_fd(char *name, int fd);
 int				outcap(char *name);
 int				outcapstr(char *cstr);
 int				outcap_arg_fb(char *cstr, char *fb, int arg, int affcnt);

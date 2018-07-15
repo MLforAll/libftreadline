@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 16:49:05 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/06 02:50:47 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/15 02:52:49 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ static void	go_to_point_dumb(t_point *to, t_point *from, t_readline *rl)
 	}
 	else
 		pos = from->x;
-	if (dir == kDirectLeft)
 	if (pos > g_ws.ws_col - 2)
 		return ;
 	while (pos != to->x)

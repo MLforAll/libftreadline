@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/06 03:55:46 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/15 03:10:55 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 
 # define DFL_LINEBUFFSIZE	10
 # define RL_READBUFFSIZE	6
+# define TERMCAPS_DFL_FD	STDIN_FILENO
 
 /*
 ** ANSI Sequences Codes

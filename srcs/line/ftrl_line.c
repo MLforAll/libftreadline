@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/04 18:56:37 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/15 03:12:41 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,33 +30,43 @@ inline static void	clr_lines(t_point *coords, t_readline *rl)
 	(void)outcap_arg_fb(NULL, rl->movs.rightm, (int)rl->csr.pos, 1);
 }
 
+inline static void	rl_line_rm_dumb(size_t len, t_point *csrm, t_readline *rl)
+{
+	t_point		back;
+	size_t		nspaces;
+
+	back = *csrm;
+	nspaces = g_ws.ws_col - csrm->x - 2 - ((back.y == 1) ? rl->prlen : 0);
+	back.x += nspaces;
+	ft_putnchar_fd(' ', nspaces, STDIN_FILENO);
+	go_to_point(csrm, &back, rl);
+	ft_putstr_fd(rl->line + rl->csr.pos + len, STDIN_FILENO);
+	get_line_info_for_pos(&back, rl->csr.max, rl);
+	go_to_point(csrm, &back, rl);
+}
+
 void				rl_line_rm(size_t len, t_readline *rl)
 {
 	t_point			coords;
 	t_point			csrm;
-	t_point			back;
 
 	if (len == 0 || !rl)
 		return ;
 	get_line_info(&coords, rl);
 	rl->csr.pos -= len;
+	rl->csr.max -= len;
 	get_line_info(&csrm, rl);
 	go_to_point(&csrm, &coords, rl);
 	if (rl->dumb)
-	{
-		ft_putnchar_fd(' ', g_ws.ws_col - csrm.x - 2, STDIN_FILENO);
-		back = csrm;
-		back.x = g_ws.ws_col - 2;
-		go_to_point(&csrm, &back, rl);
-	}
+		rl_line_rm_dumb(len, &csrm, rl);
 	else
+	{
 		clr_lines(&coords, rl);
-	(void)outcap("sc");
-	ft_putstr_fd(rl->line + rl->csr.pos + len, STDIN_FILENO);
-	if (!rl->dumb)
+		(void)outcap("sc");
+		ft_putstr_fd(rl->line + rl->csr.pos + len, STDIN_FILENO);
 		(void)outcap("rc");
+	}
 	rl_linebuff_rm(len, rl);
-	rl->csr.max -= len;
 }
 
 inline static void	line_add_border(t_readline *rl)

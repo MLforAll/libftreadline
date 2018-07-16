@@ -1,19 +1,56 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lst_utils.c                                        :+:      :+:    :+:   */
+/*   ftrl_actools.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/25 01:47:01 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/05/22 14:33:06 by kdumarai         ###   ########.fr       */
+/*   Created: 2018/07/16 17:24:32 by kdumarai          #+#    #+#             */
+/*   Updated: 2018/07/16 17:28:43 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "ftrl_internal.h"
+#include "libft.h"
+#include "ftrl_dev.h"
 
-void	ft_acres_free(void *content, size_t size)
+static void	ft_aclst_rmdups_check(t_list **lst, t_list *bw, t_list *prev)
+{
+	t_list	**ptr;
+	t_list	*chk;
+
+	chk = *lst;
+	while (chk && bw && bw->content && chk != bw)
+	{
+		if (ft_strequ(((t_acres*)bw->content)->str,
+			((t_acres*)chk->content)->str))
+		{
+			ptr = (!prev) ? lst : &prev->next;
+			*ptr = bw->next;
+			ft_lstdelone(&bw, &ft_acres_free);
+			bw = prev;
+		}
+		else
+			chk = chk->next;
+	}
+}
+
+void		ft_aclst_rmdups(t_list **lst)
+{
+	t_list	*bw;
+	t_list	*prev;
+
+	bw = (lst) ? *lst : NULL;
+	prev = NULL;
+	while (bw)
+	{
+		ft_aclst_rmdups_check(lst, bw, prev);
+		prev = bw;
+		bw = bw->next;
+	}
+}
+
+void		ft_acres_free(void *content, size_t size)
 {
 	if (!content || size == 0)
 		return ;
@@ -22,7 +59,7 @@ void	ft_acres_free(void *content, size_t size)
 	free(content);
 }
 
-int		ft_acres_sortalpha(t_list *a, t_list *b)
+int			ft_acres_sortalpha(t_list *a, t_list *b)
 {
 	if (!a || !b
 		|| !a->content || !b->content
@@ -34,3 +71,4 @@ int		ft_acres_sortalpha(t_list *a, t_list *b)
 		return (TRUE);
 	return (FALSE);
 }
+

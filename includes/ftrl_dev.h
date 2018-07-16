@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/06 22:53:36 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/25 21:49:01 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/16 17:27:36 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,17 @@ typedef struct	s_acres
 }				t_acres;
 
 /*
-** functions
+** bltn functions
 */
 
 t_list			*get_ac_result_bltn(char *line, t_cursor *csr);
 char			*show_ac_result_bltn(t_list **res);
+
+/*
+** lst mgmt functions
+*/
+
+void			ft_aclst_rmdups(t_list **lst);
 void			ft_acres_free(void *content, size_t size);
 int				ft_acres_sortalpha(t_list *a, t_list *b);
 

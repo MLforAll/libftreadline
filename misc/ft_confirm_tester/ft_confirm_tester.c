@@ -6,10 +6,11 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 03:42:54 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/04/25 08:11:22 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/17 22:31:30 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include <unistd.h>
 #include "libftreadline.h"
 
@@ -38,6 +39,8 @@ int		main(int ac, char **av)
 	ft_putstr("The user said ");
 	ft_putstr(ans ? "YES" : "NO");
 	ft_putstr("!\n");
+	ft_putendl("Check potential leaks using leaks(1) and press enter...");
+	getchar();
 	return (0);
 }
 

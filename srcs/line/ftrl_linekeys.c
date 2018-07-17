@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/15 03:15:02 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/17 21:53:26 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,19 @@ t_keyact	rl_clear_line(t_readline *rl)
 		return (kKeyFatal);
 	ft_putstr_fd(rl->prompt, rl->opts->outfd);
 	ft_bzero(&rl->csr, sizeof(t_cursor));
+	return (kKeyOK);
+}
+
+t_keyact	rl_eof_key(t_readline *rl)
+{
+	if (rl->csr.max == 0)
+	{
+		ft_strdel(&rl->line);
+		return (kKeyOK);
+	}
+	if (rl->csr.pos >= rl->csr.max)
+		return (kKeyFail);
+	rl_right_key(rl);
+	rl_line_rm(1, rl);
 	return (kKeyOK);
 }

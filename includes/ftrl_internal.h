@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/15 19:31:27 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/17 21:47:09 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ typedef enum	e_direct
 t_keyact		rl_input_add_text(char *buff, t_readline *rl);
 t_keyact		rl_input_rm_text(char *buff, t_readline *rl);
 t_keyact		rl_clear_line(t_readline *rl);
+t_keyact		rl_eof_key(t_readline *rl);
 
 /*
 ** line edit (sys)

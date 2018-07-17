@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/21 22:59:54 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/04 15:04:57 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/17 22:21:47 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int				rl_linebuff_rm(size_t len, t_readline *rl)
 	if (rl->csr.max <= rl->bufflen / 2 && rl->csr.max >= DFL_LINEBUFFSIZE)
 		(void)buffrealloc(&rl->line, rl->bufflen /= 2);
 	(void)ft_memset(rl->line + rl->csr.pos, '\0', len);
-	if (rl->csr.pos + len < rl->csr.max)
+	if (rl->csr.pos < rl->csr.max)
 		(void)ft_strcpy(rl->line + rl->csr.pos, rl->line + rl->csr.pos + len);
 	return (TRUE);
 }

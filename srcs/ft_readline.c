@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/15 19:39:17 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/17 22:04:01 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void		print_end_newlines(t_readline *rl)
 	size_t			times;
 	char			*nlb;
 
-	if (!rl)
+	if (!rl || !rl->line)
 	{
 		ft_putchar_fd('\n', STDIN_FILENO);
 		return ;
@@ -72,15 +72,13 @@ static t_keyact	edit_keys(char *buff, t_readline *rl)
 
 	if (!rl || !buff)
 		return (kKeyNone);
-	if (*buff == 4 || *buff == 3)
+	if (*buff == 3)
 	{
-		rl->bufflen = 0;
-		ft_strdel(&rl->line);
-	}
-	if (*buff == 3 && !rl_linebuff_create(rl))
-		return (kKeyFatal);
-	if (*buff == 4 || *buff == 3)
+		ft_strclr(rl->line);
 		return (kKeyOK);
+	}
+	if (*buff == 4)
+		return (rl_eof_key(rl));
 	if (ft_strequ(buff, "\025"))
 		return (rl_clear_line(rl));
 	if (ft_strequ(buff, "\t"))

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/15 03:12:41 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/17 22:23:38 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ inline static void	rl_line_rm_dumb(size_t len, t_point *csrm, t_readline *rl)
 	back.x += nspaces;
 	ft_putnchar_fd(' ', nspaces, STDIN_FILENO);
 	go_to_point(csrm, &back, rl);
-	ft_putstr_fd(rl->line + rl->csr.pos + len, STDIN_FILENO);
+	if (*rl->line)
+		ft_putstr_fd(rl->line + rl->csr.pos + len, STDIN_FILENO);
 	get_line_info_for_pos(&back, rl->csr.max, rl);
 	go_to_point(csrm, &back, rl);
 }
@@ -50,10 +51,11 @@ void				rl_line_rm(size_t len, t_readline *rl)
 	t_point			coords;
 	t_point			csrm;
 
-	if (len == 0 || !rl)
+	if (len == 0 || !rl || len > rl->csr.max)
 		return ;
 	get_line_info(&coords, rl);
-	rl->csr.pos -= len;
+	if (rl->csr.pos > 0)
+		rl->csr.pos -= len;
 	rl->csr.max -= len;
 	get_line_info(&csrm, rl);
 	go_to_point(&csrm, &coords, rl);
@@ -63,10 +65,11 @@ void				rl_line_rm(size_t len, t_readline *rl)
 	{
 		clr_lines(&coords, rl);
 		(void)outcap("sc");
-		ft_putstr_fd(rl->line + rl->csr.pos + len, STDIN_FILENO);
+		if (*rl->line)
+			ft_putstr_fd(rl->line + rl->csr.pos + len, STDIN_FILENO);
 		(void)outcap("rc");
 	}
-	rl_linebuff_rm(len, rl);
+	(void)rl_linebuff_rm(len, rl);
 }
 
 inline static void	line_add_border(t_readline *rl)
@@ -74,7 +77,7 @@ inline static void	line_add_border(t_readline *rl)
 	if (rl->dumb)
 	{
 		ft_putchar_fd('\r', STDIN_FILENO);
-		ft_putnchar_fd(' ', g_ws.ws_col, STDIN_FILENO);
+		ft_putnchar_fd(' ', g_ws.ws_col - 2, STDIN_FILENO);
 		ft_putchar_fd('\r', STDIN_FILENO);
 	}
 	else
@@ -105,7 +108,7 @@ void				rl_line_add(char *add, t_readline *rl)
 		ft_putstr_fd(rl->line + rl->csr.pos, STDIN_FILENO);
 		(void)outcap("rc");
 	}
-	rl_linebuff_add(add, len, rl);
+	(void)rl_linebuff_add(add, len, rl);
 	rl->csr.pos += len;
 	rl->csr.max += len;
 }

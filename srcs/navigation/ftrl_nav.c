@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 16:49:05 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/17 21:31:53 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/17 21:43:06 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,23 +21,24 @@ void		get_line_info_for_pos(t_point *pt,
 	char			*bw;
 
 	pt->y = (pos + rl->prlen) / (g_ws.ws_col - rl->dumb) + 1;
-	pt->x = rl->prlen;
-	if (rl->line)
+	if (!rl->line)
 	{
-		bw = rl->line;
-		while (*bw && bw != rl->line + pos)
+		pt->x = (pos + rl->prlen) % (g_ws.ws_col - rl->dumb);
+		return ;
+	}
+	pt->x = rl->prlen;
+	bw = rl->line;
+	while (*bw && bw != rl->line + pos)
+	{
+		if (*(bw++) == '\n')
 		{
-			if (*(bw++) == '\n')
-			{
-				pt->y++;
-				pt->x = 0;
-			}
-			else
-				pt->x++;
+			pt->y++;
+			pt->x = 0;
 		}
+		else
+			pt->x++;
 	}
 	pt->x = pt->x % (g_ws.ws_col - rl->dumb);
-	//pt->x = (pos + rl->prlen) % (g_ws.ws_col - rl->dumb);
 	//ft_putnbr_fd(pt->x, 2); ft_putstr_fd(" | ", 2); ft_putnbrl_fd(pt->y, 2);
 }
 

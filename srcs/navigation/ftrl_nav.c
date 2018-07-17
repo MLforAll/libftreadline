@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 16:49:05 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/15 02:52:49 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/17 21:31:53 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,27 @@ void		get_line_info_for_pos(t_point *pt,
 								unsigned long pos,
 								t_readline *rl)
 {
-	pt->x = (pos + rl->prlen) % (g_ws.ws_col - rl->dumb);
+	char			*bw;
+
 	pt->y = (pos + rl->prlen) / (g_ws.ws_col - rl->dumb) + 1;
+	pt->x = rl->prlen;
+	if (rl->line)
+	{
+		bw = rl->line;
+		while (*bw && bw != rl->line + pos)
+		{
+			if (*(bw++) == '\n')
+			{
+				pt->y++;
+				pt->x = 0;
+			}
+			else
+				pt->x++;
+		}
+	}
+	pt->x = pt->x % (g_ws.ws_col - rl->dumb);
+	//pt->x = (pos + rl->prlen) % (g_ws.ws_col - rl->dumb);
+	//ft_putnbr_fd(pt->x, 2); ft_putstr_fd(" | ", 2); ft_putnbrl_fd(pt->y, 2);
 }
 
 inline void	get_line_info(t_point *pt, t_readline *rl)

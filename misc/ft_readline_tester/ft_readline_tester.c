@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 16:49:35 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/06 04:04:34 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/17 21:09:41 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,9 @@ int			main(int ac, char **av, char **env)
 	opts.ac_get_result = NULL;
 	opts.ac_show_result = NULL;
 	hist = NULL;
+#ifdef MLTEST
+	ftrl_histadd(&hist, "Et un, Et deux, Et trois ZERO!\nOn est les champions");
+#endif
 	ft_putstr_fd("This tool is used for debug purposes ONLY!\n"
 				"Type something and check if the returned result is OK\n"
 				"PS: Autocompletion works for files "

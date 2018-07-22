@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/17 21:53:26 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/22 14:40:13 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,21 @@ t_keyact	rl_input_rm_text(char *buff, t_readline *rl)
 
 t_keyact	rl_clear_line(t_readline *rl)
 {
+	t_point		coords;
+	t_point		homec;
+	t_point		maxc;
+
 	if (rl->dumb)
 		return (kKeyFail);
-	(void)outcap("cr");
+	get_line_info(&coords, rl);
+	if (coords.y >= g_ws.ws_row)
+		return (kKeyFail);
+	get_line_info_for_pos(&homec, 0, rl);
+	get_line_info_for_pos(&maxc, rl->csr.max, rl);
+	go_to_point(&homec, &coords, rl);
+	(void)outcapstr(rl->movs.crcap);
+	(void)outcap_arg_fb(rl->movs.dlargcap, rl->movs.dlcap,
+						(int)maxc.y, (int)maxc.y);
 	(void)outcapstr(rl->movs.cecap);
 	free(rl->line);
 	if (!rl_linebuff_create(rl))

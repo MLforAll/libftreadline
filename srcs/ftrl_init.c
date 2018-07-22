@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/17 22:25:57 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/22 14:38:13 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ inline static void	set_keys_movs(t_keys *keys, t_mov *movs, t_uint8 dumb)
 	movs->upm = tgetstr("up", NULL);
 	movs->downm = tgetstr("do", NULL);
 	movs->cecap = tgetstr("ce", NULL);
+	movs->crcap = tgetstr("cr", NULL);
+	movs->dlargcap = tgetstr("DL", NULL);
+	movs->dlcap = tgetstr("dl", NULL);
 }
 
 int					rl_deinit(t_readline *rl)

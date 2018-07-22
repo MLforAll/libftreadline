@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 11:06:01 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/06 02:21:06 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/22 14:39:56 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ static void		disp_new_line(t_point *maxc, t_readline *rl)
 			go_to_pos(rl->csr.max, 0, rl);
 		return ;
 	}
-	(void)outcap("cr");
-	(void)outcap_arg_fb(tgetstr("DL", NULL), tgetstr("dl", NULL),
-		(int)maxc->y, (int)maxc->y);
+	(void)outcapstr(rl->movs.crcap);
+	(void)outcap_arg_fb(rl->movs.dlargcap, rl->movs.dlcap,
+						(int)maxc->y, (int)maxc->y);
 	ft_putstr_fd(rl->prompt, rl->opts->outfd);
 	ft_putstr_fd(rl->line, STDIN_FILENO);
 }

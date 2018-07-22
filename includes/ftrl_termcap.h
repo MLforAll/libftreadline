@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/29 01:36:45 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/15 01:46:00 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/22 14:35:35 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ typedef struct	s_mov
 	char	*upm;
 	char	*downm;
 	char	*cecap;
+	char	*crcap;
+	char	*dlargcap;
+	char	*dlcap;
 }				t_mov;
 
 /*

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/22 14:38:13 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/22 16:42:13 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ inline static void	rl_makesure_start(const char *termenv, t_uint8 dumb)
 	while (rb == 8)
 		if ((rb = read(STDIN_FILENO, rbuff, 8)) < 1)
 			return ;
+	//if (read(STDIN_FILENO, rbuff, 8) < 1 || rbuff[7] != '\0')
 	if (rbuff[7] != '\0')
 		return ;
 	if (!(tmp = ft_strrchr(rbuff, ';')) || ft_atoi(tmp + 1) < 2)

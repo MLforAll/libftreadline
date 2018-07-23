@@ -6,7 +6,7 @@
 #    By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/04 06:10:18 by kdumarai          #+#    #+#              #
-#    Updated: 2018/07/23 04:03:26 by kdumarai         ###   ########.fr        #
+#    Updated: 2018/07/23 04:04:12 by kdumarai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,7 +65,7 @@ OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
 PROJTEXT = \033[1;35mlibftreadline \033[0;39m
 
-all: $(NAME)
+all: libft $(NAME)
 
 libft:
 	@ if [ ! -e libft ] && [ -e ../libft ]; then ln -s ../libft .; fi

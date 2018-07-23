@@ -6,7 +6,7 @@
 #    By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/04 06:10:18 by kdumarai          #+#    #+#              #
-#    Updated: 2018/07/16 17:28:15 by kdumarai         ###   ########.fr        #
+#    Updated: 2018/07/23 04:03:26 by kdumarai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,6 +67,9 @@ PROJTEXT = \033[1;35mlibftreadline \033[0;39m
 
 all: $(NAME)
 
+libft:
+	@ if [ ! -e libft ] && [ -e ../libft ]; then ln -s ../libft .; fi
+
 $(NAME): $(OBJS) $(INCLUDES)
 	@ printf "\033[K$(PROJTEXT)Compiling\n"
 	@ printf "$(PROJTEXT)Linking\n"
@@ -94,4 +97,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all libft clean fclean re

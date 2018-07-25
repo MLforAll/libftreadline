@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/22 14:40:13 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/25 17:19:12 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 t_keyact	rl_input_add_text(char *buff, t_readline *rl)
 {
 	char			add[RL_READBUFFSIZE + 1];
-	unsigned int	idx;
+	unsigned short	idx;
 
 	if (*buff == 27)
 		return (kKeyNone);
@@ -26,33 +26,29 @@ t_keyact	rl_input_add_text(char *buff, t_readline *rl)
 	while (*buff)
 	{
 		if (ft_isprint(*buff))
-		{
-			add[idx] = *buff;
-			idx++;
-		}
+			add[idx++] = *buff;
 		buff++;
 	}
-	rl_line_add(add, rl);
+	if (!rl_line_add(add, rl))
+		return (kKeyFatal);
 	return ((idx > 0) ? kKeyOK : kKeyFail);
 }
 
 t_keyact	rl_input_rm_text(char *buff, t_readline *rl)
 {
 	int				keys[2];
+	t_keyact		status;
 
-	keys[0] = (*buff == 127);
-	keys[1] = (ft_strequ(buff, rl->keys.delk));
+	keys[0] = ft_strequ(buff, ESC_BACKSPACE);
+	keys[1] = ft_strequ(buff, rl->keys.delk);
 	if (!keys[0] && !keys[1])
 		return (kKeyNone);
 	if (keys[0] && rl->csr.pos > 0)
-	{
-		rl_line_rm(1, rl);
-		return (kKeyOK);
-	}
+		return ((rl_line_rm(1, rl)) ? kKeyOK : kKeyFatal);
 	else if (keys[1] && rl->csr.pos < rl->csr.max)
 	{
-		rl_right_key(rl);
-		rl_line_rm(1, rl);
+		if ((status = rl_right_key(rl)) >= kKeyFail || !rl_line_rm(1, rl))
+			return ((status == kKeyOK) ? kKeyFatal : status);
 		return (kKeyOK);
 	}
 	return (kKeyFail);
@@ -86,6 +82,8 @@ t_keyact	rl_clear_line(t_readline *rl)
 
 t_keyact	rl_eof_key(t_readline *rl)
 {
+	t_keyact	status;
+
 	if (rl->csr.max == 0)
 	{
 		ft_strdel(&rl->line);
@@ -93,7 +91,7 @@ t_keyact	rl_eof_key(t_readline *rl)
 	}
 	if (rl->csr.pos >= rl->csr.max)
 		return (kKeyFail);
-	rl_right_key(rl);
-	rl_line_rm(1, rl);
+	if ((status = rl_right_key(rl)) || !rl_line_rm(1, rl))
+		return ((status == kKeyOK) ? kKeyFatal : status);
 	return (kKeyOK);
 }

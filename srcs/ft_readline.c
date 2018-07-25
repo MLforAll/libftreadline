@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/22 16:42:59 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/25 16:46:21 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,13 @@ static void		print_end_newlines(t_readline *rl)
 static t_keyact	nav_keys(char *buff, t_readline *rl)
 {
 	t_keyact		status;
-	unsigned int	idx;
+	unsigned short	idx;
 	static t_keyact	(*f[])(t_readline*) =
 	{&rl_leftcpy_key, &rl_rightcpy_key, &rl_cpy_key, &rl_paste_key,
 	&rl_right_key, &rl_left_key, &rl_home_key, &rl_end_key, &rl_movl_key,
 	&rl_movr_key, NULL};
-	const char		*keys[] = {"\033[1;2D", "\033[1;2C", "\033[1;2A",
-								"\033[1;2B", rl->keys.rightk, rl->keys.leftk,
+	const char		*keys[] = {ESC_SHIFTL, ESC_SHIFTR, ESC_SHIFTU,
+								ESC_SHIFTD, rl->keys.rightk, rl->keys.leftk,
 								rl->keys.homek, rl->keys.endk, ESC_MOVL,
 								ESC_MOVR, NULL};
 

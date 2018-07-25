@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/22 14:34:40 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/25 16:50:13 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ inline static void	rl_line_rm_dumb(size_t len, t_point *csrm, t_readline *rl)
 	go_to_point(csrm, &back, rl);
 }
 
-void				rl_line_rm(size_t len, t_readline *rl)
+t_uint8				rl_line_rm(size_t len, t_readline *rl)
 {
 	t_point			coords;
 	t_point			csrm;
 
 	if (len == 0 || !rl || len > rl->csr.max)
-		return ;
+		return (TRUE);
 	get_line_info(&coords, rl);
 	if (rl->csr.pos > 0)
 		rl->csr.pos -= len;
@@ -69,7 +69,7 @@ void				rl_line_rm(size_t len, t_readline *rl)
 			ft_putstr_fd(rl->line + rl->csr.pos + len, STDIN_FILENO);
 		(void)outcap("rc");
 	}
-	(void)rl_linebuff_rm(len, rl);
+	return (rl_linebuff_rm(len, rl));
 }
 
 inline static void	line_add_border(t_readline *rl)
@@ -87,13 +87,13 @@ inline static void	line_add_border(t_readline *rl)
 	}
 }
 
-void				rl_line_add(char *add, t_readline *rl)
+t_uint8				rl_line_add(char *add, t_readline *rl)
 {
 	size_t			len;
 	t_point			coords;
 
-	if (!add || !rl || !(len = ft_strlen(add)))
-		return ;
+	if (!add || !rl || (len = ft_strlen(add)) == 0)
+		return (TRUE);
 	get_line_info(&coords, rl);
 	(void)outcapstr(rl->movs.cecap);
 	if (!rl->dumb)
@@ -108,7 +108,9 @@ void				rl_line_add(char *add, t_readline *rl)
 		ft_putstr_fd(rl->line + rl->csr.pos, STDIN_FILENO);
 		(void)outcap("rc");
 	}
-	(void)rl_linebuff_add(add, len, rl);
+	if (!rl_linebuff_add(add, len, rl))
+		return (FALSE);
 	rl->csr.pos += len;
 	rl->csr.max += len;
+	return (TRUE);
 }

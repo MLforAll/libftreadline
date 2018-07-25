@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/22 14:31:10 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/25 17:18:43 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@
 ** ANSI Sequences Codes
 */
 
+# define ESC_BACKSPACE		"\177"
+# define ESC_SHIFTL			"\033[1;2D"
+# define ESC_SHIFTR			"\033[1;2C"
+# define ESC_SHIFTU			"\033[1;2A"
+# define ESC_SHIFTD			"\033[1;2B"
 # define ESC_MOVL			"\033b"
 # define ESC_MOVR			"\033f"
 
@@ -116,8 +121,8 @@ t_keyact		rl_eof_key(t_readline *rl);
 ** line edit (sys)
 */
 
-void			rl_line_rm(size_t len, t_readline *rl);
-void			rl_line_add(char *add, t_readline *rl);
+t_uint8			rl_line_rm(size_t len, t_readline *rl);
+t_uint8			rl_line_add(char *add, t_readline *rl);
 
 /*
 ** line buffer

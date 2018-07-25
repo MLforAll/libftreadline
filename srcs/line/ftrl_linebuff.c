@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/21 22:59:54 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/17 22:21:47 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/25 16:35:13 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,20 +57,22 @@ int				rl_linebuff_add(char *add, size_t addlen, t_readline *rl)
 		goal = rl->bufflen + addlen;
 		rl->bufflen += (rl->bufflen == 0);
 		while (rl->bufflen < goal)
-			rl->bufflen *= 2;
-		(void)buffrealloc(&rl->line, rl->bufflen);
+			rl->bufflen += DFL_LINEBUFFSIZE;
+		if (!buffrealloc(&rl->line, rl->bufflen))
+			return (FALSE);
 	}
 	if (rl->csr.pos >= rl->csr.max)
 		(void)ft_strcpy(rl->line + rl->csr.max, add);
-	else if (insert_to_buff(add, addlen, rl))
+	else if (!insert_to_buff(add, addlen, rl))
 		return (FALSE);
 	return (TRUE);
 }
 
 int				rl_linebuff_rm(size_t len, t_readline *rl)
 {
-	if (rl->csr.max <= rl->bufflen / 2 && rl->csr.max >= DFL_LINEBUFFSIZE)
-		(void)buffrealloc(&rl->line, rl->bufflen /= 2);
+	if (rl->csr.max <= rl->bufflen / 2 && rl->csr.max >= DFL_LINEBUFFSIZE
+		&& !buffrealloc(&rl->line, rl->bufflen /= 2))
+		return (FALSE);
 	(void)ft_memset(rl->line + rl->csr.pos, '\0', len);
 	if (rl->csr.pos < rl->csr.max)
 		(void)ft_strcpy(rl->line + rl->csr.pos, rl->line + rl->csr.pos + len);

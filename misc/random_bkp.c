@@ -23,3 +23,18 @@
 			return ;
 	}
 }*/
+
+/*if (coords.x + 1 + rl->dumb == g_ws.ws_col)
+	{
+		if (rl->dumb)
+			go_to_pos(rl->csr.pos + 1, rl->csr.pos, rl);
+		else
+		{
+			(void)outcapstr(rl->movs.crcap);
+			outcapstr(rl->movs.downm);
+		}
+	}
+	else if (rl->dumb)
+		ft_putchar_fd(rl->line[rl->csr.pos], STDIN_FILENO);
+	else
+		(void)outcapstr(rl->movs.rightm);*/

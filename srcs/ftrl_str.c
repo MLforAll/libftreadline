@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/07 01:46:20 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/06 02:45:40 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/25 04:34:51 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ char						*ft_prompt_nocolor(const char *prompt)
 	t_str	vstr;
 	char	buff[2];
 
-	vstr = ft_tstrnew();
+	if (!ft_tstrnew(&vstr))
+		return (NULL);
 	buff[1] = '\0';
 	while (*prompt)
 	{

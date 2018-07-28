@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/22 16:42:13 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/28 05:11:54 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ inline static void	rl_makesure_start(const char *termenv, t_uint8 dumb)
 	while (rb == 8)
 		if ((rb = read(STDIN_FILENO, rbuff, 8)) < 1)
 			return ;
-	//if (read(STDIN_FILENO, rbuff, 8) < 1 || rbuff[7] != '\0')
 	if (rbuff[7] != '\0')
 		return ;
 	if (!(tmp = ft_strrchr(rbuff, ';')) || ft_atoi(tmp + 1) < 2)
@@ -93,17 +92,17 @@ int					rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts)
 		rl->dumb = TRUE;
 		termenv = "dumb";
 	}
-	if (!(tgetent(NULL, termenv)))
+	if (!(tgetent(NULL, termenv)) || !rl_prompt_init(rl, prompt))
 		return (FALSE);
 	if ((pcstr = tgetstr("pc", NULL)))
 		PC = *pcstr;
 	rl->opts = opts;
 	set_keys_movs(&rl->keys, &rl->movs, rl->dumb);
-	if (!(rl_set_term(NO)))
+	if (!rl_set_term(NO))
 		return (FALSE);
+	(void)rl_latest_session(YES, rl);
 	rl_makesure_start(termenv, rl->dumb);
 	set_signals();
-	rl_prompt_init(rl, prompt);
 	(void)outcap("ks");
 	if (!rl_linebuff_create(rl))
 		return (FALSE);

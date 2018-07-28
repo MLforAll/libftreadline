@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/04 17:21:00 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/06 02:24:26 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/28 04:48:43 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,11 @@ static void	rl_generic_sig_hdl(int sigc)
 
 static void	get_winsize_hdl(int sigc)
 {
-	if (sigc != SIGWINCH)
+	t_readline	*session;
+
+	if (sigc != SIGWINCH || !(session = rl_latest_session(NO, NULL)))
 		return ;
+	session->prlen = ft_prompt_len(session->prompt);
 	(void)ioctl(STDIN_FILENO, TIOCGWINSZ, &g_ws);
 }
 

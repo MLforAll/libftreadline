@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/25 17:18:43 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/28 04:55:46 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,7 @@ t_uint8			rl_set_timeout(t_uint8 enable, cc_t timeout);
 ** init
 */
 
-void			rl_prompt_init(t_readline *rl, const char *prompt);
+t_uint8			rl_prompt_init(t_readline *rl, const char *prompt);
 int				rl_deinit(t_readline *rl);
 int				rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts);
 

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 16:49:05 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/17 21:43:06 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/28 20:09:14 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void		get_line_info_for_pos(t_point *pt,
 	char			*bw;
 
 	pt->y = (pos + rl->prlen) / (g_ws.ws_col - rl->dumb) + 1;
-	if (!rl->line)
+	if (!rl->line || rl->dumb)
 	{
 		pt->x = (pos + rl->prlen) % (g_ws.ws_col - rl->dumb);
 		return ;
@@ -39,7 +39,6 @@ void		get_line_info_for_pos(t_point *pt,
 			pt->x++;
 	}
 	pt->x = pt->x % (g_ws.ws_col - rl->dumb);
-	//ft_putnbr_fd(pt->x, 2); ft_putstr_fd(" | ", 2); ft_putnbrl_fd(pt->y, 2);
 }
 
 inline void	get_line_info(t_point *pt, t_readline *rl)
@@ -47,22 +46,24 @@ inline void	get_line_info(t_point *pt, t_readline *rl)
 	get_line_info_for_pos(pt, rl->csr.pos, rl);
 }
 
-static void	go_to_point_dumb(t_point *to, t_point *from, t_readline *rl)
+static void	go_to_point_dumb(unsigned long idx,
+							t_point *to,
+							t_point *from,
+							t_readline *rl)
 {
 	const t_direct		dir = to->x > from->x ? kDirectRight : kDirectLeft;
 	unsigned long		pos;
 
 	if (to->y != from->y)
 	{
-		ft_putchar_fd('\r', STDIN_FILENO);
-		ft_putnchar_fd(' ', g_ws.ws_col, STDIN_FILENO);
-		ft_putchar_fd('\r', STDIN_FILENO);
+		rl_erase_dumb_line();
 		if (to->y == 1 && rl->prompt)
 			ft_putstr_fd(rl->prompt, STDIN_FILENO);
 		pos = ft_putstrmax_fd(rl->line + g_ws.ws_col * (to->y - 1)
 							- ((to->y > 1) ? rl->prlen + 2 : 0),
 				g_ws.ws_col - ((to->y == 1) ? rl->prlen : 0) - 2,
 				STDIN_FILENO);
+		idx--;
 		(to->y == 1) ? pos += rl->prlen : pos--;
 	}
 	else
@@ -71,12 +72,16 @@ static void	go_to_point_dumb(t_point *to, t_point *from, t_readline *rl)
 		return ;
 	while (pos != to->x)
 	{
-		ft_putchar_fd((dir == kDirectRight) ? rl->line[pos] : 8, STDIN_FILENO);
+		ft_putchar_fd((dir == kDirectRight) ? rl->line[idx] : 8, STDIN_FILENO);
 		(dir == kDirectRight) ? pos++ : pos--;
+		(dir == kDirectRight) ? idx++ : idx--;
 	}
 }
 
-void		go_to_point(t_point *to, t_point *from, t_readline *rl)
+void		go_to_point(unsigned long idx, \
+						t_point *to, \
+						t_point *from, \
+						t_readline *rl)
 {
 	char		*tch;
 	char		*tcv;
@@ -87,7 +92,7 @@ void		go_to_point(t_point *to, t_point *from, t_readline *rl)
 		return ;
 	if (rl->dumb)
 	{
-		go_to_point_dumb(to, from, rl);
+		go_to_point_dumb(idx, to, from, rl);
 		return ;
 	}
 	tcv = (from->y < to->y) ? rl->movs.downm : rl->movs.upm;
@@ -112,5 +117,5 @@ void		go_to_pos(unsigned long to, unsigned long from, t_readline *rl)
 
 	get_line_info_for_pos(&toc, to, rl);
 	get_line_info_for_pos(&fromc, from, rl);
-	go_to_point(&toc, &fromc, rl);
+	go_to_point(from, &toc, &fromc, rl);
 }

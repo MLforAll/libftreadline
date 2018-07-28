@@ -6,7 +6,7 @@
 #    By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/04 06:10:18 by kdumarai          #+#    #+#              #
-#    Updated: 2018/07/23 04:04:12 by kdumarai         ###   ########.fr        #
+#    Updated: 2018/07/28 20:07:47 by kdumarai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ SRCFILES = ft_readline.c \
 	autocompletion/ftrl_actools.c \
 	term/ftrl_term.c \
 	term/ftrl_termcaps.c \
+	ftrl_dumb.c \
 	ftrl_init.c \
 	ftrl_utils.c \
 	ftrl_str.c \

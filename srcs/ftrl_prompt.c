@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/06 03:45:43 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/28 04:58:35 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/28 18:54:59 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,15 @@ t_uint8					ftrl_prompt_isvalid_dumb(const char *prompt)
 t_uint8					rl_prompt_init(t_readline *rl, const char *prompt)
 {
 	rl->prlen = (prompt == NULL) ? 0 : ft_prompt_len(prompt);
-	rl->prompt = (rl->dumb || tgetnum("Co") < 8) ? ft_prompt_nocolor(prompt)
-								: ft_strdup((prompt == NULL) ? "" : prompt);
-	if (rl->dumb && !ftrl_prompt_isvalid_dumb_core(rl->prlen))
+	if (!rl->dumb || rl->opts->dumb_prompt)
+	{
+		if (rl->dumb || tgetnum("Co") < 8)
+			rl->prompt = ft_prompt_nocolor(prompt);
+		else
+			rl->prompt = ft_strdup((prompt == NULL) ? "" : prompt);
+	}
+	if (rl->dumb && (!rl->opts->dumb_prompt
+					|| !ftrl_prompt_isvalid_dumb_core(rl->prlen)))
 	{
 		free(rl->prompt);
 		rl->prompt = ft_strdup("$> ");

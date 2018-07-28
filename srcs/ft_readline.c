@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/28 04:48:13 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/28 18:13:59 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ char			*ft_readline(const char *prompt,
 
 	if ((bak = rl_latest_session(NO, NULL)) || !rl_init(&rl, prompt, opts))
 		return (NULL);
-	while (TRUE)
+	while (rl.line)
 	{
 		ft_readline_core(&rl, &hist);
 		check_selection(&rl);
@@ -139,7 +139,8 @@ char			*ft_readline(const char *prompt,
 			(rl.quit.func)(rl.quit.func_data);
 			(rl.quit.free_func)(rl.quit.func_data);
 		}
-		(void)rl_set_timeout(NO, 0);
+		if (!rl_set_timeout(NO, 0))
+			break ;
 		ft_bzero(&rl.quit, sizeof(t_quit));
 	}
 	(void)rl_deinit(&rl);

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/06 23:37:55 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/28 21:10:38 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/28 18:06:34 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,9 @@ t_uint8		quit_with_reason(t_abort reason,
 t_uint8		ftrl_quit(void)
 {
 	return (quit_with_reason(kAbortQuit, NULL, NULL, NULL));
+}
+
+t_uint8		ftrl_reload(void)
+{
+	return (quit_with_reason(kAbortReload, NULL, NULL, NULL));
 }

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/18 09:00:17 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/25 16:47:02 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/28 20:04:53 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_keyact	rl_right_key(t_readline *rl)
 	get_line_info(&coords, rl);
 	rl->csr.pos++;
 	get_line_info(&gtc, rl);
-	go_to_point(&gtc, &coords, rl);
+	go_to_point(rl->csr.pos - 1, &gtc, &coords, rl);
 	return (kKeyOK);
 }
 
@@ -50,7 +50,7 @@ t_keyact	rl_left_key(t_readline *rl)
 	get_line_info(&coords, rl);
 	rl->csr.pos--;
 	get_line_info(&gtc, rl);
-	go_to_point(&gtc, &coords, rl);
+	go_to_point(rl->csr.pos + 1, &gtc, &coords, rl);
 	return (kKeyOK);
 }
 
@@ -63,7 +63,7 @@ t_keyact	rl_home_key(t_readline *rl)
 	if (rl->csr.pos <= 0 || coords.y >= g_ws.ws_row)
 		return (kKeyFail);
 	get_line_info_for_pos(&homec, 0, rl);
-	go_to_point(&homec, &coords, rl);
+	go_to_point(rl->csr.pos, &homec, &coords, rl);
 	rl->csr.pos = 0;
 	return (kKeyOK);
 }
@@ -77,7 +77,7 @@ t_keyact	rl_end_key(t_readline *rl)
 	get_line_info_for_pos(&maxc, rl->csr.max, rl);
 	if (rl->csr.pos >= rl->csr.max)
 		return (kKeyFail);
-	go_to_point(&maxc, &coords, rl);
+	go_to_point(rl->csr.pos, &maxc, &coords, rl);
 	rl->csr.pos = rl->csr.max;
 	return (kKeyOK);
 }

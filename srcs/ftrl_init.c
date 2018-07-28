@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/28 05:11:54 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/28 18:17:39 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,23 +42,21 @@ inline static void	set_keys_movs(t_keys *keys, t_mov *movs, t_uint8 dumb)
 	movs->dlcap = tgetstr("dl", NULL);
 }
 
-int					rl_deinit(t_readline *rl)
+void				rl_deinit(t_readline *rl)
 {
 	if (!rl_set_term(YES))
-		return (FALSE);
+		return ;
 	(void)outcap("ke");
 	restore_signals();
 	free(rl->prompt);
 	free(rl->cpypste.dat);
 	ft_strdel(&rl->cpypste.dat);
-	return (TRUE);
 }
 
 inline static void	rl_makesure_start(const char *termenv, t_uint8 dumb)
 {
-	char	rbuff[8];
+	char	rbuff[10];
 	char	*tmp;
-	ssize_t	rb;
 
 	if (dumb || (!ft_strequ(termenv, "xterm")
 				&& !ft_strequ(termenv, "xterm-256color")))
@@ -66,13 +64,15 @@ inline static void	rl_makesure_start(const char *termenv, t_uint8 dumb)
 		ft_putchar_fd('\n', STDIN_FILENO);
 		return ;
 	}
+	if (!rl_set_timeout(YES, 0))
+		return ;
+	while (TRUE)
+		if (read(STDIN_FILENO, rbuff, sizeof(rbuff)) < 1)
+			break ;
+	(void)rl_set_timeout(NO, 0);
 	ft_putstr_fd("\033[6n", STDIN_FILENO);
 	bzero(rbuff, sizeof(rbuff));
-	rb = 8;
-	while (rb == 8)
-		if ((rb = read(STDIN_FILENO, rbuff, 8)) < 1)
-			return ;
-	if (rbuff[7] != '\0')
+	if (read(STDIN_FILENO, rbuff, 8) < 1)
 		return ;
 	if (!(tmp = ft_strrchr(rbuff, ';')) || ft_atoi(tmp + 1) < 2)
 		return ;
@@ -81,7 +81,7 @@ inline static void	rl_makesure_start(const char *termenv, t_uint8 dumb)
 	(void)outcap("me");
 }
 
-int					rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts)
+t_uint8				rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts)
 {
 	char	*termenv;
 	char	*pcstr;
@@ -92,11 +92,11 @@ int					rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts)
 		rl->dumb = TRUE;
 		termenv = "dumb";
 	}
-	if (!(tgetent(NULL, termenv)) || !rl_prompt_init(rl, prompt))
+	rl->opts = opts;
+	if (!tgetent(NULL, termenv) || !rl_prompt_init(rl, prompt))
 		return (FALSE);
 	if ((pcstr = tgetstr("pc", NULL)))
 		PC = *pcstr;
-	rl->opts = opts;
 	set_keys_movs(&rl->keys, &rl->movs, rl->dumb);
 	if (!rl_set_term(NO))
 		return (FALSE);

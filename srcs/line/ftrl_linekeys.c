@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/25 17:19:12 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/28 19:49:32 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ t_keyact	rl_clear_line(t_readline *rl)
 		return (kKeyFail);
 	get_line_info_for_pos(&homec, 0, rl);
 	get_line_info_for_pos(&maxc, rl->csr.max, rl);
-	go_to_point(&homec, &coords, rl);
+	go_to_point(rl->csr.pos, &homec, &coords, rl);
 	(void)outcapstr(rl->movs.crcap);
 	(void)outcap_arg_fb(rl->movs.dlargcap, rl->movs.dlcap,
 						(int)maxc.y, (int)maxc.y);

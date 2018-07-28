@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/28 04:55:46 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/28 20:08:59 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,8 +151,12 @@ t_keyact		rl_movr_key(t_readline *rl);
 void			get_line_info_for_pos(t_point *pt, unsigned long pos,
 									t_readline *rl);
 void			get_line_info(t_point *pt, t_readline *rl);
-void			go_to_point(t_point *to, t_point *from, t_readline *rl);
+
 void			go_to_pos(unsigned long to, unsigned long from, t_readline *rl);
+void			go_to_point(unsigned long idx,
+							t_point *to,
+							t_point *from,
+							t_readline *rl);
 
 /*
 ** copy/paste
@@ -180,6 +184,12 @@ t_list			*search_files_begin(const char *f_path, char *s_dir,
 t_keyact		hist_nav(char *buff, t_readline *rl, t_dlist **hist);
 
 /*
+** dumb mode
+*/
+
+void			rl_erase_dumb_line();
+
+/*
 ** terminal
 */
 
@@ -191,8 +201,8 @@ t_uint8			rl_set_timeout(t_uint8 enable, cc_t timeout);
 */
 
 t_uint8			rl_prompt_init(t_readline *rl, const char *prompt);
-int				rl_deinit(t_readline *rl);
-int				rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts);
+void			rl_deinit(t_readline *rl);
+t_uint8			rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts);
 
 /*
 ** signals

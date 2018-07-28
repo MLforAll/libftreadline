@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/16 17:24:32 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/16 17:28:43 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/28 17:51:42 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,3 @@ int			ft_acres_sortalpha(t_list *a, t_list *b)
 		return (TRUE);
 	return (FALSE);
 }
-

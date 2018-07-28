@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/25 16:50:13 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/28 20:06:45 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@ inline static void	rl_line_rm_dumb(size_t len, t_point *csrm, t_readline *rl)
 	nspaces = g_ws.ws_col - csrm->x - 2 - ((back.y == 1) ? rl->prlen : 0);
 	back.x += nspaces;
 	ft_putnchar_fd(' ', nspaces, STDIN_FILENO);
-	go_to_point(csrm, &back, rl);
+	go_to_point(rl->csr.pos, csrm, &back, rl);
 	if (*rl->line)
 		ft_putstr_fd(rl->line + rl->csr.pos + len, STDIN_FILENO);
 	get_line_info_for_pos(&back, rl->csr.max, rl);
-	go_to_point(csrm, &back, rl);
+	go_to_point(rl->csr.max, csrm, &back, rl);
 }
 
 t_uint8				rl_line_rm(size_t len, t_readline *rl)
@@ -58,7 +58,7 @@ t_uint8				rl_line_rm(size_t len, t_readline *rl)
 		rl->csr.pos -= len;
 	rl->csr.max -= len;
 	get_line_info(&csrm, rl);
-	go_to_point(&csrm, &coords, rl);
+	go_to_point(rl->csr.pos + len, &csrm, &coords, rl);
 	if (rl->dumb)
 		rl_line_rm_dumb(len, &csrm, rl);
 	else
@@ -75,11 +75,7 @@ t_uint8				rl_line_rm(size_t len, t_readline *rl)
 inline static void	line_add_border(t_readline *rl)
 {
 	if (rl->dumb)
-	{
-		ft_putchar_fd('\r', STDIN_FILENO);
-		ft_putnchar_fd(' ', g_ws.ws_col - 2, STDIN_FILENO);
-		ft_putchar_fd('\r', STDIN_FILENO);
-	}
+		rl_erase_dumb_line();
 	else
 	{
 		ft_putchar_fd(' ', STDIN_FILENO);

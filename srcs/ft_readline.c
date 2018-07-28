@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/28 18:13:59 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/28 20:12:52 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,17 +104,16 @@ static void		ft_readline_core(t_readline *rl, t_dlist **hist)
 		if (read(STDIN_FILENO, buff, RL_READBUFFSIZE) < 1
 			|| ft_strequ(buff, "\n") || *buff == 3)
 			break ;
-		if (((status = nav_keys(buff, rl)) >= kKeyFail
-			|| (status = hist_nav(buff, rl, hist)) >= kKeyFail
-			|| (status = edit_keys(buff, rl)) >= kKeyFail))
+		if (((status = nav_keys(buff, rl)) < kKeyFail
+			&& (status = hist_nav(buff, rl, hist)) < kKeyFail
+			&& (status = edit_keys(buff, rl)) < kKeyFail))
+			continue ;
+		if (status == kKeyFail && rl->opts->bell && !rl->dumb)
+			(void)outcap("bl");
+		else if (status == kKeyFatal)
 		{
-			if (status == kKeyFail && rl->opts->bell && !rl->dumb)
-				(void)outcap("bl");
-			else if (status == kKeyFatal)
-			{
-				ft_putendl("\nft_readline(): Fatal error");
-				break ;
-			}
+			ft_putendl("\nft_readline(): fatal error");
+			break ;
 		}
 	}
 }
@@ -143,7 +142,7 @@ char			*ft_readline(const char *prompt,
 			break ;
 		ft_bzero(&rl.quit, sizeof(t_quit));
 	}
-	(void)rl_deinit(&rl);
+	rl_deinit(&rl);
 	(void)rl_latest_session(YES, bak);
 	return (rl.line);
 }

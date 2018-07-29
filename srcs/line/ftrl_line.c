@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/28 20:06:45 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/29 05:15:53 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include "ftrl_internal.h"
 
-inline static void	clr_lines(t_point *coords, t_readline *rl)
+inline static void	clr_lines(t_point *coords, int x, t_readline *rl)
 {
 	t_point	maxc;
 	int		cnt;
@@ -27,7 +27,7 @@ inline static void	clr_lines(t_point *coords, t_readline *rl)
 	(void)outcapstr(rl->movs.downm);
 	(void)outcap_arg_fb(rl->movs.dlargcap, rl->movs.dlcap, cnt, cnt);
 	(void)outcapstr(rl->movs.upm);
-	(void)outcap_arg_fb(NULL, rl->movs.rightm, (int)rl->csr.pos, 1);
+	(void)outcap_arg_fb(NULL, rl->movs.rightm, x, 1);
 }
 
 inline static void	rl_line_rm_dumb(size_t len, t_point *csrm, t_readline *rl)
@@ -63,7 +63,7 @@ t_uint8				rl_line_rm(size_t len, t_readline *rl)
 		rl_line_rm_dumb(len, &csrm, rl);
 	else
 	{
-		clr_lines(&coords, rl);
+		clr_lines(&coords, (int)csrm.x, rl);
 		(void)outcap("sc");
 		if (*rl->line)
 			ft_putstr_fd(rl->line + rl->csr.pos + len, STDIN_FILENO);

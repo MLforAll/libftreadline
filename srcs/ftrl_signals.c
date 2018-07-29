@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/04 17:21:00 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/28 18:31:56 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/29 18:05:26 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ static void	rl_generic_sig_hdl(int sigc)
 {
 	t_readline	*session;
 
-	if (g_sig_origs[sigc] == (void (*)(int))-1
-		|| sigc == SIGINT || sigc == SIGTSTP
+	if (g_sig_origs[sigc] == SIG_ERR
+		|| g_sig_origs[sigc] == SIG_IGN
 		|| !(session = rl_latest_session(NO, NULL)))
 		return ;
-	if (g_sig_origs[sigc] == SIG_DFL || g_sig_origs[sigc] == SIG_IGN)
+	if (g_sig_origs[sigc] == SIG_DFL)
 	{
 		rl_deinit(session);
 		ft_putchar('\n');
@@ -58,7 +58,7 @@ void		set_signals(void)
 	{
 		if (sig == SIGURG || sig == SIGCONT || sig == SIGCHLD
 			|| sig == SIGIO || sig == SIGWINCH || sig == SIGINFO)
-			g_sig_origs[sig] = (void (*)(int))SIG_ERR;
+			g_sig_origs[sig] = SIG_ERR;
 		else
 			g_sig_origs[sig] = signal(sig, &rl_generic_sig_hdl);
 	}
@@ -73,7 +73,7 @@ void		restore_signals(void)
 	sig = 0;
 	while (++sig < 32)
 	{
-		if (g_sig_origs[sig] == (void (*)(int))SIG_ERR)
+		if (g_sig_origs[sig] == SIG_ERR)
 			continue ;
 		(void)signal(sig, g_sig_origs[sig]);
 	}

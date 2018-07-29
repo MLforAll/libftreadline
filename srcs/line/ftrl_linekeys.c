@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/28 19:49:32 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/29 17:36:29 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ t_keyact	rl_eof_key(t_readline *rl)
 
 	if (rl->csr.max == 0)
 	{
+		rl->ret = FTRL_EOF;
 		ft_strdel(&rl->line);
 		return (kKeyOK);
 	}

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 16:49:35 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/17 21:09:41 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/29 17:37:11 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static void	quit_hdl(int sigc)
 
 int			main(int ac, char **av, char **env)
 {
+	int			status;
 	char		*line;
 	t_rl_opts	opts;
 	t_dlist		*hist;
@@ -55,14 +56,20 @@ int			main(int ac, char **av, char **env)
 				"PS: Autocompletion works for files "
 				"using the embbeded routines\n"
 				"PS2: Ctrl-D to quit!\n\n", STDIN_FILENO);
-	while ((line = ft_readline(PRSTR, &opts, hist)))
+	while ((status = ft_readline(&line, PRSTR, &opts, hist)) != FTRL_EOF
+		&& status != FTRL_FAIL)
 	{
-		len = !ftrl_prompt_isvalid_dumb(PRSTR) ? 11 : ft_prompt_len(PRSTR) - 2;
-		ft_putnchar_fd('-', len, STDIN_FILENO);
-		ft_putstr_fd("> ", STDIN_FILENO);
-		ft_putstr_fd(line, STDIN_FILENO);
-		ft_putstr_fd("\n\n", STDIN_FILENO);
-		ftrl_histadd(&hist, line);
+		if (status == FTRL_SIGINT)
+			ft_putstr("Aborted.\n\n");
+		else
+		{
+			len = !ftrl_prompt_isvalid_dumb(PRSTR) ? 11 : ft_prompt_len(PRSTR) - 2;
+			ft_putnchar_fd('-', len, STDIN_FILENO);
+			ft_putstr_fd("> ", STDIN_FILENO);
+			ft_putstr_fd(line, STDIN_FILENO);
+			ft_putstr_fd("\n\n", STDIN_FILENO);
+			ftrl_histadd(&hist, line);
+		}
 		ft_strdel(&line);
 	}
 	ft_dlstdel(&hist, &ftrl_histdelf);

@@ -5,20 +5,21 @@ ft_readline - Read a line from stdin
 #include <libftreadline.h>
 
 .nf
-.I char *
+.I int
 .fi
 .B ft_readline
-(const char *prompt, t_rl_opts *opts, t_dlist *hist);
+(char **line, const char *prompt, t_rl_opts *opts, t_dlist *hist);
 
 .SH DESCRIPTION
 .B 
 ft_readline()
-reads a line from stdin and returns a malloced copy.
+reads a line from stdin and puts a malloced copy in the pointer referenced by
+.B line.
 You should free the returned result once you are done dealing with it.
-It takes a prompt as a C-string, a series of options via a ref
+Its other arguments are the prompt as a C-string, your options via a ref
 to a
 .B t_rl_opts struct
-and a ref to the head of a
+and the head of a
 .B t_dlist doubly-linked list.
 
 .SH OPTIONS
@@ -34,13 +35,17 @@ struct. The struct looks like the following:
 .br
 	char		*(*ac_show_result)(t_list **);
 .br
+	char		*(*ac_show_result_dumb)(t_list **);
+.br
 	int		outfd;
 .br
 	t_uint8	bell;
 .br
-	char		reserved_pad[3];
+	t_uint8	dumb_prompt;
 .br
-.B }		t_rl_opts;
+	char		reserved_pad[2];
+.br
+.B }			t_rl_opts;
 .br
 
 .SH UNICODE
@@ -49,13 +54,12 @@ While planned, unicode support is yet to be written.
 .SH RETURN VALUES
 If EOF is catched,
 .B ft_readline()
-returns NULL. Otherwise, a valid C-string is passed. This string might be empty.
-If no input has been typed,
-.B ft_readline()
-returns a valid C-string only containing the terminating NULL character.
+returns FTLR_EOF. Otherwise, FTRL_OK is returned.
+In case of a failure, FTRL_FAIL is returned.
+If Ctrl-C is catched, FTRL_SIGINT is returned.
 
 .SH SEE ALSO
 Nothing for now
 
 .SH AUTHOR
-Copyright kdumarai@ - 2017-2018 - Kelian DUMARAIS
+Copyright kdumarai@ - 2018 - Kelian DUMARAIS

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/28 20:12:52 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/29 17:35:51 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ static t_keyact	edit_keys(char *buff, t_readline *rl)
 		return (kKeyNone);
 	if (*buff == 3)
 	{
-		ft_strclr(rl->line);
+		ft_strdel(&rl->line);
+		rl->ret = FTRL_SIGINT;
 		return (kKeyOK);
 	}
 	if (*buff == 4)
@@ -90,7 +91,7 @@ static t_keyact	edit_keys(char *buff, t_readline *rl)
 	return (kKeyNone);
 }
 
-static void		ft_readline_core(t_readline *rl, t_dlist **hist)
+static int		ft_readline_core(t_readline *rl, t_dlist **hist)
 {
 	t_keyact		status;
 	char			buff[RL_READBUFFSIZE + 1];
@@ -102,7 +103,7 @@ static void		ft_readline_core(t_readline *rl, t_dlist **hist)
 	{
 		ft_bzero(buff, sizeof(buff));
 		if (read(STDIN_FILENO, buff, RL_READBUFFSIZE) < 1
-			|| ft_strequ(buff, "\n") || *buff == 3)
+			|| ft_strequ(buff, "\n"))
 			break ;
 		if (((status = nav_keys(buff, rl)) < kKeyFail
 			&& (status = hist_nav(buff, rl, hist)) < kKeyFail
@@ -113,22 +114,23 @@ static void		ft_readline_core(t_readline *rl, t_dlist **hist)
 		else if (status == kKeyFatal)
 		{
 			ft_putendl("\nft_readline(): fatal error");
-			break ;
+			return (FTRL_FAIL);
 		}
 	}
+	return (rl->ret);
 }
 
-char			*ft_readline(const char *prompt,
+int				ft_readline(char **line, const char *prompt,
 							t_rl_opts *opts, t_dlist *hist)
 {
 	t_readline		rl;
 	t_readline		*bak;
 
 	if ((bak = rl_latest_session(NO, NULL)) || !rl_init(&rl, prompt, opts))
-		return (NULL);
+		return (FTRL_FAIL);
 	while (rl.line)
 	{
-		ft_readline_core(&rl, &hist);
+		rl.ret = ft_readline_core(&rl, &hist);
 		check_selection(&rl);
 		print_end_newlines(&rl);
 		if (rl.quit.reason != kAbortReload)
@@ -144,5 +146,6 @@ char			*ft_readline(const char *prompt,
 	}
 	rl_deinit(&rl);
 	(void)rl_latest_session(YES, bak);
-	return (rl.line);
+	*line = rl.line;
+	return (rl.ret);
 }

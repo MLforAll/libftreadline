@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 06:36:52 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/28 18:15:36 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/29 17:27:57 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,15 @@
 
 # include <sys/ioctl.h>
 # include <stdint.h>
+
+/*
+** Return values macros
+*/
+
+# define FTRL_OK		0
+# define FTRL_FAIL		-1
+# define FTRL_SIGINT	1
+# define FTRL_EOF		2
 
 /*
 ** global for window size

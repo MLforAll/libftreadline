@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/28 18:17:39 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/29 17:22:40 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,5 +106,6 @@ t_uint8				rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts)
 	(void)outcap("ks");
 	if (!rl_linebuff_create(rl))
 		return (FALSE);
+	rl->ret = FTRL_OK;
 	return (TRUE);
 }

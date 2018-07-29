@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/28 20:08:59 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/29 17:22:04 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ typedef struct	s_readline
 	size_t			prlen;
 	char			*line;
 	size_t			bufflen;
+	int				ret;
 	t_cursor		csr;
 	t_cpypste		cpypste;
 	t_quit			quit;

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/28 18:06:29 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/29 17:21:29 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@
 ** ft_readine -- Read a line from stdin
 */
 
-char		*ft_readline(const char *prompt, t_rl_opts *opts, t_dlist *hist);
+int			ft_readline(char **line, const char *prompt,
+						t_rl_opts *opts, t_dlist *hist);
 
 void		ftrl_histadd(t_dlist **headref, char *line);
 void		ftrl_histdelf(void *data, size_t size);

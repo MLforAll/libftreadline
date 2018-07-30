@@ -38,3 +38,19 @@
 		ft_putchar_fd(rl->line[rl->csr.pos], STDIN_FILENO);
 	else
 		(void)outcapstr(rl->movs.rightm);*/
+
+		/*
+**t_keyact	rl_historybu_key(t_rl_hist **history, t_readline *rl)
+**{
+**	if (!history || !*history || !(*history)->next)
+**		return (kKeyFail);
+**	return (kKeyOK);
+**}
+**
+**t_keyact	rl_historybd_key(t_rl_hist **history, t_readline *rl)
+**{
+**	if (!history || !*history || !(*history)->prev)
+**		return (kKeyFail);
+**	return (kKeyOK);
+**}
+*/

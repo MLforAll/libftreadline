@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 11:06:01 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/22 14:39:56 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/30 03:08:20 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,24 @@
 #include <stdlib.h>
 #include "ftrl_internal.h"
 
+static t_dlist	*get_new_line(t_dlist *lst, t_direct mode)
+{
+	t_dlist	*tmp;
+
+	tmp = lst;
+	while ((mode == kDirectLeft) ? tmp->prev : tmp->next)
+	{
+		tmp = (mode == kDirectLeft) ? tmp->prev : tmp->next;
+		if (!tmp->content || !ft_strchr((char*)tmp->content, '\n'))
+			break ;
+	}
+	return ((tmp->content && ft_strchr(tmp->content, '\n')) ? lst : tmp);
+}
+
 static t_keyact	rl_history_keys(char *buff, t_readline *rl, t_dlist **history)
 {
 	int		keys[2];
+	t_dlist	*tmp;
 
 	keys[0] = (ft_strequ(buff, rl->keys.upk));
 	keys[1] = (ft_strequ(buff, rl->keys.downk));
@@ -24,12 +39,14 @@ static t_keyact	rl_history_keys(char *buff, t_readline *rl, t_dlist **history)
 		return (kKeyNone);
 	if (!history || !*history)
 		return (kKeyFail);
-	if (keys[0] && (*history)->next)
-		*history = (*history)->next;
-	else if (keys[1] && (*history)->prev)
-		*history = (*history)->prev;
+	tmp = *history;
+	if (keys[0] && tmp->next)
+		tmp = rl->dumb ? get_new_line(*history, kDirectRight) : tmp->next;
+	else if (keys[1] && tmp->prev)
+		tmp = rl->dumb ? get_new_line(*history, kDirectLeft) : tmp->prev;
 	else
 		return (kKeyFail);
+	*history = tmp;
 	return (kKeyOK);
 }
 
@@ -79,19 +96,3 @@ t_keyact		hist_nav(char *buff, t_readline *rl, t_dlist **hist)
 	disp_new_line(&maxc, rl);
 	return (kKeyOK);
 }
-
-/*
-**t_keyact	rl_historybu_key(t_rl_hist **history, t_readline *rl)
-**{
-**	if (!history || !*history || !(*history)->next)
-**		return (kKeyFail);
-**	return (kKeyOK);
-**}
-**
-**t_keyact	rl_historybd_key(t_rl_hist **history, t_readline *rl)
-**{
-**	if (!history || !*history || !(*history)->prev)
-**		return (kKeyFail);
-**	return (kKeyOK);
-**}
-*/

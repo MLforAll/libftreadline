@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/29 05:15:53 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/30 03:23:20 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,17 +92,17 @@ t_uint8				rl_line_add(char *add, t_readline *rl)
 		return (TRUE);
 	get_line_info(&coords, rl);
 	(void)outcapstr(rl->movs.cecap);
-	if (!rl->dumb)
-		ft_putstr_fd(add, STDIN_FILENO);
-	if (coords.x + len + rl->dumb == g_ws.ws_col)
-		line_add_border(rl);
-	if (rl->dumb)
-		ft_putstr_fd(add, STDIN_FILENO);
+	(!rl->dumb) ? ft_putstr_fd(add, STDIN_FILENO) : 0;
+	(coords.x + len + rl->dumb == g_ws.ws_col) ? line_add_border(rl) : 0;
+	(rl->dumb) ? ft_putstr_fd(add, STDIN_FILENO) : 0;
 	if (rl->csr.pos < rl->csr.max)
 	{
-		(void)outcap("sc");
+		(!rl->dumb) ? (void)outcap("sc") : 0;
 		ft_putstr_fd(rl->line + rl->csr.pos, STDIN_FILENO);
-		(void)outcap("rc");
+		if (rl->dumb)
+			go_to_pos(rl->csr.pos + len, rl->csr.max + len, rl);
+		else
+			(void)outcap("rc");
 	}
 	if (!rl_linebuff_add(add, len, rl))
 		return (FALSE);

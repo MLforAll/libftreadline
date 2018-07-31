@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 23:12:06 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/05 04:30:38 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/07/31 05:38:54 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,10 @@ static char				*get_diff(char *line, char *ch, unsigned long pos)
 		while (*res && line[idx] && *res == line[idx++])
 			res++;
 		if (res && (chk = ft_strndup(line + pos, posbkp - pos))
-			&& ft_stradd(&chk, res))
+			&& ft_stradd(&chk, res) && !ft_strequ(chk, ch))
 		{
-			if (!ft_strequ(chk, ch))
-				continue ;
+			free(chk);
+			continue ;
 		}
 		free(chk);
 		return ((!res || !*res) ? NULL : res);

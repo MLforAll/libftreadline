@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/26 20:53:53 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/25 21:14:53 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/01 19:02:37 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ inline static char	*get_region(char *line, t_cursor *csr)
 	{
 		if (!(tmp = get_last_components(line, chkcomps)))
 			return (NULL);
-		return (ft_strdup(tmp));
+		return (ft_strdup(tmp + 1));
 	}
 	idx = csr->pos;
 	while (idx--)

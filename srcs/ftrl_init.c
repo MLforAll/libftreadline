@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/29 17:22:40 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/02 21:53:41 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ inline static void	rl_makesure_start(const char *termenv, t_uint8 dumb)
 	char	*tmp;
 
 	if (dumb || (!ft_strequ(termenv, "xterm")
-				&& !ft_strequ(termenv, "xterm-256color")))
+		&& !ft_strequ(termenv, "xterm-color")
+		&& !ft_strequ(termenv, "xterm-256color")))
 	{
 		ft_putchar_fd('\n', STDIN_FILENO);
 		return ;

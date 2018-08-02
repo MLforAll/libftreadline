@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 06:36:52 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/02 18:18:06 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/02 21:52:25 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,10 @@ typedef struct			s_cursor
 
 /*
 ** options struct
+*/
+
+/*
+** WARNING: prompt_perline should not be used as it doesn't work properly yet
 */
 
 typedef struct			s_rl_opts

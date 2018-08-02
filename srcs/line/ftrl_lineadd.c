@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/02 18:20:51 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/02 18:25:34 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/02 21:47:50 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ t_uint8				rl_line_add(char *add, t_readline *rl)
 		return (TRUE);
 	get_line_info(&coords, rl);
 	(void)outcapstr(rl->movs.cecap);
-	(!rl->dumb) ? rl_line_add_multiple(add, rl) : 0;
+	if (!rl->dumb)
+		rl_line_add_multiple(add, rl);
 	(coords.x + len + rl->dumb == g_ws.ws_col) ? line_add_border(rl) : 0;
 	(rl->dumb) ? ft_putstr_fd(add, STDIN_FILENO) : 0;
 	if (rl->csr.pos < rl->csr.max)

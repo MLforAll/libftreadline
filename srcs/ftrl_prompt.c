@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/06 03:45:43 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/28 18:54:59 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/02 18:13:06 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,9 @@ t_uint8					rl_prompt_init(t_readline *rl, const char *prompt)
 		rl->prlen = ft_strlen(rl->prompt);
 	}
 	return (rl->prompt != NULL);
+}
+
+inline void				rl_show_prompt(t_readline *rl)
+{
+	ft_putstr_fd(rl->prompt, rl->opts->outfd);
 }

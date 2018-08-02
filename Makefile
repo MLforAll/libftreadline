@@ -6,7 +6,7 @@
 #    By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/04 06:10:18 by kdumarai          #+#    #+#              #
-#    Updated: 2018/08/02 05:00:34 by kdumarai         ###   ########.fr        #
+#    Updated: 2018/08/02 18:22:57 by kdumarai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,8 @@ INCLUDES = $(addprefix $(INCDIR)/, $(INCFILES))
 SRCDIR = srcs
 SRCFILES = ft_readline.c \
 	ft_confirm.c \
-	line/ftrl_line.c \
+	line/ftrl_lineadd.c \
+	line/ftrl_linerm.c \
 	line/ftrl_linekeys.c \
 	line/ftrl_linebuff.c \
 	navigation/ftrl_csrkeys.c \

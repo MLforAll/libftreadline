@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/30 03:25:13 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/02 18:03:09 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_keyact	rl_input_add_text(char *buff, t_readline *rl)
 	ft_bzero(add, sizeof(add));
 	while (*buff)
 	{
-		if (ft_isprint(*buff))
+		if (ft_isprint(*buff) || (*buff == '\n' && !rl->dumb))
 			add[idx++] = *buff;
 		buff++;
 	}

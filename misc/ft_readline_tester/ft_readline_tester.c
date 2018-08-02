@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 16:49:35 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/29 17:37:11 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/02 18:19:48 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,9 @@ int			main(int ac, char **av, char **env)
 	opts.outfd = STDIN_FILENO;
 	opts.ac_get_result = NULL;
 	opts.ac_show_result = NULL;
+#ifdef PPL
+	opts.prompt_perline = TRUE;
+#endif
 	hist = NULL;
 #ifdef MLTEST
 	ftrl_histadd(&hist, "Et un, Et deux, Et trois ZERO!\nOn est les champions");

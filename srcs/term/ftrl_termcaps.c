@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 18:20:20 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/15 03:11:26 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/02 04:44:18 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 #include <stdlib.h>
 #include "ftrl_internal.h"
 
-static int			g_termcaps_fd = TERMCAPS_DFL_FD;
+static int		g_termcaps_fd = TERMCAPS_DFL_FD;
 
-static int			putcf(int c)
+static int		putcf(int c)
 {
 	return ((int)write(g_termcaps_fd, &c, 1));
 }
 
-inline int			outcap_fd(char *name, int fd)
+int				outcap_fd(char *name, int fd)
 {
 	int		bak;
 	int		ret;
@@ -33,7 +33,7 @@ inline int			outcap_fd(char *name, int fd)
 	return (ret);
 }
 
-int					outcap(char *name)
+int				outcap(char *name)
 {
 	char	*cap;
 
@@ -43,14 +43,14 @@ int					outcap(char *name)
 	return (TRUE);
 }
 
-int					outcapstr(char *cstr)
+int				outcapstr(char *cstr)
 {
 	if (tputs(cstr, 1, &putcf) == -1)
 		return (FALSE);
 	return (TRUE);
 }
 
-int					outcap_arg_fb(char *cstr, char *fb, int arg, int affcnt)
+int				outcap_arg_fb(char *cstr, char *fb, int arg, int affcnt)
 {
 	char	*prog;
 

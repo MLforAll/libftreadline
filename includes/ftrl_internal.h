@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/29 17:22:04 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/02 04:40:39 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,14 +81,14 @@ typedef struct	s_readline
 	size_t			prlen;
 	char			*line;
 	size_t			bufflen;
-	int				ret;
 	t_cursor		csr;
 	t_cpypste		cpypste;
 	t_quit			quit;
 	t_mov			movs;
 	t_keys			keys;
+	int				ret;
 	t_uint8			dumb;
-	char			reserved_pad[7];
+	char			reserved_pad[3];
 }				t_readline;
 
 /*
@@ -188,7 +188,7 @@ t_keyact		hist_nav(char *buff, t_readline *rl, t_dlist **hist);
 ** dumb mode
 */
 
-void			rl_erase_dumb_line();
+void			rl_erase_dumb_line(void);
 
 /*
 ** terminal

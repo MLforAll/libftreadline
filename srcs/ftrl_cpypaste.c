@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 18:03:06 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/06/28 18:27:50 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/02 04:42:00 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_keyact	rl_rightcpy_key(t_readline *rl)
 		get_line_info(&pos, rl);
 		if (pos.x + 2 == g_ws.ws_col)
 			go_to_pos(rl->csr.pos + 1, rl->csr.pos, rl);
-		ft_putchar_fd(ft_toupper(rl->line[rl->csr.pos]), STDIN_FILENO);
+		ft_putchar_fd((char)ft_toupper(rl->line[rl->csr.pos]), STDIN_FILENO);
 	}
 	else
 	{

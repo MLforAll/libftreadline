@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/16 17:24:32 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/28 17:51:42 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/02 22:19:37 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,21 @@
 #include "libft.h"
 #include "ftrl_dev.h"
 
-static void	ft_aclst_rmdups_check(t_list **lst, t_list *bw, t_list *prev)
+static void	ft_aclst_rmdups_check(t_list **lst, t_list **bw, t_list *prev)
 {
 	t_list	**ptr;
 	t_list	*chk;
 
 	chk = *lst;
-	while (chk && bw && bw->content && chk != bw)
+	while (chk && *bw && (*bw)->content && chk != *bw)
 	{
-		if (ft_strequ(((t_acres*)bw->content)->str,
+		if (ft_strequ(((t_acres*)(*bw)->content)->str,
 			((t_acres*)chk->content)->str))
 		{
 			ptr = (!prev) ? lst : &prev->next;
-			*ptr = bw->next;
-			ft_lstdelone(&bw, &ft_acres_free);
-			bw = prev;
+			*ptr = (*bw)->next;
+			ft_lstdelone(bw, &ft_acres_free);
+			*bw = prev;
 		}
 		else
 			chk = chk->next;
@@ -44,7 +44,7 @@ void		ft_aclst_rmdups(t_list **lst)
 	prev = NULL;
 	while (bw)
 	{
-		ft_aclst_rmdups_check(lst, bw, prev);
+		ft_aclst_rmdups_check(lst, &bw, prev);
 		prev = bw;
 		bw = bw->next;
 	}

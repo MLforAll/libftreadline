@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/02 18:20:51 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/02 18:21:19 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/02 18:25:34 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,3 @@ t_uint8				rl_line_add(char *add, t_readline *rl)
 	rl->csr.max += len;
 	return (TRUE);
 }
-

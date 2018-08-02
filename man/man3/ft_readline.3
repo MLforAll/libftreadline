@@ -43,7 +43,9 @@ struct. The struct looks like the following:
 .br
 	t_uint8	dumb_prompt;
 .br
-	char		reserved_pad[2];
+	t_uint8	prompt_perline;
+.br
+	char		reserved_pad;
 .br
 .B }			t_rl_opts;
 .br

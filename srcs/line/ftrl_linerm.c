@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ftrl_line.c                                        :+:      :+:    :+:   */
+/*   ftrl_linerm.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/02 18:21:17 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/03 20:29:14 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,26 +30,34 @@ inline static void	clr_lines(t_point *coords, int x, t_readline *rl)
 	(void)outcap_arg_fb(NULL, rl->movs.rightm, x, 1);
 }
 
-inline static void	rl_line_rm_dumb(size_t len, t_point *csrm, t_readline *rl)
-{
-	t_point		back;
-	size_t		nspaces;
+/*
+** Note: -3 to compensate for +1 in nspaces
+** Remember: We are not using the last 2 chars in a term line in dumb mode
+*/
 
-	back = *csrm;
-	nspaces = g_ws.ws_col - csrm->x - 2 - ((back.y == 1) ? rl->prlen : 0);
+inline static void	rl_line_rm_dumb(size_t len, t_point *gtc, t_readline *rl)
+{
+	t_point			back;
+	size_t			nspaces;
+	unsigned long	pos;
+
+	back = *gtc;
+	nspaces = g_ws.ws_col - gtc->x + 1 - ((gtc->y == 1) ? rl->prlen : 3);
 	back.x += nspaces;
 	ft_putnchar_fd(' ', nspaces, STDIN_FILENO);
-	go_to_point(rl->csr.pos, csrm, &back, rl);
-	if (*rl->line)
-		ft_putstr_fd(rl->line + rl->csr.pos + len, STDIN_FILENO);
-	get_line_info_for_pos(&back, rl->csr.max, rl);
-	go_to_point(rl->csr.max, csrm, &back, rl);
+	go_to_point(rl->csr.pos, gtc, &back, rl);
+	if (!*rl->line)
+		return ;
+	pos = rl->csr.pos;
+	pos += ft_putstrmax_fd(rl->line + rl->csr.pos + len, nspaces, STDIN_FILENO);
+	get_line_info_for_pos(&back, pos, rl);
+	go_to_point(pos, gtc, &back, rl);
 }
 
 t_uint8				rl_line_rm(size_t len, t_readline *rl)
 {
 	t_point			coords;
-	t_point			csrm;
+	t_point			gtc;
 
 	if (len == 0 || !rl || len > rl->csr.max)
 		return (TRUE);
@@ -57,13 +65,13 @@ t_uint8				rl_line_rm(size_t len, t_readline *rl)
 	if (rl->csr.pos > 0)
 		rl->csr.pos -= len;
 	rl->csr.max -= len;
-	get_line_info(&csrm, rl);
-	go_to_point(rl->csr.pos + len, &csrm, &coords, rl);
+	get_line_info(&gtc, rl);
+	go_to_point(rl->csr.pos + len, &gtc, &coords, rl);
 	if (rl->dumb)
-		rl_line_rm_dumb(len, &csrm, rl);
+		rl_line_rm_dumb(len, &gtc, rl);
 	else
 	{
-		clr_lines(&coords, (int)csrm.x, rl);
+		clr_lines(&coords, (int)gtc.x, rl);
 		(void)outcap("sc");
 		if (*rl->line)
 			ft_putstr_fd(rl->line + rl->csr.pos + len, STDIN_FILENO);

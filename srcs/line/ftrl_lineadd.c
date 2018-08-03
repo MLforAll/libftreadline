@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/02 18:20:51 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/03 04:06:25 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/03 22:08:06 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,22 @@ static void			rl_line_add_multiple(char *add, t_readline *rl)
 	ft_putstr_fd(tmp, STDIN_FILENO);
 }
 
+inline static void	restore_line(size_t len, t_point *coords, t_readline *rl)
+{
+	size_t	n;
+
+	if (rl->dumb)
+	{
+		n = g_ws.ws_col - coords->x - len - 2 - ((coords->y == 1) ? rl->prlen : 0);
+		n = ft_putstrmax_fd(rl->line + rl->csr.pos, n, STDIN_FILENO);
+		go_to_pos(rl->csr.pos + len, rl->csr.pos + n, rl);
+		return ;
+	}
+	(void)outcap("sc");
+	ft_putstr_fd(rl->line + rl->csr.pos, STDIN_FILENO);
+	(void)outcap("rc");
+}
+
 t_uint8				rl_line_add(char *add, t_readline *rl)
 {
 	size_t			len;
@@ -57,16 +73,9 @@ t_uint8				rl_line_add(char *add, t_readline *rl)
 	if (!rl->dumb)
 		rl_line_add_multiple(add, rl);
 	(coords.x + len + rl->dumb == g_ws.ws_col) ? line_add_border(rl) : 0;
-	(rl->dumb) ? ft_putstr_fd(add, STDIN_FILENO) : 0;
+	(rl->dumb) ? ft_putstrmax_fd(add, g_ws.ws_col - coords.x - 2, STDIN_FILENO) : 0;
 	if (rl->csr.pos < rl->csr.max)
-	{
-		(!rl->dumb) ? (void)outcap("sc") : 0;
-		ft_putstr_fd(rl->line + rl->csr.pos, STDIN_FILENO);
-		if (rl->dumb)
-			go_to_pos(rl->csr.pos + len, rl->csr.max + len, rl);
-		else
-			(void)outcap("rc");
-	}
+		restore_line(len, &coords, rl);
 	if (!rl_linebuff_add(add, len, rl))
 		return (FALSE);
 	rl->csr.pos += len;

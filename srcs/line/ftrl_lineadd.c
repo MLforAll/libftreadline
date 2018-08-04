@@ -6,24 +6,13 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/02 18:20:51 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/04 06:03:17 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/04 08:29:25 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
 #include "ftrl_internal.h"
-
-inline static void	line_add_border(t_readline *rl)
-{
-	if (rl->dumb)
-		rl_erase_dumb_line();
-	else
-	{
-		ft_putchar_fd(' ', STDIN_FILENO);
-		(void)outcapstr(rl->movs.leftm);
-	}
-}
 
 static void			rl_line_add_multiple(char *add, t_readline *rl)
 {
@@ -54,7 +43,6 @@ inline static void	restore_line(size_t len, t_point *coords, t_readline *rl)
 		n = g_ws.ws_col - coords->x - (coords->y == 1) * rl->prlen;
 		if (n > 0)
 			n = ft_putstrmax_fd(rl->line + rl->csr.pos + len, n, STDIN_FILENO);
-		len += (coords->x == 0 && coords->y > 1);
 		go_to_pos(rl->csr.pos + len, rl->csr.pos + n + 1, rl);
 		return ;
 	}
@@ -70,18 +58,26 @@ inline static void	print_add(char *add,
 {
 	size_t			n;
 
-	n = g_ws.ws_col - coords->x - (coords->y == 1) * rl->prlen;
-	n = ft_putstrmax_fd(add, n, STDIN_FILENO);
-	if (!rl->dumb || n != 0)
-		return ;
-	line_add_border(rl);
-	if (len > 1)
-		go_to_pos(rl->csr.pos + n, rl->csr.pos + len, rl);
-	else
+	if (!rl->dumb)
 	{
-		coords->x = 0;
-		coords->y++;
+		(void)outcapstr(rl->movs.cecap);
+		rl_line_add_multiple(add, rl);
+		if (coords->x + len >= g_ws.ws_col)
+		{
+			ft_putchar_fd(' ', STDIN_FILENO);
+			(void)outcapstr(rl->movs.leftm);
+		}
+		return ;
 	}
+	n = g_ws.ws_col - coords->x + 1 - (coords->y == 1) * rl->prlen;
+	if (len > n)
+	{
+		rl_erase_dumb_line();
+		ft_putstr_fd(add + n, STDIN_FILENO);
+		get_line_info_for_pos(coords, rl->csr.pos + len, rl);
+		return ;
+	}
+	ft_putstr_fd(add, STDIN_FILENO);
 }
 
 t_uint8				rl_line_add(char *add, t_readline *rl)
@@ -95,15 +91,7 @@ t_uint8				rl_line_add(char *add, t_readline *rl)
 		return (FALSE);
 	rl->csr.max += len;
 	get_line_info(&coords, rl);
-	if (!rl->dumb)
-	{
-		(void)outcapstr(rl->movs.cecap);
-		rl_line_add_multiple(add, rl);
-	}
-	if (!rl->dumb && coords.x + len + rl->dumb >= g_ws.ws_col)
-		line_add_border(rl);
-	if (rl->dumb)
-		print_add(add, len, &coords, rl);
+	print_add(add, len, &coords, rl);
 	if (rl->csr.pos < rl->csr.max - len)
 		restore_line(len, &coords, rl);
 	rl->csr.pos += len;

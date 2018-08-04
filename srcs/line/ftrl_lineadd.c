@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/02 18:20:51 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/03 22:08:06 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/04 06:03:17 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,37 @@ inline static void	restore_line(size_t len, t_point *coords, t_readline *rl)
 
 	if (rl->dumb)
 	{
-		n = g_ws.ws_col - coords->x - len - 2 - ((coords->y == 1) ? rl->prlen : 0);
-		n = ft_putstrmax_fd(rl->line + rl->csr.pos, n, STDIN_FILENO);
-		go_to_pos(rl->csr.pos + len, rl->csr.pos + n, rl);
+		n = g_ws.ws_col - coords->x - (coords->y == 1) * rl->prlen;
+		if (n > 0)
+			n = ft_putstrmax_fd(rl->line + rl->csr.pos + len, n, STDIN_FILENO);
+		len += (coords->x == 0 && coords->y > 1);
+		go_to_pos(rl->csr.pos + len, rl->csr.pos + n + 1, rl);
 		return ;
 	}
 	(void)outcap("sc");
-	ft_putstr_fd(rl->line + rl->csr.pos, STDIN_FILENO);
+	ft_putstr_fd(rl->line + rl->csr.pos + len, STDIN_FILENO);
 	(void)outcap("rc");
+}
+
+inline static void	print_add(char *add,
+							size_t len,
+							t_point *coords,
+							t_readline *rl)
+{
+	size_t			n;
+
+	n = g_ws.ws_col - coords->x - (coords->y == 1) * rl->prlen;
+	n = ft_putstrmax_fd(add, n, STDIN_FILENO);
+	if (!rl->dumb || n != 0)
+		return ;
+	line_add_border(rl);
+	if (len > 1)
+		go_to_pos(rl->csr.pos + n, rl->csr.pos + len, rl);
+	else
+	{
+		coords->x = 0;
+		coords->y++;
+	}
 }
 
 t_uint8				rl_line_add(char *add, t_readline *rl)
@@ -68,17 +91,21 @@ t_uint8				rl_line_add(char *add, t_readline *rl)
 
 	if (!add || !rl || (len = ft_strlen(add)) == 0)
 		return (TRUE);
-	get_line_info(&coords, rl);
-	(void)outcapstr(rl->movs.cecap);
-	if (!rl->dumb)
-		rl_line_add_multiple(add, rl);
-	(coords.x + len + rl->dumb == g_ws.ws_col) ? line_add_border(rl) : 0;
-	(rl->dumb) ? ft_putstrmax_fd(add, g_ws.ws_col - coords.x - 2, STDIN_FILENO) : 0;
-	if (rl->csr.pos < rl->csr.max)
-		restore_line(len, &coords, rl);
 	if (!rl_linebuff_add(add, len, rl))
 		return (FALSE);
-	rl->csr.pos += len;
 	rl->csr.max += len;
+	get_line_info(&coords, rl);
+	if (!rl->dumb)
+	{
+		(void)outcapstr(rl->movs.cecap);
+		rl_line_add_multiple(add, rl);
+	}
+	if (!rl->dumb && coords.x + len + rl->dumb >= g_ws.ws_col)
+		line_add_border(rl);
+	if (rl->dumb)
+		print_add(add, len, &coords, rl);
+	if (rl->csr.pos < rl->csr.max - len)
+		restore_line(len, &coords, rl);
+	rl->csr.pos += len;
 	return (TRUE);
 }

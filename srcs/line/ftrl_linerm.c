@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/03 20:29:14 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/05 06:11:52 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,6 @@ inline static void	clr_lines(t_point *coords, int x, t_readline *rl)
 	(void)outcap_arg_fb(NULL, rl->movs.rightm, x, 1);
 }
 
-/*
-** Note: -3 to compensate for +1 in nspaces
-** Remember: We are not using the last 2 chars in a term line in dumb mode
-*/
-
 inline static void	rl_line_rm_dumb(size_t len, t_point *gtc, t_readline *rl)
 {
 	t_point			back;
@@ -42,7 +37,7 @@ inline static void	rl_line_rm_dumb(size_t len, t_point *gtc, t_readline *rl)
 	unsigned long	pos;
 
 	back = *gtc;
-	nspaces = g_ws.ws_col - gtc->x + 1 - ((gtc->y == 1) ? rl->prlen : 3);
+	nspaces = g_ws.ws_col - gtc->x - 2;
 	back.x += nspaces;
 	ft_putnchar_fd(' ', nspaces, STDIN_FILENO);
 	go_to_point(rl->csr.pos, gtc, &back, rl);

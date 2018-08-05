@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/18 09:00:17 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/05 05:06:22 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/05 06:05:52 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ void		check_selection(t_readline *rl)
 		if (spt.y != ept.y)
 		{
 			ft_putchar_fd('\r', STDIN_FILENO);
-			(void)ft_putstrmax_fd(rl->line + rl->cpypste.mkrs[1] - ept.x, ept.x, STDIN_FILENO);
+			(void)ft_putstrmax_fd(rl->line + rl->cpypste.mkrs[1] - ept.x,
+				ept.x + 1, STDIN_FILENO);
 		}
 	}
 	else

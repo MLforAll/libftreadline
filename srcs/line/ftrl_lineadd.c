@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/02 18:20:51 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/05 05:47:34 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/05 06:06:00 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ inline static void	print_add(char *add,
 							t_point *coords,
 							t_readline *rl)
 {
-	size_t			n;
+	size_t	n;
 
 	if (!rl->dumb)
 	{

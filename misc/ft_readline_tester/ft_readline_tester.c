@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 16:49:35 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/02 18:19:48 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/05 04:05:45 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int			main(int ac, char **av, char **env)
 	ft_bzero(&opts, sizeof(t_rl_opts));
 	opts.bell = TRUE;
 	opts.outfd = STDIN_FILENO;
+	opts.dumb_prompt = TRUE;
 	opts.ac_get_result = NULL;
 	opts.ac_show_result = NULL;
 #ifdef PPL

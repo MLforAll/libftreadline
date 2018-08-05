@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/02 21:53:41 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/05 04:42:31 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ inline static void	set_keys_movs(t_keys *keys, t_mov *movs, t_uint8 dumb)
 	while (idx < sizeof(caps) / sizeof(caps[0]))
 	{
 		if (dumb
-			|| !(keysptr[idx] = tgetstr((char*)((uintptr_t)caps[idx]), NULL)))
-			keysptr[idx] = (char*)(uintptr_t)dfl[idx];
+			|| !(keysptr[idx] = tgetstr((char*)((t_uintptr)caps[idx]), NULL)))
+			keysptr[idx] = (char*)(t_uintptr)dfl[idx];
 		idx++;
 	}
 	movs->leftm = tgetstr("le", NULL);
@@ -94,10 +94,11 @@ t_uint8				rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts)
 		termenv = "dumb";
 	}
 	rl->opts = opts;
-	if (!tgetent(NULL, termenv) || !rl_prompt_init(rl, prompt))
+	rl->origpr = prompt;
+	if (!rl_linebuff_create(rl) || !tgetent(NULL, termenv)
+		|| !rl_prompt_init(&rl->prompt, &rl->prlen, rl))
 		return (FALSE);
-	if ((pcstr = tgetstr("pc", NULL)))
-		PC = *pcstr;
+	PC = ((pcstr = tgetstr("pc", NULL))) ? *pcstr : 0;
 	set_keys_movs(&rl->keys, &rl->movs, rl->dumb);
 	if (!rl_set_term(NO))
 		return (FALSE);
@@ -105,8 +106,6 @@ t_uint8				rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts)
 	rl_makesure_start(termenv, rl->dumb);
 	set_signals();
 	(void)outcap("ks");
-	if (!rl_linebuff_create(rl))
-		return (FALSE);
 	rl->ret = FTRL_OK;
 	return (TRUE);
 }

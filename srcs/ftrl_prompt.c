@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/06 03:45:43 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/02 18:13:06 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/05 04:31:57 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,38 +14,45 @@
 #include <stdlib.h>
 #include "ftrl_internal.h"
 
-inline static t_uint8	ftrl_prompt_isvalid_dumb_core(size_t prlen)
+inline static t_uint8	ftrl_prompt_isvalid_dumb_core(struct winsize *ptr,
+													size_t prlen)
 {
 	struct winsize	ws;
 
-	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &ws) == -1)
-		return (FALSE);
-	return ((prlen <= ws.ws_col * 3 / 4));
+	if (!ptr)
+	{
+		if (ioctl(STDIN_FILENO, TIOCGWINSZ, &ws) == -1)
+			return (FALSE);
+		ptr = &ws;
+	}
+	return ((prlen <= ptr->ws_col * 3 / 4));
 }
 
 t_uint8					ftrl_prompt_isvalid_dumb(const char *prompt)
 {
-	return (ftrl_prompt_isvalid_dumb_core(ft_prompt_len(prompt)));
+	return (ftrl_prompt_isvalid_dumb_core(NULL, ft_prompt_len(prompt)));
 }
 
-t_uint8					rl_prompt_init(t_readline *rl, const char *prompt)
+t_uint8					rl_prompt_init(char **dest, size_t *len, t_readline *rl)
 {
-	rl->prlen = (prompt == NULL) ? 0 : ft_prompt_len(prompt);
+	if (!dest || !len)
+		return (FALSE);
+	*len = (rl->origpr == NULL) ? 0 : ft_prompt_len(rl->origpr);
 	if (!rl->dumb || rl->opts->dumb_prompt)
 	{
 		if (rl->dumb || tgetnum("Co") < 8)
-			rl->prompt = ft_prompt_nocolor(prompt);
+			*dest = ft_prompt_nocolor(rl->origpr);
 		else
-			rl->prompt = ft_strdup((prompt == NULL) ? "" : prompt);
+			*dest = ft_strdup((rl->origpr == NULL) ? "" : rl->origpr);
 	}
 	if (rl->dumb && (!rl->opts->dumb_prompt
-					|| !ftrl_prompt_isvalid_dumb_core(rl->prlen)))
+					|| !ftrl_prompt_isvalid_dumb_core(NULL, *len)))
 	{
-		free(rl->prompt);
-		rl->prompt = ft_strdup("$> ");
-		rl->prlen = ft_strlen(rl->prompt);
+		free(*dest);
+		*dest = ft_strdup(DFL_DUMB_PR);
+		*len = ft_strlen(rl->prompt);
 	}
-	return (rl->prompt != NULL);
+	return (*dest != NULL);
 }
 
 inline void				rl_show_prompt(t_readline *rl)

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 06:36:52 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/02 21:52:25 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/05 03:59:00 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,12 @@
 # define FTRL_FAIL		-1
 # define FTRL_SIGINT	1
 # define FTRL_EOF		2
+
+/*
+** Other Macros
+*/
+
+# define DFL_DUMB_PR	"$> "
 
 /*
 ** global for window size

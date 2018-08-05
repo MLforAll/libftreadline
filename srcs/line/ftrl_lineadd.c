@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/02 18:20:51 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/04 08:29:25 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/05 05:47:34 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,16 @@ static void			rl_line_add_multiple(char *add, t_readline *rl)
 inline static void	restore_line(size_t len, t_point *coords, t_readline *rl)
 {
 	size_t	n;
+	size_t	p;
 
 	if (rl->dumb)
 	{
-		n = g_ws.ws_col - coords->x - (coords->y == 1) * rl->prlen;
+		n = g_ws.ws_col - coords->x - 2 - len;
 		if (n > 0)
-			n = ft_putstrmax_fd(rl->line + rl->csr.pos + len, n, STDIN_FILENO);
-		go_to_pos(rl->csr.pos + len, rl->csr.pos + n + 1, rl);
+			p = ft_putstrmax_fd(rl->line + rl->csr.pos + len, n, STDIN_FILENO);
+		else
+			p = 0;
+		go_to_pos(rl->csr.pos + len, rl->csr.pos + p + 1, rl);
 		return ;
 	}
 	(void)outcap("sc");
@@ -69,7 +72,7 @@ inline static void	print_add(char *add,
 		}
 		return ;
 	}
-	n = g_ws.ws_col - coords->x + 1 - (coords->y == 1) * rl->prlen;
+	n = g_ws.ws_col - coords->x - 2;
 	if (len > n)
 	{
 		rl_erase_dumb_line();

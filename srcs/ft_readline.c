@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/02 21:47:36 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/05 04:40:01 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,8 @@ static t_keyact	nav_keys(char *buff, t_readline *rl)
 	&rl_right_key, &rl_left_key, &rl_home_key, &rl_end_key, &rl_movl_key,
 	&rl_movr_key, NULL};
 	const char		*keys[] = {ESC_SHIFTL, ESC_SHIFTR, ESC_SHIFTU,
-								ESC_SHIFTD, rl->keys.rightk, rl->keys.leftk,
-								rl->keys.homek, rl->keys.endk, ESC_MOVL,
-								ESC_MOVR, NULL};
+	ESC_SHIFTD, rl->keys.rightk, rl->keys.leftk, rl->keys.homek,
+	rl->keys.endk, ESC_MOVL, ESC_MOVR, NULL};
 
 	if (!rl || !buff)
 		return (kKeyFail);
@@ -57,7 +56,7 @@ static t_keyact	nav_keys(char *buff, t_readline *rl)
 	{
 		if (ft_strequ(keys[idx], buff))
 		{
-			(idx > 3) ? check_selection(rl) : 0;
+			(idx > 3) ? check_selection(rl) : (void)0;
 			if ((status = f[idx](rl)) >= kKeyFail)
 				return (status);
 		}
@@ -98,7 +97,7 @@ static int		ft_readline_core(t_readline *rl, t_dlist **hist)
 
 	ft_putstr_fd(rl->prompt, rl->opts->outfd);
 	ft_putstr_fd(rl->line, STDIN_FILENO);
-	(rl->csr.pos != rl->csr.max) ? go_to_pos(rl->csr.pos, rl->csr.max, rl) : 0;
+	go_to_pos(rl->csr.pos, rl->csr.max, rl);
 	while (rl->line)
 	{
 		ft_bzero(buff, sizeof(buff));
@@ -113,7 +112,7 @@ static int		ft_readline_core(t_readline *rl, t_dlist **hist)
 			(void)outcap("bl");
 		else if (status == kKeyFatal)
 		{
-			ft_putendl("\nft_readline(): fatal error");
+			ft_putendl_fd("\nft_readline(): fatal error", STDERR_FILENO);
 			return (FTRL_FAIL);
 		}
 	}

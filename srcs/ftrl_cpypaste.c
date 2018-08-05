@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 18:03:06 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/02 04:42:00 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/05 04:58:00 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,24 @@ t_keyact	rl_leftcpy_key(t_readline *rl)
 	if (!rl || rl->cpypste.mkrs[1] <= rl->cpypste.mkrs[0]
 		|| rl->cpypste.mkrs[1] == 0)
 		return (kKeyFail);
-	rl_left_key(rl);
+	(void)rl_left_key(rl);
 	ft_putchar_fd(rl->line[rl->csr.pos], STDIN_FILENO);
 	rl->csr.pos++;
-	rl_left_key(rl);
+	(void)rl_left_key(rl);
 	rl->cpypste.mkrs[1]--;
+	if (rl->cpypste.mkrs[0] == rl->cpypste.mkrs[1])
+		rl->cpypste.idx = 0;
 	return (kKeyOK);
 }
 
 t_keyact	rl_rightcpy_key(t_readline *rl)
 {
-	static t_uint8	idx = 0;
 	t_point			pos;
 
-	if (!rl)
+	if (!rl || rl->csr.pos >= rl->csr.max)
 		return (kKeyFail);
-	rl->cpypste.mkrs[idx] = rl->csr.pos + (idx == 1);
-	idx = 1;
+	rl->cpypste.mkrs[rl->cpypste.idx] = rl->csr.pos + (rl->cpypste.idx == 1);
+	rl->cpypste.idx = 1;
 	if (rl->dumb)
 	{
 		get_line_info(&pos, rl);
@@ -65,7 +66,7 @@ t_keyact	rl_cpy_key(t_readline *rl)
 	if (ft_strequ(rl->cpypste.dat, cpy))
 	{
 		go_to_pos(rl->cpypste.mkrs[1], rl->csr.pos, rl);
-		rl_line_rm(len, rl);
+		(void)rl_line_rm(len, rl);
 	}
 	else
 	{
@@ -82,7 +83,7 @@ t_keyact	rl_paste_key(t_readline *rl)
 {
 	if (!rl || !rl->cpypste.dat)
 		return (kKeyFail);
-	rl_line_add(rl->cpypste.dat, rl);
+	(void)rl_line_add(rl->cpypste.dat, rl);
 	ft_bzero(&rl->cpypste.mkrs, sizeof(rl->cpypste.mkrs));
 	return (kKeyOK);
 }

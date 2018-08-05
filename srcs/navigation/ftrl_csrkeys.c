@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/18 09:00:17 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/28 20:04:53 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/05 05:06:22 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,28 @@
 
 void		check_selection(t_readline *rl)
 {
+	t_point		spt;
+	t_point		ept;
+
 	if (rl->cpypste.mkrs[0] == 0 && rl->cpypste.mkrs[1] == 0)
 		return ;
-	go_to_pos(rl->cpypste.mkrs[0], rl->csr.pos, rl);
-	ft_putstrmax_fd(rl->line + rl->cpypste.mkrs[0],
-		rl->cpypste.mkrs[1] - rl->cpypste.mkrs[0], STDIN_FILENO);
-	go_to_pos(rl->csr.pos, rl->cpypste.mkrs[1], rl);
+	if (rl->dumb)
+	{
+		get_line_info_for_pos(&spt, rl->cpypste.mkrs[0], rl);
+		get_line_info_for_pos(&ept, rl->cpypste.mkrs[1], rl);
+		if (spt.y != ept.y)
+		{
+			ft_putchar_fd('\r', STDIN_FILENO);
+			(void)ft_putstrmax_fd(rl->line + rl->cpypste.mkrs[1] - ept.x, ept.x, STDIN_FILENO);
+		}
+	}
+	else
+	{
+		go_to_pos(rl->cpypste.mkrs[0], rl->csr.pos, rl);
+		ft_putstrmax_fd(rl->line + rl->cpypste.mkrs[0],
+			rl->cpypste.mkrs[1] - rl->cpypste.mkrs[0], STDIN_FILENO);
+		go_to_pos(rl->csr.pos, rl->cpypste.mkrs[1], rl);
+	}
 	ft_bzero(rl->cpypste.mkrs, sizeof(rl->cpypste.mkrs));
 }
 

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/02 21:47:29 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/05 04:55:17 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ typedef struct	s_cpypste
 {
 	unsigned long	mkrs[2];
 	char			*dat;
+	t_uint8			idx;
+	char			reserved_pad[7];
 }				t_cpypste;
 
 /*
@@ -78,6 +80,7 @@ typedef struct	s_readline
 {
 	t_rl_opts		*opts;
 	char			*prompt;
+	const char		*origpr;
 	size_t			prlen;
 	char			*line;
 	size_t			bufflen;
@@ -201,7 +204,7 @@ t_uint8			rl_set_timeout(t_uint8 enable, cc_t timeout);
 ** init
 */
 
-t_uint8			rl_prompt_init(t_readline *rl, const char *prompt);
+t_uint8			rl_prompt_init(char **dest, size_t *len, t_readline *rl);
 void			rl_deinit(t_readline *rl);
 t_uint8			rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts);
 

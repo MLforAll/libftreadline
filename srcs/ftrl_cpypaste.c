@@ -6,12 +6,17 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 18:03:06 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/05 04:58:00 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/07 19:22:51 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include <stdlib.h>
 #include "ftrl_internal.h"
+
+/*
+** Left Selection (Shift + Left)
+*/
 
 t_keyact	rl_leftcpy_key(t_readline *rl)
 {
@@ -27,6 +32,10 @@ t_keyact	rl_leftcpy_key(t_readline *rl)
 		rl->cpypste.idx = 0;
 	return (kKeyOK);
 }
+
+/*
+** Right Selection (Shift + Right)
+*/
 
 t_keyact	rl_rightcpy_key(t_readline *rl)
 {
@@ -53,37 +62,51 @@ t_keyact	rl_rightcpy_key(t_readline *rl)
 	return (kKeyOK);
 }
 
+/*
+** Copy/Cut Selection (Shift + Up once or twice)
+*/
+
 t_keyact	rl_cpy_key(t_readline *rl)
 {
 	char	*cpy;
 	size_t	len;
 
-	if (!rl || !*rl->line
-		|| !(len = rl->cpypste.mkrs[1] - rl->cpypste.mkrs[0]))
+	if (!rl || !*rl->line || !(len = rl->cpypste.mkrs[1] - rl->cpypste.mkrs[0]))
 		return (kKeyFail);
 	if (!(cpy = ft_strsub(rl->line, (unsigned int)rl->cpypste.mkrs[0], len)))
-		return (kKeyFail);
-	if (ft_strequ(rl->cpypste.dat, cpy))
+		return (kKeyFatal);
+	if (ft_strequ(rl->cpypste.dat, cpy) && rl->cpypste.cpyed)
 	{
 		go_to_pos(rl->cpypste.mkrs[1], rl->csr.pos, rl);
-		(void)rl_line_rm(len, rl);
+		free(cpy);
+		rl->cpypste.cpyed = FALSE;
+		if (!rl_line_rm(len, rl))
+			return (kKeyFatal);
 	}
 	else
 	{
 		go_to_pos(rl->cpypste.mkrs[0], rl->csr.pos, rl);
 		ft_putstr_fd(cpy, STDIN_FILENO);
 		go_to_pos(rl->csr.pos, rl->cpypste.mkrs[1], rl);
+		rl->cpypste.cpyed = TRUE;
+		ft_strdel(&rl->cpypste.dat);
+		rl->cpypste.dat = cpy;
 	}
-	ft_strdel(&rl->cpypste.dat);
-	rl->cpypste.dat = cpy;
 	return (kKeyOK);
 }
+
+/*
+** Paste Selection (Shift + Down)
+*/
 
 t_keyact	rl_paste_key(t_readline *rl)
 {
 	if (!rl || !rl->cpypste.dat)
 		return (kKeyFail);
-	(void)rl_line_add(rl->cpypste.dat, rl);
 	ft_bzero(&rl->cpypste.mkrs, sizeof(rl->cpypste.mkrs));
+	rl->cpypste.idx = 0;
+	rl->cpypste.cpyed = FALSE;
+	if (!rl_line_add(rl->cpypste.dat, rl))
+		return (kKeyFatal);
 	return (kKeyOK);
 }

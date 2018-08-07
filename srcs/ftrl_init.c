@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/06 21:57:29 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/07 19:44:52 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,9 @@ void				rl_deinit(t_readline *rl)
 	(void)outcap("ke");
 	restore_signals();
 	free(rl->prompt);
-	free(rl->cpypste.dat);
 	ft_strdel(&rl->cpypste.dat);
+	if (rl->heap_opts)
+		free(rl->opts);
 }
 
 inline static void	rl_makesure_start(const char *termenv, t_uint8 dumb)
@@ -82,6 +83,20 @@ inline static void	rl_makesure_start(const char *termenv, t_uint8 dumb)
 	(void)outcap("me");
 }
 
+static t_rl_opts	*get_opts(t_rl_opts *user_opts, t_readline *rl)
+{
+	t_rl_opts	*ret;
+
+	if (user_opts)
+		return (user_opts);
+	if (!(ret = (t_rl_opts*)ft_memalloc(sizeof(t_rl_opts))))
+		return (NULL);
+	rl->heap_opts = TRUE;
+	ret->bell = TRUE;
+	ret->dumb_prompt = TRUE;
+	return (ret);
+}
+
 t_uint8				rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts)
 {
 	char	*termenv;
@@ -93,9 +108,9 @@ t_uint8				rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts)
 		rl->dumb = TRUE;
 		termenv = "dumb";
 	}
-	rl->opts = opts;
+	rl->opts = get_opts(opts, rl);
 	rl->origpr = prompt;
-	if (!opts || !rl_linebuff_create(rl) || !tgetent(NULL, termenv)
+	if (!rl->opts || !rl_linebuff_create(rl) || !tgetent(NULL, termenv)
 		|| !rl_prompt_init(&rl->prompt, &rl->prlen, rl))
 		return (FALSE);
 	if ((pcstr = tgetstr("pc", NULL)))

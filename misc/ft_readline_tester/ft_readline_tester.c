@@ -6,10 +6,11 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 16:49:35 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/06 17:39:41 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/07 19:38:33 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include <unistd.h>
 #include <signal.h>
 #include "libftreadline.h"
@@ -36,12 +37,16 @@ int			main(int ac, char **av, char **env)
 	int			status;
 	char		*line;
 	t_rl_opts	opts;
+	t_rl_opts	*opts_ptr;
 	t_dlist		*hist;
 	size_t		len;
 
 #ifdef INSMSG
 	signal(SIGUSR1, &quit_hdl);
 #endif
+#ifdef NOOPTS
+	opts_ptr = NULL;
+#else
 	ft_bzero(&opts, sizeof(t_rl_opts));
 	opts.bell = TRUE;
 	opts.outfd = STDIN_FILENO;
@@ -50,6 +55,8 @@ int			main(int ac, char **av, char **env)
 	opts.ac_show_result = NULL;
 #ifdef PPL
 	opts.prompt_perline = TRUE;
+#endif
+	opts_ptr = &opts;
 #endif
 	hist = NULL;
 #ifdef MLTEST
@@ -60,7 +67,7 @@ int			main(int ac, char **av, char **env)
 				"PS: Autocompletion works for files "
 				"using the embbeded routines\n"
 				"PS2: Ctrl-D to quit!\n\n", STDIN_FILENO);
-	while ((status = ft_readline(&line, PRSTR, &opts, hist)) != FTRL_EOF
+	while ((status = ft_readline(&line, PRSTR, opts_ptr, hist)) != FTRL_EOF
 		&& status != FTRL_FAIL)
 	{
 		if (status == FTRL_SIGINT)
@@ -79,5 +86,9 @@ int			main(int ac, char **av, char **env)
 	if (status == FTRL_FAIL)
 		ft_putendl("FATAL ERROR");
 	ft_dlstdel(&hist, &ftrl_histdelf);
+#ifdef LEAKS
+	ft_putendl("LEAKS CHECK TIME. getchar(); enabled!");
+	getchar();
+#endif
 	return (0);
 }

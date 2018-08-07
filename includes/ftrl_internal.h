@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/05 04:55:17 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/07 19:44:31 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,11 @@
 
 typedef struct	s_cpypste
 {
-	unsigned long	mkrs[2];
 	char			*dat;
+	unsigned long	mkrs[2];
 	t_uint8			idx;
-	char			reserved_pad[7];
+	t_uint8			cpyed;
+	char			reserved_pad[6];
 }				t_cpypste;
 
 /*
@@ -84,14 +85,17 @@ typedef struct	s_readline
 	size_t			prlen;
 	char			*line;
 	size_t			bufflen;
-	t_cursor		csr;
-	t_cpypste		cpypste;
-	t_quit			quit;
 	t_mov			movs;
 	t_keys			keys;
+	t_cpypste		cpypste;
+	t_cursor		csr;
+	unsigned long	min_y;
+	unsigned long	max_y;
+	t_quit			quit;
 	int				ret;
 	t_uint8			dumb;
-	char			reserved_pad[3];
+	t_uint8			heap_opts;
+	char			reserved_pad[2];
 }				t_readline;
 
 /*
@@ -166,12 +170,17 @@ void			go_to_point(unsigned long idx,
 ** copy/paste
 */
 
-void			check_selection(t_readline *rl);
-
 t_keyact		rl_paste_key(t_readline *rl);
 t_keyact		rl_cpy_key(t_readline *rl);
 t_keyact		rl_rightcpy_key(t_readline *rl);
 t_keyact		rl_leftcpy_key(t_readline *rl);
+
+/*
+** csr keys utils
+*/
+
+t_uint8			check_height(t_point *gtc, t_readline *rl);
+void			check_selection(t_readline *rl);
 
 /*
 ** autocompletion

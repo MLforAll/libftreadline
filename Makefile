@@ -6,7 +6,7 @@
 #    By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/04 06:10:18 by kdumarai          #+#    #+#              #
-#    Updated: 2018/08/07 19:44:59 by kdumarai         ###   ########.fr        #
+#    Updated: 2018/08/07 19:57:45 by kdumarai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,6 +71,7 @@ PROJTEXT = \033[1;35mlibftreadline \033[0;39m
 all: libft $(NAME)
 
 libft:
+	@ echo "$(PROJTEXT)Missing libft... Fixing..."
 	@ if [ ! -e libft ] && [ -e ../libft ]; then ln -s ../libft .; fi
 
 $(NAME): $(OBJS) $(INCLUDES)
@@ -100,4 +101,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all libft clean fclean re
+.PHONY: all clean fclean re

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 21:26:34 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/04 15:11:54 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/08 18:23:52 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,22 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include "ftrl_internal.h"
+
+#ifdef __linux__
+
+inline size_t		dnamlen(struct dirent *dird)
+{
+	return (ft_strlen(dird->d_name))
+}
+
+#else
+
+inline size_t		dnamlen(struct dirent *dird)
+{
+	return (dird->d_namlen);
+}
+
+#endif
 
 static int			is_exec(const char *d_path, char *name, int folder)
 {
@@ -40,11 +56,11 @@ inline static char	*get_visible_str(struct dirent *dird, char *basedir)
 	if (dird->d_type == DT_DIR)
 		return (NULL);
 	isexec = is_exec(basedir, dird->d_name, NO);
-	if (!(ret = ft_strnew(dird->d_namlen + (size_t)isexec)))
+	if (!(ret = ft_strnew(dnamlen(dird) + (size_t)isexec)))
 		return (NULL);
 	(void)ft_strcpy(ret, dird->d_name);
 	if (isexec)
-		ret[dird->d_namlen] = '*';
+		ret[dnamlen(dird)] = '*';
 	return (ret);
 }
 
@@ -56,11 +72,11 @@ inline static void	search_files_add(struct dirent *dird,
 	t_acres	newcontent;
 
 	ft_bzero((void*)&newcontent, sizeof(t_acres));
-	if (!(newcontent.str = ft_strnew(dird->d_namlen + 1)))
+	if (!(newcontent.str = ft_strnew(dnamlen(dird) + 1)))
 		return ;
 	(void)ft_strcpy(newcontent.str, dird->d_name);
 	if (dird->d_type != DT_LNK)
-		(void)ft_strcpy(newcontent.str + dird->d_namlen,
+		(void)ft_strcpy(newcontent.str + dnamlen(dird),
 			(dird->d_type == DT_DIR) ? "/" : " ");
 	newcontent.visible_str = get_visible_str(dird, basedir);
 	if (!(new = ft_lstnew((void*)&newcontent, sizeof(t_acres))))

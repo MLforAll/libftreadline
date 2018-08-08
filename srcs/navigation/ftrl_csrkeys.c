@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/18 09:00:17 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/07 18:10:00 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/08 04:26:54 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_keyact	rl_right_key(t_readline *rl)
 	rl->csr.pos++;
 	get_line_info(&gtc, rl);
 	go_to_point(rl->csr.pos - 1, &gtc, &coords, rl);
+	rl->prefered_x = gtc.x;
 	return (kKeyOK);
 }
 
@@ -42,6 +43,7 @@ t_keyact	rl_left_key(t_readline *rl)
 		return (kKeyFail);
 	go_to_point(rl->csr.pos, &gtc, &coords, rl);
 	rl->csr.pos--;
+	rl->prefered_x = gtc.x;
 	return (kKeyOK);
 }
 
@@ -56,6 +58,7 @@ t_keyact	rl_home_key(t_readline *rl)
 		return (kKeyFail);
 	go_to_point(rl->csr.pos, &homec, &coords, rl);
 	rl->csr.pos = 0;
+	rl->prefered_x = homec.x;
 	return (kKeyOK);
 }
 
@@ -70,5 +73,6 @@ t_keyact	rl_end_key(t_readline *rl)
 		return (kKeyFail);
 	go_to_point(rl->csr.pos, &maxc, &coords, rl);
 	rl->csr.pos = rl->csr.max;
+	rl->prefered_x = maxc.x;
 	return (kKeyOK);
 }

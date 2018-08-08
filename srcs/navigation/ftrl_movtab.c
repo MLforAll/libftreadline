@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/19 00:22:58 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/07 18:09:02 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/08 05:40:18 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static t_uint8	move_to_next_tab(t_readline *rl, int direct)
 		return (FALSE);
 	go_to_point(rl->csr.pos, &newpoint, &coords, rl);
 	rl->csr.pos = pos;
+	rl->prefered_x = newpoint.x;
 	return (TRUE);
 }
 

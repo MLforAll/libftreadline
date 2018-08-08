@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/02 18:20:51 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/05 06:06:00 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/08 04:31:11 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,5 +98,7 @@ t_uint8				rl_line_add(char *add, t_readline *rl)
 	if (rl->csr.pos < rl->csr.max - len)
 		restore_line(len, &coords, rl);
 	rl->csr.pos += len;
+	get_line_info(&coords, rl);
+	rl->prefered_x = coords.x;
 	return (TRUE);
 }

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/06 17:37:50 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/08 04:10:27 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,10 @@ static t_keyact	nav_keys(char *buff, t_readline *rl)
 	static t_keyact	(*f[])(t_readline*) =
 	{&rl_leftcpy_key, &rl_rightcpy_key, &rl_cpy_key, &rl_paste_key,
 	&rl_right_key, &rl_left_key, &rl_home_key, &rl_end_key, &rl_movl_key,
-	&rl_movr_key, NULL};
+	&rl_movr_key, &rl_moveline_up, &rl_moveline_down, NULL};
 	const char		*keys[] = {ESC_SHIFTL, ESC_SHIFTR, ESC_SHIFTU,
 	ESC_SHIFTD, rl->keys.rightk, rl->keys.leftk, rl->keys.homek,
-	rl->keys.endk, ESC_MOVL, ESC_MOVR, NULL};
+	rl->keys.endk, ESC_MOVL, ESC_MOVR, "\e\e[A", "\e\e[B", NULL};
 
 	if (!rl || !buff)
 		return (kKeyFail);

@@ -6,47 +6,13 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 16:49:05 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/05 04:38:37 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/08 04:59:18 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
 #include "ftrl_internal.h"
-
-void		get_line_info_for_pos(t_point *pt,
-								unsigned long pos,
-								t_readline *rl)
-{
-	char			*bw;
-
-	if (g_ws.ws_col == 0 || g_ws.ws_row == 0)
-		return ;
-	pt->y = (pos + rl->prlen) / (g_ws.ws_col - rl->dumb) + 1;
-	if (!rl->line || rl->dumb)
-	{
-		pt->x = (pos + rl->prlen) % (g_ws.ws_col - rl->dumb);
-		return ;
-	}
-	pt->x = rl->prlen;
-	bw = rl->line;
-	while (*bw && bw != rl->line + pos)
-	{
-		if (*(bw++) == '\n')
-		{
-			pt->y++;
-			pt->x = 0;
-		}
-		else
-			pt->x++;
-	}
-	pt->x = pt->x % (g_ws.ws_col - rl->dumb);
-}
-
-inline void	get_line_info(t_point *pt, t_readline *rl)
-{
-	get_line_info_for_pos(pt, rl->csr.pos, rl);
-}
 
 static void	go_to_point_dumb(unsigned long idx,
 							t_point *to,

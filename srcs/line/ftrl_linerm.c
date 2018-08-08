@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/05 06:11:52 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/08 04:33:25 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,5 +72,7 @@ t_uint8				rl_line_rm(size_t len, t_readline *rl)
 			ft_putstr_fd(rl->line + rl->csr.pos + len, STDIN_FILENO);
 		(void)outcap("rc");
 	}
+	get_line_info(&coords, rl);
+	rl->prefered_x = coords.x;
 	return ((t_uint8)rl_linebuff_rm(len, rl));
 }

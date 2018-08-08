@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 18:03:06 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/07 19:22:51 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/08 05:47:01 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ t_keyact	rl_rightcpy_key(t_readline *rl)
 		return (kKeyFail);
 	rl->cpypste.mkrs[rl->cpypste.idx] = rl->csr.pos + (rl->cpypste.idx == 1);
 	rl->cpypste.idx = 1;
+	get_line_info(&pos, rl);
 	if (rl->dumb)
 	{
-		get_line_info(&pos, rl);
 		if (pos.x + 2 == g_ws.ws_col)
 			go_to_pos(rl->csr.pos + 1, rl->csr.pos, rl);
 		ft_putchar_fd((char)ft_toupper(rl->line[rl->csr.pos]), STDIN_FILENO);
@@ -59,6 +59,7 @@ t_keyact	rl_rightcpy_key(t_readline *rl)
 		(void)outcap("me");
 	}
 	rl->csr.pos++;
+	rl->prefered_x = pos.x;
 	return (kKeyOK);
 }
 

@@ -6,7 +6,7 @@
 #    By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/04 06:10:18 by kdumarai          #+#    #+#              #
-#    Updated: 2018/08/07 19:57:45 by kdumarai         ###   ########.fr        #
+#    Updated: 2018/08/08 05:01:34 by kdumarai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,8 @@ SRCFILES = ft_readline.c \
 	line/ftrl_linebuff.c \
 	navigation/ftrl_csrkeys.c \
 	navigation/ftrl_movtab.c \
+	navigation/ftrl_linemov.c \
+	navigation/ftrl_lineinfo.c \
 	navigation/ftrl_nav.c \
 	ftrl_cpypaste.c \
 	ftrl_csrutils.c \

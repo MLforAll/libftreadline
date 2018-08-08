@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/08 03:40:54 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/08 05:43:38 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/08 19:10:00 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,9 @@ static unsigned long	point_to_idx(t_point *pt, t_readline *rl)
 	return (ret);
 }
 
-static t_uint8	get_new_idx(unsigned long *ret, t_point *pt, t_readline *rl)
+static t_uint8			get_new_idx(unsigned long *ret, \
+									t_point *pt, \
+									t_readline *rl)
 {
 	unsigned long	idx;
 	size_t			len;
@@ -57,7 +59,7 @@ static t_uint8	get_new_idx(unsigned long *ret, t_point *pt, t_readline *rl)
 	return (TRUE);
 }
 
-static t_uint8	chg_line(t_readline *rl, t_direct direct)
+static t_uint8			chg_line(t_readline *rl, t_direct direct)
 {
 	t_point			coords;
 	t_point			maxc;
@@ -81,14 +83,14 @@ static t_uint8	chg_line(t_readline *rl, t_direct direct)
 	return (TRUE);
 }
 
-t_keyact	rl_moveline_up(t_readline *rl)
+t_keyact				rl_moveline_up(t_readline *rl)
 {
 	if (rl->dumb || !chg_line(rl, kDirectLeft))
 		return (kKeyFail);
 	return (kKeyOK);
 }
 
-t_keyact	rl_moveline_down(t_readline *rl)
+t_keyact				rl_moveline_down(t_readline *rl)
 {
 	if (rl->dumb || !chg_line(rl, kDirectRight))
 		return (kKeyFail);

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/08 18:44:08 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/08 19:22:53 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,7 @@
 void		tcaps_set_extern(struct termios *pterm)
 {
 	struct termios	t;
-	extern short	ospeed;
 	char			*pcstr;
-	extern char		PC;
 
 	if (!pterm)
 	{

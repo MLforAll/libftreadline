@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 06:36:52 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/08 18:16:05 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/08 19:16:03 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 ** global for window size
 */
 
-struct 					s_winsize
+struct					s_winsize
 {
 	unsigned long	ws_col;
 	unsigned long	ws_row;

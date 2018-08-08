@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/04 17:21:00 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/08 18:28:43 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/08 19:06:39 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,28 @@ static void	rl_generic_sig_hdl(int sigc)
 	(g_sig_origs[sigc])(sigc);
 }
 
+static void	set_custom_winsize(void)
+{
+	struct winsize	cws;
+
+	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &cws) == -1)
+	{
+		ft_bzero(&g_ws, sizeof(struct winsize));
+		return ;
+	}
+	g_ws.ws_col = cws.ws_col;
+	g_ws.ws_row = cws.ws_row;
+}
+
 static void	winsize_hdl(int sigc)
 {
 	t_readline		*session;
 	char			*new_pr;
 	size_t			new_len;
-	struct winsize	cws;
 
 	if (sigc != SIGWINCH || !(session = rl_latest_session(NO, NULL)))
 		return ;
-	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &cws) == -1)
-		ft_bzero(&g_ws, sizeof(struct winsize));
-	else
-		(void)ft_memcpy(&g_ws, &cws, sizeof(struct winsize));
+	set_custom_winsize();
 	if (session->dumb)
 	{
 		if (rl_prompt_init(&new_pr, &new_len, session))
@@ -76,7 +85,7 @@ void		set_signals(void)
 		else
 			g_sig_origs[sig] = signal(sig, &rl_generic_sig_hdl);
 	}
-	(void)ioctl(STDIN_FILENO, TIOCGWINSZ, &g_ws);
+	set_custom_winsize();
 	g_sig_origs[SIGWINCH] = signal(SIGWINCH, &winsize_hdl);
 }
 

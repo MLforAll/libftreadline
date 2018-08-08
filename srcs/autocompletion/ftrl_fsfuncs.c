@@ -6,30 +6,14 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 21:26:34 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/08 18:23:52 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/08 18:34:20 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include <dirent.h>
 #include <sys/stat.h>
+#include "ftrl_linux.h"
 #include "ftrl_internal.h"
-
-#ifdef __linux__
-
-inline size_t		dnamlen(struct dirent *dird)
-{
-	return (ft_strlen(dird->d_name))
-}
-
-#else
-
-inline size_t		dnamlen(struct dirent *dird)
-{
-	return (dird->d_namlen);
-}
-
-#endif
 
 static int			is_exec(const char *d_path, char *name, int folder)
 {

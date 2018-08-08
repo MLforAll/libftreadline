@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/24 12:50:52 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/04 14:47:09 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/08 18:43:57 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int					ft_confirm(const char *msg, int outfd, t_dflact dfl)
 		return (-1);
 	ret = 0;
 	(void)tgetent(NULL, getenv("TERM"));
+	tcaps_set_extern(NULL);
 	reset_after = rl_set_term(NO);
 	print_message(msg, outfd, dfl);
 	ft_bzero(buff, sizeof(buff));

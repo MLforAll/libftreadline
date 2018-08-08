@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/04 18:10:32 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/08 18:44:08 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,24 @@
 #include <stdlib.h>
 #include <limits.h>
 #include "ftrl_internal.h"
+
+void		tcaps_set_extern(struct termios *pterm)
+{
+	struct termios	t;
+	extern short	ospeed;
+	char			*pcstr;
+	extern char		PC;
+
+	if (!pterm)
+	{
+		if (tcgetattr(STDIN_FILENO, &t) == -1)
+			return ;
+		pterm = &t;
+	}
+	ospeed = (short)pterm->c_ospeed;
+	pcstr = tgetstr("pc", NULL);
+	PC = (pcstr) ? *pcstr : 0;
+}
 
 int			rl_set_term(t_uint8 echo)
 {
@@ -23,7 +41,7 @@ int			rl_set_term(t_uint8 echo)
 
 	if (state != echo || (!echo && tcgetattr(STDIN_FILENO, &saved_t) == -1))
 		return (FALSE);
-	ospeed = (short)saved_t.c_ospeed;
+	tcaps_set_extern(&saved_t);
 	if (!echo)
 	{
 		t = saved_t;

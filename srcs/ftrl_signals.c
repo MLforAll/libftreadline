@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/04 17:21:00 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/08 18:13:03 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/08 18:28:43 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void		set_signals(void)
 	while (++sig < 32)
 	{
 		if (sig == SIGURG || sig == SIGCONT || sig == SIGCHLD
-			|| sig == SIGIO || sig == SIGWINCH || sig == SIGINFO)
+			|| sig == SIGIO || sig == SIGWINCH)
 			g_sig_origs[sig] = SIG_ERR;
 		else
 			g_sig_origs[sig] = signal(sig, &rl_generic_sig_hdl);

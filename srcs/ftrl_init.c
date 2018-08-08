@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/08 18:18:08 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/08 18:42:23 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,7 @@ static t_rl_opts	*get_opts(t_rl_opts *user_opts, t_readline *rl)
 
 t_uint8				rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts)
 {
-	char	*termenv;
-	char	*pcstr;
+	char		*termenv;
 
 	ft_bzero(rl, sizeof(t_readline));
 	if (!(termenv = getenv("TERM")))
@@ -113,8 +112,6 @@ t_uint8				rl_init(t_readline *rl, const char *prompt, t_rl_opts *opts)
 	if (!rl->opts || !rl_linebuff_create(rl) || !tgetent(NULL, termenv)
 		|| !rl_prompt_init(&rl->prompt, &rl->prlen, rl))
 		return (FALSE);
-	if ((pcstr = tgetstr("pc", NULL)))
-		PC = *pcstr;
 	set_keys_movs(&rl->keys, &rl->movs, rl->dumb);
 	if (!rl_set_term(NO))
 		return (FALSE);

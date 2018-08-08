@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/08 18:09:14 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/08 18:43:41 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,6 +209,7 @@ void			rl_erase_dumb_line(void);
 ** terminal
 */
 
+void			tcaps_set_extern(struct termios *pterm);
 int				rl_set_term(t_uint8 echo);
 t_uint8			rl_set_timeout(t_uint8 enable, cc_t timeout);
 

@@ -6,12 +6,26 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/29 01:36:45 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/22 14:35:35 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/08 18:14:02 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FTRL_TERMCAP_H
 # define FTRL_TERMCAP_H
+
+/*
+** Termcaps
+** --------
+**
+** Preprocessor directive for Linux compatibility
+*/
+
+# ifdef __linux__
+#  include <term.h>
+#  include <curses.h>
+# else
+#  include <termcap.h>
+# endif
 
 /*
 ** structs for termcaps
@@ -43,7 +57,7 @@ typedef struct	s_mov
 }				t_mov;
 
 /*
-** termcap functions
+** my custom termcap functions
 */
 
 int				outcap_fd(char *name, int fd);

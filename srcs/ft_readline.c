@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/08 04:10:27 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/08 18:16:19 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ static int		ft_readline_core(t_readline *rl, t_dlist **hist)
 			&& (status = hist_nav(buff, rl, hist)) < kKeyFail
 			&& (status = edit_keys(buff, rl)) < kKeyFail))
 			continue ;
-		if (status == kKeyFail && rl->opts->bell && !rl->dumb)
+		if (status == kKeyFail && rl->opts->tbell && !rl->dumb)
 			(void)outcap("bl");
 		else if (status == kKeyFatal)
 		{

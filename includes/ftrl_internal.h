@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/08 04:25:27 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/08 18:09:14 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include "libftreadline.h"
 # include "ftrl_termcap.h"
 # include "ftrl_dev.h"
-# include <termcap.h>
 # include <termios.h>
 # include <sys/ioctl.h>
 

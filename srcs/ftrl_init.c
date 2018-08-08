@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 02:01:46 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/07 19:44:52 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/08 18:18:08 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static t_rl_opts	*get_opts(t_rl_opts *user_opts, t_readline *rl)
 	if (!(ret = (t_rl_opts*)ft_memalloc(sizeof(t_rl_opts))))
 		return (NULL);
 	rl->heap_opts = TRUE;
-	ret->bell = TRUE;
+	ret->tbell = TRUE;
 	ret->dumb_prompt = TRUE;
 	return (ret);
 }

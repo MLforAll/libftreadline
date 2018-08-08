@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 06:36:52 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/05 03:59:00 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/08 18:16:05 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,14 @@
 ** global for window size
 */
 
-extern struct winsize	g_ws;
-struct winsize			g_ws;
+struct 					s_winsize
+{
+	unsigned long	ws_col;
+	unsigned long	ws_row;
+};
+
+extern struct s_winsize	g_ws;
+struct s_winsize		g_ws;
 
 /*
 ** struct for cursor mgmt
@@ -62,7 +68,7 @@ typedef struct			s_rl_opts
 	char		*(*ac_show_result)(t_list **);
 	char		*(*ac_show_result_dumb)(t_list **);
 	int			outfd;
-	t_uint8		bell;
+	t_uint8		tbell;
 	t_uint8		dumb_prompt;
 	t_uint8		prompt_perline;
 	char		reserved_pad;

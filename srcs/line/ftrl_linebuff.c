@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/21 22:59:54 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/25 16:35:13 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/08 18:03:04 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@
 
 static int		buffrealloc(char **line, size_t size)
 {
-	char	*newline;
+	char	*nline;
 
-	if (!(newline = ft_strnew(size)))
+	if (!(nline = ft_strnew(size)))
 		return (FALSE);
-	(void)ft_strcpy(newline, *line);
+	(void)ft_strcpy(nline, *line);
 	free(*line);
-	*line = newline;
+	*line = nline;
 	return (TRUE);
 }
 

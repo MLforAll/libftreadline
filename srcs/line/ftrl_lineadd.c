@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/02 18:20:51 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/08 04:31:11 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/09 05:30:21 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,32 @@ static void			rl_line_add_multiple(char *add, t_readline *rl)
 	ft_putstr_fd(tmp, STDIN_FILENO);
 }
 
+inline static void	clear_multiple(size_t len, t_readline *rl)
+{
+	unsigned long	idx;
+	unsigned long	old;
+	t_point			mv;
+
+	idx = rl->csr.pos + len;
+	old = idx;
+	while (rl->line[idx])
+	{
+		if (rl->line[idx] == '\n')
+		{
+			get_line_info_for_pos(&mv, idx, rl);
+			if (mv.x > 0)
+			{
+				go_to_pos(idx, old, rl);
+				(void)outcapstr(rl->movs.cecap);
+				old = idx;
+			}
+		}
+		idx++;
+	}
+	if (old != rl->csr.pos + len)
+		go_to_pos(rl->csr.pos + len, old, rl);
+}
+
 inline static void	restore_line(size_t len, t_point *coords, t_readline *rl)
 {
 	size_t	n;
@@ -52,6 +78,7 @@ inline static void	restore_line(size_t len, t_point *coords, t_readline *rl)
 	(void)outcap("sc");
 	ft_putstr_fd(rl->line + rl->csr.pos + len, STDIN_FILENO);
 	(void)outcap("rc");
+	clear_multiple(len, rl);
 }
 
 inline static void	print_add(char *add,
@@ -65,7 +92,7 @@ inline static void	print_add(char *add,
 	{
 		(void)outcapstr(rl->movs.cecap);
 		rl_line_add_multiple(add, rl);
-		if (coords->x + len >= g_ws.ws_col)
+		if (coords->x + len == g_ws.ws_col)
 		{
 			ft_putchar_fd(' ', STDIN_FILENO);
 			(void)outcapstr(rl->movs.leftm);

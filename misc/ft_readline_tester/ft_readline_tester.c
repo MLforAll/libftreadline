@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 16:49:35 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/08 18:17:27 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/09 04:35:45 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 static void	quit_hdl(int sigc)
 {
 	(void)sigc;
-	ftrl_insert_msg("Yolo", STDOUT_FILENO, NO);
+	(void)ftrl_insert_msg("Yolo", STDOUT_FILENO, NO);
 }
 #endif
 
@@ -42,7 +42,7 @@ int			main(int ac, char **av, char **env)
 	size_t		len;
 
 #ifdef INSMSG
-	signal(SIGUSR1, &quit_hdl);
+	(void)signal(SIGUSR1, &quit_hdl);
 #endif
 #ifdef NOOPTS
 	opts_ptr = NULL;
@@ -79,7 +79,8 @@ int			main(int ac, char **av, char **env)
 			ft_putstr_fd("> ", STDIN_FILENO);
 			ft_putstr_fd(line, STDIN_FILENO);
 			ft_putstr_fd("\n\n", STDIN_FILENO);
-			ftrl_histadd(&hist, line);
+			if (*line)
+				ftrl_histadd(&hist, line);
 		}
 		ft_strdel(&line);
 	}
@@ -88,7 +89,7 @@ int			main(int ac, char **av, char **env)
 	ft_dlstdel(&hist, &ftrl_histdelf);
 #ifdef LEAKS
 	ft_putendl("LEAKS CHECK TIME. getchar(); enabled!");
-	getchar();
+	(void)getchar();
 #endif
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/08 03:40:54 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/08 19:10:00 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/09 03:26:35 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,12 @@ static unsigned long	point_to_idx(t_point *pt, t_readline *rl)
 	chkpt.y = 1;
 	chkpt.x = rl->prlen;
 	ret = 0;
-	while (chkpt.y != pt->y && rl->line[ret])
+	while ((chkpt.y != pt->y || chkpt.x != pt->x) && rl->line[ret])
 	{
 		if (rl->line[ret] == '\n' || chkpt.x == g_ws.ws_col - 1)
 		{
+			if (chkpt.y == pt->y && chkpt.x != pt->x)
+				break ;
 			chkpt.y++;
 			chkpt.x = 0;
 		}
@@ -33,30 +35,7 @@ static unsigned long	point_to_idx(t_point *pt, t_readline *rl)
 			chkpt.x++;
 		ret++;
 	}
-	ret += pt->x - ((pt->y == 1) ? rl->prlen : 0);
 	return (ret);
-}
-
-static t_uint8			get_new_idx(unsigned long *ret, \
-									t_point *pt, \
-									t_readline *rl)
-{
-	unsigned long	idx;
-	size_t			len;
-
-	*ret = point_to_idx(pt, rl);
-	len = 0;
-	idx = *ret;
-	while (TRUE)
-	{
-		len++;
-		if (rl->line[idx] == '\n' || idx == 0)
-			break ;
-		idx--;
-	}
-	if (idx > 0 && len < pt->x)
-		*ret = idx;
-	return (TRUE);
 }
 
 static t_uint8			chg_line(t_readline *rl, t_direct direct)
@@ -76,8 +55,7 @@ static t_uint8			chg_line(t_readline *rl, t_direct direct)
 	}
 	(direct == kDirectLeft) ? coords.y-- : coords.y++;
 	coords.x = rl->prefered_x;
-	if (!get_new_idx(&idx, &coords, rl))
-		return (FALSE);
+	idx = point_to_idx(&coords, rl);
 	go_to_pos(idx, rl->csr.pos, rl);
 	rl->csr.pos = idx;
 	return (TRUE);

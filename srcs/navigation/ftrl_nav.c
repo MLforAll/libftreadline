@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 16:49:05 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/08 04:59:18 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/09 02:02:43 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ static void	go_to_point_dumb(unsigned long idx,
 							t_point *from,
 							t_readline *rl)
 {
-	const t_direct		dir = to->x > from->x ? kDirectRight : kDirectLeft;
-	unsigned long		pos;
+	t_direct		dir;
+	unsigned long	pos;
 
 	if (to->y != from->y)
 	{
@@ -36,8 +36,7 @@ static void	go_to_point_dumb(unsigned long idx,
 	}
 	else
 		pos = from->x;
-	if (pos > g_ws.ws_col - 2)
-		return ;
+	dir = to->x > pos ? kDirectRight : kDirectLeft;
 	while (pos != to->x)
 	{
 		ft_putchar_fd((dir == kDirectRight) ? rl->line[idx] : 8, STDIN_FILENO);

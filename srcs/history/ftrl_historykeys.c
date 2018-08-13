@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 11:06:01 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/07/30 03:08:20 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/13 02:26:19 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,21 +50,29 @@ static t_keyact	rl_history_keys(char *buff, t_readline *rl, t_dlist **history)
 	return (kKeyOK);
 }
 
+static void		disp_new_line_dumb(t_point *maxc, t_readline *rl)
+{
+	if (maxc->y == 1)
+	{
+		ft_putchar('\r');
+		ft_putnchar_fd(' ', g_ws.ws_col, STDIN_FILENO);
+		ft_putchar_fd('\r', STDIN_FILENO);
+		ft_putstr_fd(rl->prompt, STDIN_FILENO);
+		(void)ft_putstrmax_fd(rl->line,
+							g_ws.ws_col - rl->prlen - 2, STDIN_FILENO);
+	}
+	else
+		go_to_pos(rl->csr.max, 0, rl);
+}
+
 static void		disp_new_line(t_point *maxc, t_readline *rl)
 {
+	const char *tmp = rl->line;
+	const char *chr;
+
 	if (rl->dumb)
 	{
-		if (maxc->y == 1)
-		{
-			ft_putchar('\r');
-			ft_putnchar_fd(' ', g_ws.ws_col, STDIN_FILENO);
-			ft_putchar_fd('\r', STDIN_FILENO);
-			ft_putstr_fd(rl->prompt, STDIN_FILENO);
-			(void)ft_putstrmax_fd(rl->line,
-								g_ws.ws_col - rl->prlen - 2, STDIN_FILENO);
-		}
-		else
-			go_to_pos(rl->csr.max, 0, rl);
+		disp_new_line_dumb(maxc, rl);
 		return ;
 	}
 	(void)outcapstr(rl->movs.crcap);
@@ -72,6 +80,13 @@ static void		disp_new_line(t_point *maxc, t_readline *rl)
 						(int)maxc->y, (int)maxc->y);
 	ft_putstr_fd(rl->prompt, rl->opts->outfd);
 	ft_putstr_fd(rl->line, STDIN_FILENO);
+	while ((chr = ft_strchr(tmp, '\n')))
+		tmp = chr;
+	if (ft_strlen(tmp) + rl->prlen == g_ws.ws_col)
+	{
+		ft_putchar_fd(' ', STDIN_FILENO);
+		(void)outcapstr(rl->movs.leftm);
+	}
 }
 
 t_keyact		hist_nav(char *buff, t_readline *rl, t_dlist **hist)

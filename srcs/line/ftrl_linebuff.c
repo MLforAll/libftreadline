@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/21 22:59:54 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/08 18:03:04 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/13 23:20:46 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int		buffrealloc(char **line, size_t size)
 
 	if (!(nline = ft_strnew(size)))
 		return (FALSE);
-	(void)ft_strcpy(nline, *line);
+	(void)ft_strncpy(nline, *line, size);
 	free(*line);
 	*line = nline;
 	return (TRUE);
@@ -70,7 +70,7 @@ int				rl_linebuff_add(char *add, size_t addlen, t_readline *rl)
 
 int				rl_linebuff_rm(size_t len, t_readline *rl)
 {
-	if (rl->csr.max <= rl->bufflen / 2 && rl->csr.max >= DFL_LINEBUFFSIZE
+	if (rl->csr.max < rl->bufflen / 2 && rl->csr.max > DFL_LINEBUFFSIZE
 		&& !buffrealloc(&rl->line, rl->bufflen /= 2))
 		return (FALSE);
 	(void)ft_memset(rl->line + rl->csr.pos, '\0', len);

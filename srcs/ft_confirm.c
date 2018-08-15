@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/24 12:50:52 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/08 18:43:57 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/15 19:54:18 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int			get_ret(char c, t_dflact dfl)
 		return ((dfl == kDefaultYes));
 	if (ft_tolower(c) == 'y')
 		return (1);
-	if (ft_tolower(c) == 'n')
+	if (ft_tolower(c) == 'n' || c == 3 || c == 4)
 		return (0);
 	return (-1);
 }

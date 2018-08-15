@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 17:46:30 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/09 05:09:47 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/15 14:35:21 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,11 @@
 # define ESC_SHIFTR			"\033[1;2C"
 # define ESC_SHIFTU			"\033[1;2A"
 # define ESC_SHIFTD			"\033[1;2B"
+# define ESC_ALTU			"\033\033[A"
+# define ESC_ALTD			"\033\033[B"
 # define ESC_MOVL			"\033b"
 # define ESC_MOVR			"\033f"
+# define ESC_CTRLL			"\014"
 
 /*
 ** cpy/paste structs
@@ -60,7 +63,8 @@ typedef enum	e_abort
 {
 	kAbortNone,
 	kAbortQuit,
-	kAbortReload
+	kAbortReload,
+	kAbortClear
 }				t_abort;
 
 typedef struct	s_quit
@@ -124,6 +128,8 @@ t_keyact		rl_input_add_text(char *buff, t_readline *rl);
 t_keyact		rl_input_rm_text(char *buff, t_readline *rl);
 t_keyact		rl_clear_line(t_readline *rl);
 t_keyact		rl_eof_key(t_readline *rl);
+
+t_keyact		rl_clscr_key(t_readline *rl);
 
 /*
 ** line edit (sys)

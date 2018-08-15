@@ -6,13 +6,13 @@
 #    By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/04 06:10:18 by kdumarai          #+#    #+#              #
-#    Updated: 2018/08/08 18:31:53 by kdumarai         ###   ########.fr        #
+#    Updated: 2018/08/15 14:10:20 by kdumarai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftreadline.a
 
-CC_FLAGS = -Wall -Werror -Wextra
+CC_FLAGS = -Wall -Weverything -Wextra
 CC_LIB = -I includes -I libft/includes
 LD_FLAGS = -L libft -lft
 

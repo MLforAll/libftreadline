@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/08 19:01:05 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/15 14:35:13 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static t_keyact	nav_keys(char *buff, t_readline *rl)
 	&rl_movr_key, &rl_moveline_up, &rl_moveline_down, NULL};
 	const char		*keys[] = {ESC_SHIFTL, ESC_SHIFTR, ESC_SHIFTU,
 	ESC_SHIFTD, rl->keys.rightk, rl->keys.leftk, rl->keys.homek,
-	rl->keys.endk, ESC_MOVL, ESC_MOVR, "\e\e[A", "\e\e[B", NULL};
+	rl->keys.endk, ESC_MOVL, ESC_MOVR, ESC_ALTU, ESC_ALTD, NULL};
 
 	if (!rl || !buff)
 		return (kKeyFail);
@@ -57,12 +57,12 @@ static t_keyact	nav_keys(char *buff, t_readline *rl)
 		if (ft_strequ(keys[idx], buff))
 		{
 			(idx > 3) ? check_selection(rl) : (void)0;
-			if ((status = f[idx](rl)) >= kKeyFail)
+			if ((status = f[idx](rl)) != kKeyNone)
 				return (status);
 		}
 		idx++;
 	}
-	return (kKeyOK);
+	return (kKeyNone);
 }
 
 static t_keyact	edit_keys(char *buff, t_readline *rl)
@@ -83,6 +83,8 @@ static t_keyact	edit_keys(char *buff, t_readline *rl)
 		return (rl_clear_line(rl));
 	if (ft_strequ(buff, "\t"))
 		return (rl_acroutine(rl));
+	if (ft_strequ(ESC_CTRLL, buff))
+		return (rl_clscr_key(rl));
 	if ((tmp = rl_input_rm_text(buff, rl)) != kKeyNone)
 		return (tmp);
 	if ((tmp = rl_input_add_text(buff, rl)) != kKeyNone)
@@ -98,7 +100,7 @@ static int		ft_readline_core(t_readline *rl, t_dlist **hist)
 	ft_putstr_fd(rl->prompt, rl->opts->outfd);
 	ft_putstr_fd(rl->line, STDIN_FILENO);
 	go_to_pos(rl->csr.pos, rl->csr.max, rl);
-	while (rl->line)
+	while (rl->line && rl->quit.reason == kAbortNone)
 	{
 		ft_bzero(buff, sizeof(buff));
 		if (read(STDIN_FILENO, buff, RL_READBUFFSIZE) < 1
@@ -110,11 +112,8 @@ static int		ft_readline_core(t_readline *rl, t_dlist **hist)
 			continue ;
 		if (status == kKeyFail && rl->opts->tbell && !rl->dumb)
 			(void)outcap("bl");
-		else if (status == kKeyFatal)
-		{
-			ft_putendl_fd("\nft_readline(): fatal error", STDERR_FILENO);
+		if (status == kKeyFatal)
 			return (FTRL_FAIL);
-		}
 	}
 	return (rl->ret);
 }
@@ -131,15 +130,15 @@ int				ft_readline(char **line, const char *prompt,
 	{
 		rl.ret = ft_readline_core(&rl, &hist);
 		check_selection(&rl);
-		print_end_newlines(&rl);
-		if (rl.quit.reason != kAbortReload)
+		(rl.quit.reason != kAbortClear) ? print_end_newlines(&rl) : (void)0;
+		if (rl.quit.reason < kAbortReload)
 			break ;
 		if (rl.quit.func)
 		{
 			(rl.quit.func)(rl.quit.func_data);
 			(rl.quit.free_func)(rl.quit.func_data);
 		}
-		if (!rl_set_timeout(NO, 0))
+		if (rl.quit.reason == kAbortReload && !rl_set_timeout(NO, 0))
 			break ;
 		ft_bzero(&rl.quit, sizeof(t_quit));
 	}

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/02 18:20:51 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/09 05:30:21 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/15 13:48:55 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ inline static void	clear_multiple(size_t len, t_readline *rl)
 		}
 		idx++;
 	}
-	if (old != rl->csr.pos + len)
+	if (old != idx)
 		go_to_pos(rl->csr.pos + len, old, rl);
 }
 

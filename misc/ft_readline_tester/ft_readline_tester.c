@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 16:49:35 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/09 04:35:45 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/15 13:55:49 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int			main(int ac, char **av, char **env)
 		ft_strdel(&line);
 	}
 	if (status == FTRL_FAIL)
-		ft_putendl("FATAL ERROR");
+		ft_putendl("ft_readline(): fatal error");
 	ft_dlstdel(&hist, &ftrl_histdelf);
 #ifdef LEAKS
 	ft_putendl("LEAKS CHECK TIME. getchar(); enabled!");

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/21 19:45:50 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/08 04:30:21 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/15 14:35:33 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,5 +94,16 @@ t_keyact	rl_eof_key(t_readline *rl)
 		return (kKeyFail);
 	if ((status = rl_right_key(rl)) != kKeyOK || !rl_line_rm(1, rl))
 		return ((status == kKeyOK) ? kKeyFatal : status);
+	return (kKeyOK);
+}
+
+t_keyact	rl_clscr_key(t_readline *rl)
+{
+	char	*ptr;
+
+	if (!(ptr = tgetstr("cl", NULL))
+		|| tputs(ptr, (int)g_ws.ws_row, &putcf) == -1)
+		return (kKeyFail);
+	rl->quit.reason = kAbortClear;
 	return (kKeyOK);
 }

@@ -6,7 +6,7 @@
 /*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 11:06:01 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/13 02:26:19 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/08/15 22:41:37 by kdumarai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static void		disp_new_line(t_point *maxc, t_readline *rl)
 	ft_putstr_fd(rl->prompt, rl->opts->outfd);
 	ft_putstr_fd(rl->line, STDIN_FILENO);
 	while ((chr = ft_strchr(tmp, '\n')))
-		tmp = chr;
+		tmp = chr + 1;
 	if (ft_strlen(tmp) + rl->prlen == g_ws.ws_col)
 	{
 		ft_putchar_fd(' ', STDIN_FILENO);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ftrl_lineadd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kdumarai <kdumarai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kelian <kelian@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/02 18:20:51 by kdumarai          #+#    #+#             */
-/*   Updated: 2018/08/15 13:48:55 by kdumarai         ###   ########.fr       */
+/*   Updated: 2018/09/02 19:29:59 by kelian           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ inline static void	print_add(char *add,
 		if (coords->x + len == g_ws.ws_col)
 		{
 			ft_putchar_fd(' ', STDIN_FILENO);
-			(void)outcapstr(rl->movs.leftm);
+			(void)outcapstr(rl->movs.crcap);
 		}
 		return ;
 	}
